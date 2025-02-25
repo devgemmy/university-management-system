@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.dashboard.DashboardController">
+    <!-- Header Section -->
+    <top>
+        <HBox spacing="60" style="-fx-padding: 10;">
+            <Button ellipsisString="" lineSpacing="1.0" text="Log out" textAlignment="CENTER" textFill="#007878" textOverrun="WORD_ELLIPSIS">
+                <font>
+                   <Font name="Avenir Roman" size="13.0" />
+                </font>
+            </Button>
+            <HBox>
+                <ComboBox fx:id="filterDropdown">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                            <String fx:value="All records" />
+                            <String fx:value="By Month" />
+                            <String fx:value="By Year" />
+                        </FXCollections>
+                    </items>
+                </ComboBox>
+                <ComboBox fx:id="yearDropdown">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                            <String fx:value="2024" />
+                            <String fx:value="2023" />
+                            <String fx:value="2022" />
+                            <String fx:value="2021" />
+                            <String fx:value="2020" />
+                        </FXCollections>
+                    </items>
+                </ComboBox>
+                <TextField fx:id="searchField" promptText="Search Course..." />
+            </HBox>
+        </HBox>
+    </top>
+
+    <!-- Center Section -->
+    <center>
+        <VBox spacing="15" stylesheets="@styles.css">
+            <HBox spacing="20">
+                <PieChart fx:id="totalCostsChart" title="Total Costs in 2022 for Business Students" />
+                <BarChart fx:id="averageCostsChart">
+                    <xAxis>
+                        <CategoryAxis fx:id="xAxis" />
+                    </xAxis>
+                    <yAxis>
+                        <NumberAxis fx:id="yAxis" />
+                    </yAxis>
+                </BarChart>
+            </HBox>
+
+            <TableView fx:id="dataTable">
+                <columns>
+                    <TableColumn prefWidth="37.0" text="#" />
+                    <TableColumn prefWidth="191.0" text="Name" />
+                    <TableColumn prefWidth="240.0" text="Institution" />
+                    <TableColumn prefWidth="170.0" text="Course Details" />
+                    <TableColumn prefWidth="139.0" text="Course Fees" />
+                    <TableColumn prefWidth="116.0" text="Sports" />
+                    <TableColumn prefWidth="142.0" text="Foods" />
+                    <TableColumn prefWidth="154.0" text="Date" />
+                </columns>
+            </TableView>
+        </VBox>
+    </center>
+
+    <!-- Bottom Section -->
+    <bottom>
+        <HBox spacing="10" style="-fx-padding: 10;">
+            <Label text="Total costs in 2022 for business students: " />
+            <Label fx:id="totalCostsLabel" text=" `$645,850.50` " />
+
+        </HBox>
+    </bottom>
+</BorderPane>
