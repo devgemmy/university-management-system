@@ -7,18 +7,18 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
 
 public class DashboardApp extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("dashboard-view.fxml"));
-        Parent root = fxmlLoader.load();
+        FXMLLoader fxmlLoader = new FXMLLoader(DashboardApp.class.getResource("dashboard-view.fxml"));
 
-        Scene scene = new Scene(root);
-        scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
+        Scene scene = new Scene(fxmlLoader.load(), 1200, 1000);
+        scene.getStylesheets().add(DashboardApp.class.getResource("styles.css").toExternalForm());
 
+        primaryStage.setTitle("UMS Finance Dashboard");
         primaryStage.setScene(scene);
-        primaryStage.setTitle("Business Student Costs Dashboard");
         primaryStage.show();
     }
 
