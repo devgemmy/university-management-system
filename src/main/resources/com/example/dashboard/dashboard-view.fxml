@@ -2,11 +2,13 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
+<?import javafx.scene.Group?>
 <?import javafx.scene.chart.BarChart?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TableColumn?>
@@ -14,6 +16,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
@@ -46,7 +49,7 @@
                   <Font name="Avenir Roman" size="13.0" />
                </font>
             </MenuButton>
-            <MenuButton layoutX="604.0" layoutY="23.0" mnemonicParsing="false" style="-fx-background-color: #FFF;" text="All">
+            <MenuButton layoutX="604.0" layoutY="23.0" mnemonicParsing="false" style="-fx-background-color: #FFF;" text="Month">
                <items>
 
                   <MenuItem mnemonicParsing="false" text="All Records" />
@@ -69,42 +72,95 @@
             <Cursor fx:constant="DEFAULT" />
          </cursor>
       </Pane>
-      <TableView layoutX="36.0" layoutY="496.0" prefHeight="450.0" prefWidth="1132.0" AnchorPane.bottomAnchor="54.0" AnchorPane.leftAnchor="36.0" AnchorPane.rightAnchor="32.0" AnchorPane.topAnchor="496.0">
-         <columns>
-            <TableColumn prefWidth="30.750228881835938" text="#" />
-            <TableColumn prefWidth="186.92894744873047" text="Name" />
-            <TableColumn prefWidth="233.7859344482422" text="Institution" />
-            <TableColumn prefWidth="183.714111328125" text="Course Details" />
-            <TableColumn prefWidth="145.86065673828125" text="Course Fees" />
-            <TableColumn prefWidth="117.6624755859375" text="Sports" />
-            <TableColumn prefWidth="113.18072509765625" text="Food" />
-            <TableColumn prefWidth="119.0" text="Date" />
-         </columns>
-         <columnResizePolicy>
-            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-         </columnResizePolicy>
-      </TableView>
-      <BarChart layoutX="580.0" layoutY="113.0" prefHeight="328.0" prefWidth="577.0">
-        <xAxis>
-          <CategoryAxis side="BOTTOM" />
-        </xAxis>
-        <yAxis>
-          <NumberAxis side="LEFT" />
-        </yAxis>
-         <opaqueInsets>
-            <Insets bottom="35.0" left="72.0" right="120.0" top="67.0" />
-         </opaqueInsets>
-      </BarChart>
-      <Pane layoutX="36.0" layoutY="444.0" prefHeight="49.0" prefWidth="1131.0">
+      <VBox layoutX="36.0" layoutY="444.0">
          <children>
-            <Button defaultButton="true" ellipsisString="" layoutX="987.0" layoutY="6.0" lineSpacing="1.0" prefHeight="32.0" prefWidth="129.0" style="-fx-background-color: #007878; -fx-border-color: #007A7A; -fx-text-fill: #FFFFFF; -fx-border-radius: 5px;" text="Add Invoice" textAlignment="CENTER" textFill="WHITE" textOverrun="WORD_ELLIPSIS" wrapText="true">
+            <Pane prefHeight="49.0" prefWidth="1131.0">
+               <children>
+                  <Button fx:id="addInvoiceButton" defaultButton="true" ellipsisString="" layoutX="987.0" layoutY="7.0" lineSpacing="1.0" prefHeight="32.0" prefWidth="129.0" style="-fx-background-color: #007878; -fx-border-color: #007A7A; -fx-text-fill: #FFFFFF; -fx-border-radius: 5px;" text="Add Invoice" textAlignment="CENTER" textFill="WHITE" textOverrun="WORD_ELLIPSIS" wrapText="true">
+                     <font>
+                        <Font name="Avenir Roman" size="13.0" />
+                     </font>
+                  </Button>
+                  <MenuButton layoutX="903.0" layoutY="10.0" mnemonicParsing="false" style="-fx-background-color: #FFF;" text="Course">
+                     <items>
+                        <MenuItem mnemonicParsing="false" text="All Records" />
+                        <MenuItem mnemonicParsing="false" text="Month" />
+                        <MenuItem mnemonicParsing="false" text="Year" />
+                     </items>
+                     <font>
+                        <Font name="Avenir Roman" size="13.0" />
+                     </font>
+                  </MenuButton>
+                  <MenuButton layoutX="833.0" layoutY="10.0" mnemonicParsing="false" style="-fx-background-color: #007A7A;" text="ASC" textFill="WHITE">
+                     <items>
+                        <MenuItem mnemonicParsing="false" text="January" />
+                        <MenuItem mnemonicParsing="false" text="February" />
+                        <MenuItem mnemonicParsing="false" text="March" />
+                        <MenuItem mnemonicParsing="false" text="April" />
+                        <MenuItem mnemonicParsing="false" text="May" />
+                        <MenuItem mnemonicParsing="false" text="June" />
+                        <MenuItem mnemonicParsing="false" text="July" />
+                        <MenuItem mnemonicParsing="false" text="August" />
+                        <MenuItem mnemonicParsing="false" text="September" />
+                        <MenuItem mnemonicParsing="false" text="October" />
+                        <MenuItem mnemonicParsing="false" text="November" />
+                        <MenuItem mnemonicParsing="false" text="December" />
+                     </items>
+                     <font>
+                        <Font name="Avenir Roman" size="13.0" />
+                     </font>
+                  </MenuButton>
+               </children>
+            </Pane>
+            <TableView prefHeight="425.0" prefWidth="1132.0">
+               <columns>
+                  <TableColumn prefWidth="30.750228881835938" text="#" />
+                  <TableColumn prefWidth="186.92894744873047" text="Name" />
+                  <TableColumn prefWidth="233.7859344482422" text="Institution" />
+                  <TableColumn prefWidth="183.714111328125" text="Course Details" />
+                  <TableColumn prefWidth="145.86065673828125" text="Course Fees" />
+                  <TableColumn prefWidth="117.6624755859375" text="Sports" />
+                  <TableColumn prefWidth="113.18072509765625" text="Food" />
+                  <TableColumn prefWidth="119.0" text="Date" />
+               </columns>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
+            </TableView>
+            <Pane prefHeight="45.0" prefWidth="1131.0" />
+         </children>
+      </VBox>
+      <Group layoutX="492.0" layoutY="104.0">
+         <children>
+            <BarChart layoutY="28.0" prefHeight="309.0" prefWidth="672.0">
+              <xAxis>
+                <CategoryAxis side="BOTTOM" />
+              </xAxis>
+              <yAxis>
+                <NumberAxis side="LEFT" />
+              </yAxis>
+               <opaqueInsets>
+                  <Insets bottom="35.0" left="72.0" right="120.0" top="67.0" />
+               </opaqueInsets>
+            </BarChart>
+            <MenuButton layoutX="51.0" mnemonicParsing="false" style="-fx-background-color: #FFF;" text="Arts University Plymouth">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="All Records" />
+                  <MenuItem mnemonicParsing="false" text="Month" />
+                  <MenuItem mnemonicParsing="false" text="Year" />
+               </items>
                <font>
                   <Font name="Avenir Roman" size="13.0" />
                </font>
-            </Button>
+            </MenuButton>
          </children>
-      </Pane>
-      <PieChart layoutX="69.0" layoutY="103.0" prefHeight="318.0" prefWidth="466.0" />
+      </Group>
+      <Group layoutX="69.0" layoutY="99.0">
+         <children>
+            <PieChart fx:id="totalCostsChart" prefHeight="342.0" prefWidth="366.0" />
+            <Label fx:id="costLabel" layoutX="205.0" layoutY="128.0" text="Label" />
+         </children>
+      </Group>
    </children>
 
 </AnchorPane>

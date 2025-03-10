@@ -7,7 +7,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.net.URL;
 
 public class DashboardApp extends Application {
     @Override
@@ -15,7 +14,7 @@ public class DashboardApp extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(DashboardApp.class.getResource("dashboard-view.fxml"));
 
         Scene scene = new Scene(fxmlLoader.load(), 1200, 1000);
-        scene.getStylesheets().add(DashboardApp.class.getResource("styles.css").toExternalForm());
+        // scene.getStylesheets().add(DashboardApp.class.getResource("styles.css").toExternalForm());
 
         primaryStage.setTitle("UMS Finance Dashboard");
         primaryStage.setScene(scene);
