@@ -5,6 +5,7 @@ import javafx.scene.chart.*;
 import javafx.scene.control.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -114,7 +115,7 @@ public class DemoController {
 //    }
 
 //    private void loadBarChartData() {
-//        XYChart.Series<String, Number> series2022 = new XYChart.Series<>();
+//
 //        series2022.setName("2022");
 //        series2022.getData().add(new XYChart.Data<>("Jan", 15000));
 //        series2022.getData().add(new XYChart.Data<>("Feb", 18000));
@@ -160,3 +161,20 @@ public class DemoController {
         return total;
     }
 }
+
+//        HashMap<String, String> courseDetails = new HashMap<String, String>();
+//        courseDetails.put("NC1600", "Business Computing");
+//        HashMap<String, Double> sportsDetails = new HashMap<String, Double>();
+//        sportsDetails.put("Basket Ball", 12.9);
+//        sportsDetails.put("Table Tennis", 3.45);
+//        HashMap<String, Double> foodDetails = new HashMap<String, Double>();
+//        foodDetails.put("Cheese Pizza", 4.75);
+//        foodDetails.put("Indian Biryani", 1.40);
+//        HashMap<String, String> institutionDetails = new HashMap<String, String>();
+//        institutionDetails.put("NC1600", "Business Computing");
+        /*
+        courseDetails,
+        institutionDetails,
+        sportsDetails,
+        foodDetails
+        */
