@@ -1,6 +1,6 @@
 /* General Styles */
 .root {
-    -fx-font-family: "Arial";
+    -fx-font-family: "Avenir";
     -fx-background-color: #f4f4f4;
 }
 
@@ -25,6 +25,14 @@
     -fx-background-color: #0056b3;
 }
 
+/* Chart Styles */
+.pie-chart {
+    -fx-background-color: #ffffff;
+}
+.bar-chart {
+    -fx-background-color: #ffffff;
+}
+
 /* Table Styles */
 .table-view {
     -fx-background-color: #ffffff;
@@ -32,14 +40,6 @@
 }
 .table-column {
     -fx-alignment: CENTER;
-}
-
-/* Chart Styles */
-.pie-chart {
-    -fx-background-color: #ffffff;
-}
-.bar-chart {
-    -fx-background-color: #ffffff;
 }
 
 /* Footer Styles */
