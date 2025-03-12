@@ -32,7 +32,7 @@
       <Label fx:id="costLabel" layoutX="236.0" layoutY="234.0" text="Label" />
       <Pane prefHeight="78.0" prefWidth="1200" style="-fx-background-color: #e8f1f1;">
          <children>
-            <Button defaultButton="true" ellipsisString="" layoutX="26.0" layoutY="22.0" lineSpacing="1.0" prefWidth="83.0" style="-fx-background-color: transparent; -fx-border-color: #007A7A; -fx-text-fill: #007A7A; -fx-border-radius: 4px;" text="Log out" textAlignment="CENTER" textFill="#007878" textOverrun="WORD_ELLIPSIS" wrapText="true">
+            <Button defaultButton="true" ellipsisString="" layoutX="26.0" layoutY="22.0" lineSpacing="1.0" fx:id="logOutButton" prefWidth="83.0" style="-fx-background-color: transparent; -fx-border-color: #007A7A; -fx-text-fill: #007A7A; -fx-border-radius: 4px;" text="Log out" textAlignment="CENTER" textFill="#007878" textOverrun="WORD_ELLIPSIS" wrapText="true">
                <font>
                   <Font name="Avenir Roman" size="13.0" />
                </font>
@@ -113,14 +113,14 @@
 
             <TableView prefHeight="425.0" prefWidth="1132.0" fx:id="invoiceTable">
                <columns>
-                  <TableColumn prefWidth="30" text="#" fx:id="invID"/>
-                  <TableColumn prefWidth="187" text="Name" fx:id="invName"/>
-                  <TableColumn prefWidth="234" text="Institution" fx:id="invUniDts"/>
-                  <TableColumn prefWidth="184" text="Course Details" fx:id="invCourDts"/>
-                  <TableColumn prefWidth="145" text="Course Fees" fx:id="invCourFees"/>
-                  <TableColumn prefWidth="118" text="Sports" fx:id="invSports"/>
-                  <TableColumn prefWidth="113" text="Food" fx:id="invFoods"/>
-                  <TableColumn prefWidth="119" text="Date" fx:id="invDate"/>
+                  <TableColumn prefWidth="30" text="#" fx:id="invoiceID"/>
+                  <TableColumn prefWidth="190" text="Name" fx:id="studentName"/>
+                  <TableColumn prefWidth="240" text="Institution" fx:id="institutionDetails"/>
+                  <TableColumn prefWidth="200" text="Course Details" fx:id="courseList"/>
+                  <TableColumn prefWidth="120" text="Course Fees" fx:id="courseInvFees"/>
+                  <TableColumn prefWidth="120" text="Sports" fx:id="totalSportsCost"/>
+                  <TableColumn prefWidth="120" text="Food" fx:id="totalFoodCost"/>
+                  <TableColumn prefWidth="115" text="Date" fx:id="invoiceDate"/>
                </columns>
                <columnResizePolicy>
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

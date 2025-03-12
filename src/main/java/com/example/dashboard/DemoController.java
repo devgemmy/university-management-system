@@ -104,35 +104,6 @@ public class DemoController {
         dataTable.setItems(tableData);
     }
 
-//    private void loadPieChartData() {
-//        // Total costs PieChart with sample data
-//        ObservableList<PieChart.Data> pieData = FXCollections.observableArrayList(
-//                new PieChart.Data("Courses", 535000),
-//                new PieChart.Data("Food", 35000),
-//                new PieChart.Data("Sports", 115000)
-//        );
-//        totalCostsChart.setData(pieData);
-//    }
-
-//    private void loadBarChartData() {
-//
-//        series2022.setName("2022");
-//        series2022.getData().add(new XYChart.Data<>("Jan", 15000));
-//        series2022.getData().add(new XYChart.Data<>("Feb", 18000));
-//        series2022.getData().add(new XYChart.Data<>("Mar", 20000));
-//        series2022.getData().add(new XYChart.Data<>("Apr", 25000));
-//
-//        averageCostsChart.getData().add(series2022);
-//    }
-
-//    private void generateInvoice() {
-//        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-//        alert.setTitle("Invoice");
-//        alert.setHeaderText(null);
-//        alert.setContentText("Add Invoice functionality will be implemented here.");
-//        alert.showAndWait();
-//    }
-
     // Method to parse and sum costs from a given string
     private static double getFoodOrSportsCosts(String costStr) {
         ArrayList<Double> costs = new ArrayList<>();
@@ -161,20 +132,3 @@ public class DemoController {
         return total;
     }
 }
-
-//        HashMap<String, String> courseDetails = new HashMap<String, String>();
-//        courseDetails.put("NC1600", "Business Computing");
-//        HashMap<String, Double> sportsDetails = new HashMap<String, Double>();
-//        sportsDetails.put("Basket Ball", 12.9);
-//        sportsDetails.put("Table Tennis", 3.45);
-//        HashMap<String, Double> foodDetails = new HashMap<String, Double>();
-//        foodDetails.put("Cheese Pizza", 4.75);
-//        foodDetails.put("Indian Biryani", 1.40);
-//        HashMap<String, String> institutionDetails = new HashMap<String, String>();
-//        institutionDetails.put("NC1600", "Business Computing");
-        /*
-        courseDetails,
-        institutionDetails,
-        sportsDetails,
-        foodDetails
-        */
