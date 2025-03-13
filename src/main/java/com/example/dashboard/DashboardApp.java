@@ -12,12 +12,13 @@ public class DashboardApp extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(DashboardApp.class.getResource("dashboard-view.fxml"));
-
-        Scene scene = new Scene(fxmlLoader.load(), 1200, 1000);
-        // scene.getStylesheets().add(DashboardApp.class.getResource("styles.css").toExternalForm());
+        Parent root = fxmlLoader.load();
+        Scene mainScene = new Scene(root, 1200, 1000);
+        mainScene.getStylesheets().add(DashboardApp.class.getResource("styles.css").toExternalForm());
 
         primaryStage.setTitle("UMS Finance Dashboard");
-        primaryStage.setScene(scene);
+        primaryStage.setScene(mainScene);
+        primaryStage.setResizable(false);
         primaryStage.show();
     }
 

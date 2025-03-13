@@ -1,13 +1,15 @@
 package com.example.dashboard;
 
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Side;
+import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
@@ -15,40 +17,55 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 import java.util.HashMap;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
 
 public class DashboardController implements Initializable {
-    @FXML private PieChart totalCostsChart;
-    //@FXML private Button addInvoiceButton;
-    @FXML private Button logOutButton;
-    @FXML private Label costLabel;
-    @FXML private TextField searchField;
-    @FXML private BarChart<String, Integer> averageUniCostsBarChart;
-    @FXML private TableView<Invoice> invoiceTable;
+    @FXML
+    private PieChart totalCostsChart;
+    @FXML
+    private Button addInvoiceButton;
+    @FXML
+    private Button logOutButton;
+    @FXML
+    private Label costLabel;
+    @FXML
+    private TextField searchField;
+    @FXML
+    private BarChart<String, Integer> averageUniCostsBarChart;
+    @FXML
+    private TableView<Invoice> invoiceTable;
 
-    @FXML private TableColumn<Invoice, String> invoiceID;
-    @FXML private TableColumn<Invoice, String> studentName;
-    @FXML private TableColumn<Invoice, String> institutionDetails;
-    @FXML private TableColumn<Invoice, String> courseList;
-    @FXML private TableColumn<Invoice, String> courseInvFees;
-    @FXML private TableColumn<Invoice, String> totalSportsCost;
-    @FXML private TableColumn<Invoice, String> totalFoodCost;
-    @FXML private TableColumn<Invoice, String> invoiceDate;
+    @FXML
+    private TableColumn<Invoice, String> invoiceID;
+    @FXML
+    private TableColumn<Invoice, String> studentName;
+    @FXML
+    private TableColumn<Invoice, String> institutionDetails;
+    @FXML
+    private TableColumn<Invoice, String> courseList;
+    @FXML
+    private TableColumn<Invoice, String> courseInvFees;
+    @FXML
+    private TableColumn<Invoice, String> totalSportsCost;
+    @FXML
+    private TableColumn<Invoice, String> totalFoodCost;
+    @FXML
+    private TableColumn<Invoice, String> invoiceDate;
 
     // Load total costs across all Universities
-    @FXML private void loadTotalCostsChart() {
+    @FXML
+    private void loadTotalCostsChart() {
 
-        ObservableList<PieChart.Data> pieData =
-                FXCollections.observableArrayList(
+        ObservableList<PieChart.Data> pieData = FXCollections.observableArrayList(
                 new PieChart.Data("Courses", 535000),
                 new PieChart.Data("Food", 35000),
-                new PieChart.Data("Sports", 115000)
-        );
+                new PieChart.Data("Sports", 115000));
 
         totalCostsChart.setData(pieData);
         totalCostsChart.setTitle("Total Costs in 2022 for Business");
@@ -56,26 +73,27 @@ public class DashboardController implements Initializable {
         totalCostsChart.setLegendSide(Side.BOTTOM);
 
         costLabel.setTextFill(Color.BLACK);
-        costLabel.setStyle("-fx-font: 20 Avenir;");
+        costLabel.getStyleClass().add("cost-label");
         costLabel.setText("£" + String.valueOf(totalCostsChart.getData().getFirst().getPieValue()));
 
         for (final PieChart.Data data : totalCostsChart.getData()) {
             data.getNode().addEventHandler(
-                MouseEvent.MOUSE_CLICKED,
-                new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent ev) {
-                        // System.out.println("PieChart clicked");
-                        costLabel.setTranslateX(ev.getSceneX() - costLabel.getLayoutX());
-                        costLabel.setTranslateY(ev.getSceneY() - costLabel.getLayoutY());
-                        costLabel.setText("£" + String.valueOf(data.getPieValue()));
-                    }
-                });
+                    MouseEvent.MOUSE_CLICKED,
+                    new EventHandler<MouseEvent>() {
+                        @Override
+                        public void handle(MouseEvent ev) {
+                            // System.out.println("PieChart clicked");
+                            costLabel.setTranslateX(ev.getSceneX() - costLabel.getLayoutX());
+                            costLabel.setTranslateY(ev.getSceneY() - costLabel.getLayoutY());
+                            costLabel.setText("£" + String.valueOf(data.getPieValue()));
+                        }
+                    });
         }
     }
 
     // Load Average costs for each category in a selected University in a Bar Chart
-    @FXML private void loadAverageCostsChart() {
+    @FXML
+    private void loadAverageCostsChart() {
         // Create Series instance with data types
         XYChart.Series<String, Integer> courseCosts = new XYChart.Series<>();
         courseCosts.setName("Courses"); // This is one of the Legends
@@ -111,13 +129,16 @@ public class DashboardController implements Initializable {
     }
 
     // Load Invoices data based on sort or search
-    @FXML private void loadTableData() {
-        // String tableQuery = "SELECT * FROM KISCOURSE where KISCOURSE.TITLE LIKE '%" + searchField.getText() + "%'";
+    @FXML
+    private void loadTableData() {
+        // String tableQuery = "SELECT * FROM KISCOURSE where KISCOURSE.TITLE LIKE '%" +
+        // searchField.getText() + "%'";
         // ResultSet tableData = queryTheDB(tableQuery);
 
         // ERROR FIX: Reassigning invoiceTable to a new TableView is wrong.
         // The TableView is already defined in your FXML.
-        // Therefore, I remove ERR_LINE 1 as it prevents invoiceTable from being null since it is already injected via @FXML.
+        // Therefore, I remove ERR_LINE 1 as it prevents invoiceTable from being null
+        // since it is already injected via @FXML.
         // --- ERR_LINE 1: invoiceTable = new TableView<>();
 
         // SOME BIG DUMMY DATA
@@ -161,10 +182,14 @@ public class DashboardController implements Initializable {
         institutionDetails4.put("10001270", "Sussex University");
 
         final ObservableList<Invoice> invoiceTableData = FXCollections.observableArrayList();
-        invoiceTableData.add(new Invoice("1", "Jatinder Alma", "12/08/2023", 21800.0, 32.8, 176.43, courseDetails1, institutionDetails1, sportsDetails1, foodDetails1));
-        invoiceTableData.add(new Invoice("2", "Ahmad Rosser", "28/01/2022", 19800.0, 82.7, 253.12, courseDetails2, institutionDetails2, sportsDetails2, foodDetails2));
-        invoiceTableData.add(new Invoice("3", "Corey Stanton", "24/03/2020", 21750.0, 45.1, 120.50, courseDetails3, institutionDetails3, sportsDetails3, foodDetails3));
-        invoiceTableData.add(new Invoice("4", "Justin Tanaka",  "17/09/2022", 5189.0, 124.5, 317.87, courseDetails4, institutionDetails4, sportsDetails4, foodDetails4));
+        invoiceTableData.add(new Invoice("1", "Jatinder Alma", "12/08/2023", 21800.0, 32.8, 176.43, courseDetails1,
+                institutionDetails1, sportsDetails1, foodDetails1));
+        invoiceTableData.add(new Invoice("2", "Ahmad Rosser", "28/01/2022", 19800.0, 82.7, 253.12, courseDetails2,
+                institutionDetails2, sportsDetails2, foodDetails2));
+        invoiceTableData.add(new Invoice("3", "Corey Stanton", "24/03/2020", 21750.0, 45.1, 120.50, courseDetails3,
+                institutionDetails3, sportsDetails3, foodDetails3));
+        invoiceTableData.add(new Invoice("4", "Justin Tanaka", "17/09/2022", 5189.0, 124.5, 317.87, courseDetails4,
+                institutionDetails4, sportsDetails4, foodDetails4));
 
         invoiceTable.setItems(invoiceTableData);
         invoiceTable.setEditable(false);
@@ -193,8 +218,9 @@ public class DashboardController implements Initializable {
         });
 
         totalSportsCost.setCellValueFactory(sportData -> {
-            double sCost = sportData.getValue().getTotalSportsCost();  // Get the sports cost
-            int sportCount = getInvItemsCount(sportData.getValue().getSportsActivityList());  // Method to determine the count of sports
+            double sCost = sportData.getValue().getTotalSportsCost(); // Get the sports cost
+            int sportCount = getInvItemsCount(sportData.getValue().getSportsActivityList()); // Method to determine the
+                                                                                             // count of sports
             return new SimpleStringProperty(String.format("£%.2f (%d Sports)", sCost, sportCount));
         });
         totalFoodCost.setCellValueFactory(foodData -> {
@@ -208,13 +234,30 @@ public class DashboardController implements Initializable {
 
     // Alert the user before closing the application
     private void closeApplication() {
-        Alert closeAlert = new Alert(Alert.AlertType.INFORMATION);
+        Alert closeAlert = new Alert(
+                Alert.AlertType.CONFIRMATION,
+                "Clicking OK would close this application",
+                ButtonType.OK,
+                ButtonType.CANCEL);
         closeAlert.setTitle("Close UMS Finance Dashboard");
-        closeAlert.setHeaderText(null);
-        closeAlert.setContentText("Clicking OK would close this application");
         closeAlert.showAndWait();
 
         // If Ok is clicked -> Close the app
+        if (closeAlert.getResult() == ButtonType.OK) {
+            Stage closingAppStage = (Stage) logOutButton.getScene().getWindow();
+            closingAppStage.close();
+        }
+    }
+
+    @FXML
+    public void generateNewInvoice() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(
+                DashboardApp.class.getResource("generate-invoice-view.fxml"));
+        Stage newInvoiceStage = new Stage(); // Create a new stage for the second scene
+        newInvoiceStage.setScene(new Scene(fxmlLoader.load(), 1200, 1000)); // Set the scene for the new stage
+        newInvoiceStage.setTitle("UMS - Generate New Invoice");
+        newInvoiceStage.setResizable(false);
+        newInvoiceStage.show();
     }
 
     // Setup Connection to the SQLite Database
@@ -222,17 +265,16 @@ public class DashboardController implements Initializable {
         // JDBC stands for Java Database Connector
         String driver = "jdbc:sqlite", db = "/Users/macbookair/Documents/BRUNEL/YEAR 1/Group Project B/UMS-DB.db";
         final String DB_URL = driver + ":" + db;
-        Connection conn = null;
 
-        try {
-            conn = DriverManager.getConnection(DB_URL);
+        try (Connection conn = DriverManager.getConnection(DB_URL);) {
             System.out.println("Connected to SQL DB successfully.");
+            return conn;
         } catch (Exception e) {
             System.out.println("ERROR: " + e);
             System.out.println("Database failed to connect.");
+            return null;
         }
 
-        return conn;
     }
 
     private int getInvItemsCount(HashMap<String, Double> getTotalCosts) {
@@ -240,18 +282,19 @@ public class DashboardController implements Initializable {
     }
 
     // Template function for each SQL query
-    public ResultSet queryTheDB(String query) throws SQLException {
+    public ResultSet queryTheDB(String query, String param) throws SQLException {
         Connection conn = connectToDatabase();
-        try (PreparedStatement sqlStatement = conn.prepareStatement(query)) {
-            return sqlStatement.executeQuery();
-        }
+        PreparedStatement sqlStatement = conn.prepareStatement(query);
+        sqlStatement.setString(1, param); // Avoids SQL injection
+        return sqlStatement.executeQuery();
     }
 
     // Initialise Data and required functions.
-    @Override public void initialize(URL url, ResourceBundle resourceBundle) {
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
         loadTotalCostsChart();
         loadAverageCostsChart();
         loadTableData();
-        logOutButton.setOnAction(event -> closeApplication());
+        logOutButton.setOnAction(_ -> closeApplication());
     }
 }

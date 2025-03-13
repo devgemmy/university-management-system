@@ -1,7 +1,6 @@
 package com.example.dashboard;
 
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 import java.util.HashMap;
@@ -28,8 +27,7 @@ public class Invoice {
             HashMap<String, String> cList,
             HashMap<String, String> instDetails,
             HashMap<String, Double> sActivityList,
-            HashMap<String, Double> fItemsList
-    ) {
+            HashMap<String, Double> fItemsList) {
         this.invoiceID = new SimpleStringProperty(invID);
         this.studentName = new SimpleStringProperty(sName);
         this.invoiceDate = new SimpleStringProperty(invDate);
@@ -43,29 +41,52 @@ public class Invoice {
     }
 
     // Standard Java Getters
-    public String getInvoiceID() { return invoiceID.get(); }
-    public String getStudentName() { return studentName.get(); }
-    public String getInvoiceDate() { return invoiceDate.get(); }
-    public double getCourseInvFees() { return courseInvFees.get(); }
-    public double getTotalSportsCost() { return totalSportsCost.get(); }
-    public double getTotalFoodCost() { return totalFoodCost.get(); }
-    public HashMap<String, String> getInstitutionDetails() { return institutionDetails; }
-    public HashMap<String, String> getCourseList() { return courseList; }
+    public String getInvoiceID() {
+        return invoiceID.get();
+    }
+
+    public String getStudentName() {
+        return studentName.get();
+    }
+
+    public String getInvoiceDate() {
+        return invoiceDate.get();
+    }
+
+    public double getCourseInvFees() {
+        return courseInvFees.get();
+    }
+
+    public double getTotalSportsCost() {
+        return totalSportsCost.get();
+    }
+
+    public double getTotalFoodCost() {
+        return totalFoodCost.get();
+    }
+
+    public HashMap<String, String> getInstitutionDetails() {
+        return institutionDetails;
+    }
+
+    public HashMap<String, String> getCourseList() {
+        return courseList;
+    }
+
     public HashMap<String, Double> getSportsActivityList() {
         return sportsActivityList;
     }
+
     public HashMap<String, Double> getFoodItemsList() {
         return foodItemsList;
     }
 
+    // public HashMap<String, String> getCourseList() {
+    // return courseList;
+    // }
 
-//    public HashMap<String, String> getCourseList() {
-//        return courseList;
-//    }
-
-//    public HashMap<String, String> getInstitutionDetails() {
-//        return institutionDetails;
-//    }
-
+    // public HashMap<String, String> getInstitutionDetails() {
+    // return institutionDetails;
+    // }
 
 }

@@ -1,11 +1,11 @@
 /* General Styles */
-.root {
+/* .root {
     -fx-font-family: "Avenir";
     -fx-background-color: #f4f4f4;
-}
+} */
 
 /* Header Styles */
-.hbox {
+/* .hbox {
     -fx-spacing: 10px;
     -fx-padding: 10px;
     -fx-alignment: center-left;
@@ -23,27 +23,27 @@
 }
 .button:hover {
     -fx-background-color: #0056b3;
-}
+} */
 
 /* Chart Styles */
-.pie-chart {
+/* .pie-chart {
     -fx-background-color: #ffffff;
 }
 .bar-chart {
     -fx-background-color: #ffffff;
-}
+} */
 
 /* Table Styles */
-.table-view {
+/* .table-view {
     -fx-background-color: #ffffff;
     -fx-border-color: #d1d1d1;
 }
 .table-column {
     -fx-alignment: CENTER;
-}
+} */
 
 /* Footer Styles */
-.label {
-    -fx-font-size: 16px;
-    -fx-font-weight: bold;
+.cost-label {
+    -fx-font-size: 20px;
+    -fx-font-family: "Avenir";
 }
