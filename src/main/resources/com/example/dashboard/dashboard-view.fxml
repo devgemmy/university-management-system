@@ -8,9 +8,8 @@
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.MenuButton?>
-<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -20,12 +19,6 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
-
-<!--Charts-->
-<!-- Control -->
-<!-- Layouts -->
-<!-- Shapes -->
-<!-- Text -->
 
 <AnchorPane prefHeight="1000.0" prefWidth="1200" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.dashboard.DashboardController">
    <children>
@@ -38,36 +31,14 @@
                   <Font name="Avenir Roman" size="13.0" />
                </font>
             </Button>
-            <MenuButton layoutX="692.0" layoutY="23.0" mnemonicParsing="false" style="-fx-background-color: #007A7A;" text="March" textFill="WHITE">
-              <items>
-                 <MenuItem mnemonicParsing="false" text="January" />
-                 <MenuItem mnemonicParsing="false" text="February" />
-                 <MenuItem mnemonicParsing="false" text="March" />
-                 <MenuItem mnemonicParsing="false" text="April" />
-                 <MenuItem mnemonicParsing="false" text="May" />
-                 <MenuItem mnemonicParsing="false" text="June" />
-                 <MenuItem mnemonicParsing="false" text="July" />
-                 <MenuItem mnemonicParsing="false" text="August" />
-                 <MenuItem mnemonicParsing="false" text="September" />
-                 <MenuItem mnemonicParsing="false" text="October" />
-                 <MenuItem mnemonicParsing="false" text="November" />
-                 <MenuItem mnemonicParsing="false" text="December" />
-              </items>
-               <font>
-                  <Font name="Avenir Roman" size="13.0" />
-               </font>
-            </MenuButton>
-            <MenuButton layoutX="579.0" layoutY="23.0" mnemonicParsing="false" style="-fx-background-color: #FFF;" text="All Records">
-               <items>
-                  <MenuItem mnemonicParsing="false" text="All Records" />
-                  <MenuItem mnemonicParsing="false" text="By Month" />
-                  <MenuItem mnemonicParsing="false" text="By Year" />
-               </items>
-               <font>
-                  <Font name="Avenir Roman" size="13.0" />
-               </font>
-            </MenuButton>
-            <TextField layoutX="777.0" layoutY="26.0" prefHeight="26.0" prefWidth="270.0" promptText="Search Course ..." />
+
+            <ComboBox fx:id="timeFilter" layoutX="570.0" layoutY="23.0" onAction="#setTimeFilter" promptText="All Records" style="-fx-background-color: #FFFFFF; -fx-text-fill: #007A7A;" />
+
+            <ComboBox fx:id="monthPeriodDropdown" layoutX="692.0" layoutY="23.0" onAction="#setTimeFilter" prefHeight="26.0" prefWidth="89.0" promptText="January" style="-fx-background-color: #FFFFFF;" />
+
+            <ComboBox fx:id="yearPeriodDropdown" layoutX="692.0" layoutY="23.0" onAction="#setTimeFilter" prefHeight="26.0" prefWidth="89.0" promptText="2020" style="-fx-background-color: #FFFFFF;" />
+
+            <TextField layoutX="798.0" layoutY="23.0" prefHeight="26.0" prefWidth="270.0" promptText="Search Course ..." />
             <Circle fill="#003f5a" layoutX="1158.0" layoutY="36.0" radius="21.0" stroke="BLACK" strokeType="INSIDE" />
             <Text fill="WHITE" layoutX="1146.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="AA">
                <font>
@@ -88,30 +59,14 @@
                         <Font name="Avenir Roman" size="13.0" />
                      </font>
                   </Button>
-                  <MenuButton layoutX="899.0" layoutY="10.0" mnemonicParsing="false" style="-fx-background-color: #FFF;" text="Courses">
-                     <items>
-                        <MenuItem mnemonicParsing="false" text="Courses" />
-                        <MenuItem mnemonicParsing="false" text="Sports" />
-                        <MenuItem mnemonicParsing="false" text="Foods" />
-                        <MenuItem mnemonicParsing="false" text="Date" />
-                     </items>
-                     <font>
-                        <Font name="Avenir Roman" size="13.0" />
-                     </font>
-                  </MenuButton>
-                  <MenuButton layoutX="833.0" layoutY="10.0" mnemonicParsing="false" style="-fx-background-color: #007A7A;" text="ASC" textFill="WHITE">
-                     <items>
-                        <MenuItem mnemonicParsing="false" text="ASC" />
-                        <MenuItem mnemonicParsing="false" text="DESC" />
-                     </items>
-                     <font>
-                        <Font name="Avenir Roman" size="13.0" />
-                     </font>
-                  </MenuButton>
+
+                  <ComboBox fx:id="orderByComboBox" layoutX="785.0" layoutY="10.0" onAction="#sortDataByCategory" promptText="ASC" style="-fx-background-color: #FFFFFF;" />
+                  
+                  <ComboBox fx:id="categoryComboBox" layoutX="875.0" layoutY="10.0" onAction="#sortDataByCategory" promptText="Date" style="-fx-background-color: #FFF; -fx-text-fill: #007A7A;" />
                </children>
             </Pane>
 
-            <TableView fx:id="invoiceTable" prefHeight="425.0" prefWidth="1132.0">
+            <TableView fx:id="invoiceTable" onSort="#loadTableData" prefHeight="425.0" prefWidth="1132.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #007A7A;">
                <columns>
                   <TableColumn fx:id="invoiceID" prefWidth="30" text="#" />
                   <TableColumn fx:id="studentName" prefWidth="190" text="Name" />
@@ -129,11 +84,11 @@
 
             <Pane prefHeight="45.0" prefWidth="1131.0" style="-fx-border-width: 26px;">
                <children>
-                  <Label layoutX="14.0" prefHeight="28.0" prefWidth="235.0" text="Total costs in 2022 for business students: " />
-                  <Label layoutX="658.0" layoutY="6.0" prefHeight="17.0" prefWidth="104.0" text="£55,350,000.00" />
-                  <Label layoutX="891.0" layoutY="5.0" prefHeight="17.0" prefWidth="92.0" text="£350,000.50" />
-                  <Label layoutX="781.0" layoutY="6.0" prefHeight="17.0" prefWidth="100.0" text="£1,150,050.00" />
-                  <Label layoutX="1004.0" layoutY="5.0" prefHeight="17.0" prefWidth="104.0" text="£61,045,850.85">
+                  <Label fx:id="titlePerSelect" layoutX="14.0" prefHeight="28.0" prefWidth="235.0" text="Total costs in 2022 for business students: " />
+                  <Label fx:id="totalFeesPerSelect" layoutX="658.0" layoutY="6.0" prefHeight="17.0" prefWidth="104.0" text="£55,350,000.00" />
+                  <Label fx:id="totalSportsPerSelect" layoutX="891.0" layoutY="6.0" prefHeight="17.0" prefWidth="92.0" text="£350,000.50" />
+                  <Label fx:id="totalFoodPerSelect" layoutX="781.0" layoutY="6.0" prefHeight="17.0" prefWidth="100.0" text="£1,150,050.00" />
+                  <Label fx:id="totalCosterSelect" layoutX="1004.0" layoutY="6.0" prefHeight="17.0" prefWidth="104.0" text="£61,045,850.85">
                      <font>
                         <Font name="System Bold" size="13.0" />
                      </font>
@@ -154,21 +109,24 @@
                   <Insets bottom="35.0" left="72.0" right="120.0" top="67.0" />
                </opaqueInsets>
             </BarChart>
-            <MenuButton layoutX="51.0" mnemonicParsing="true" style="-fx-background-color: #FFF;" text="Arts University Plymouth">
-               <items>
-                  <MenuItem mnemonicParsing="true" text="Imperial College" />
-                  <MenuItem mnemonicParsing="false" text="Brunel University London" />
-                  <MenuItem mnemonicParsing="false" text="Sussex University" />
-                  <MenuItem mnemonicParsing="false" text="Bedford College" />
-                  <MenuItem mnemonicParsing="false" text="Coventry University" />
-                  <MenuItem mnemonicParsing="false" text="Colchester Institute" />
-               </items>
-               <font>
-                  <Font name="Avenir Roman" size="13.0" />
-               </font>
-            </MenuButton>
+
+            <ComboBox fx:id="uniAverageComboBox" layoutX="51.0" onAction="#loadTableData" promptText="Select University" style="-fx-background-color: #FFFFFF;" />
          </children>
       </Group>
+      <Pane layoutX="1109.0" layoutY="610.0" prefHeight="70.0" prefWidth="70.0" style="-fx-background-color: #FFFFFF; -fx-border-radius: 8px; -fx-border-color: #F1F2F9;">
+         <children>
+            <Label fx:id="viewInvoiceBtn" layoutX="13.0" layoutY="10.0" onMouseClicked="#viewInvoice" text="View" textFill="#007a7a">
+               <font>
+                  <Font name="Avenir Heavy" size="13.0" />
+               </font>
+            </Label>
+            <Label fx:id="deleteInvoiceBtn" layoutX="13.0" layoutY="37.0" onMouseClicked="#deleteInvoice" text="Delete" textFill="#dc4067">
+               <font>
+                  <Font name="Avenir Heavy" size="13.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
    </children>
 
 </AnchorPane>

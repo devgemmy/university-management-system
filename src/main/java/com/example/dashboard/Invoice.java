@@ -81,12 +81,4 @@ public class Invoice {
         return foodItemsList;
     }
 
-    // public HashMap<String, String> getCourseList() {
-    // return courseList;
-    // }
-
-    // public HashMap<String, String> getInstitutionDetails() {
-    // return institutionDetails;
-    // }
-
 }

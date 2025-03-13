@@ -22,41 +22,35 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
 public class DashboardController implements Initializable {
     @FXML
+    private Button logOutButton;
+    @FXML
+    private ComboBox<String> timeFilter, monthPeriodDropdown, yearPeriodDropdown, uniAverageComboBox;
+    @FXML
+    private TextField searchField;
+
+    @FXML
+    private Label costLabel, titlePerSelect, totalFeesPerSelect, totalSportsPerSelect, totalFoodPerSelect,
+            totalCosterSelect, viewInvoiceBtn, deleteInvoiceBtn;
+    @FXML
     private PieChart totalCostsChart;
+    @FXML
+    private BarChart<String, Integer> averageUniCostsBarChart;
+
+    @FXML
+    private ComboBox<String> categoryComboBox, orderByComboBox;
     @FXML
     private Button addInvoiceButton;
     @FXML
-    private Button logOutButton;
-    @FXML
-    private Label costLabel;
-    @FXML
-    private TextField searchField;
-    @FXML
-    private BarChart<String, Integer> averageUniCostsBarChart;
-    @FXML
     private TableView<Invoice> invoiceTable;
-
     @FXML
-    private TableColumn<Invoice, String> invoiceID;
-    @FXML
-    private TableColumn<Invoice, String> studentName;
-    @FXML
-    private TableColumn<Invoice, String> institutionDetails;
-    @FXML
-    private TableColumn<Invoice, String> courseList;
-    @FXML
-    private TableColumn<Invoice, String> courseInvFees;
-    @FXML
-    private TableColumn<Invoice, String> totalSportsCost;
-    @FXML
-    private TableColumn<Invoice, String> totalFoodCost;
-    @FXML
-    private TableColumn<Invoice, String> invoiceDate;
+    private TableColumn<Invoice, String> invoiceID, studentName, institutionDetails, courseList, courseInvFees,
+            totalSportsCost, totalFoodCost, invoiceDate;
 
     // Load total costs across all Universities
     @FXML
@@ -230,6 +224,17 @@ public class DashboardController implements Initializable {
         });
 
         invoiceDate.setCellValueFactory(new PropertyValueFactory<>("invoiceDate"));
+
+        invoiceTable.setRowFactory(_ -> {
+            TableRow<Invoice> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && (!row.isEmpty())) {
+                    Invoice rowData = row.getItem();
+                    System.out.println("Double click on: " + rowData.getStudentName());
+                }
+            });
+            return row;
+        });
     }
 
     // Alert the user before closing the application
@@ -289,12 +294,102 @@ public class DashboardController implements Initializable {
         return sqlStatement.executeQuery();
     }
 
+    public void sortDataByCategory(ActionEvent event) {
+        String selectedCategory = categoryComboBox.getValue();
+        String selectedOrder = orderByComboBox.getValue();
+        System.out.println("Selected Order: " + selectedOrder + ", Selected Category:" + selectedCategory);
+
+        // String sortQuery = "SELECT * FROM INVOICE ORDER BY " + selectedCategory + " "
+        // + selectedOrder;
+        // ResultSet sortedData = queryTheDB(sortQuery);
+    }
+
+    public void setTimeFilter(ActionEvent event) {
+        String selectedPeriod = timeFilter.getValue();
+        if (selectedPeriod.equals("By Month")) {
+            monthPeriodDropdown.setVisible(true);
+            yearPeriodDropdown.setVisible(false);
+        } else if (selectedPeriod.equals("By Year")) {
+            monthPeriodDropdown.setVisible(false);
+            yearPeriodDropdown.setVisible(true);
+        } else {
+            monthPeriodDropdown.setVisible(false);
+            yearPeriodDropdown.setVisible(false);
+        }
+    }
+
+    public void setSortingPeriod() {
+        // Filter the invoices by month
+        // String monthQuery = "SELECT * FROM INVOICE WHERE INVOICE_DATE LIKE '%" +
+        // searchField.getText() + "%'";
+        // ResultSet monthData = queryTheDB(monthQuery);
+    }
+
+    public void viewInvoice() throws IOException {
+        // View the invoice data
+        // String viewQuery = "SELECT * FROM INVOICE WHERE INVOICE_ID = ?";
+        // ResultSet viewData = queryTheDB(viewQuery, "1");
+
+        // Open a new window to view the invoice
+        FXMLLoader viewInvFXMLLoader = new FXMLLoader(
+                DashboardApp.class.getResource("invoice-details-view.fxml"));
+        Stage newInvoiceStage = new Stage();
+        newInvoiceStage.setScene(new Scene(viewInvFXMLLoader.load(), 1200, 1000)); // Set the scene for the new stage
+        newInvoiceStage.setTitle("UMS - Generate New Invoice");
+        newInvoiceStage.setResizable(false);
+        newInvoiceStage.show();
+    }
+
+    public void deleteInvoice() {
+        // Delete the invoice data
+        // String deleteQuery = "DELETE FROM INVOICE WHERE INVOICE_ID = ?";
+        // queryTheDB(deleteQuery, "1");
+
+        System.out.println("Delete Invoice Clicked");
+    }
+
     // Initialise Data and required functions.
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         loadTotalCostsChart();
         loadAverageCostsChart();
         loadTableData();
+
+        ObservableList<String> categories = FXCollections.observableArrayList("Courses", "Sports", "Food", "Date");
+        categoryComboBox.setItems(categories);
+
+        ObservableList<String> orderBy = FXCollections.observableArrayList("ASC", "DESC");
+        orderByComboBox.setItems(orderBy);
+
+        ObservableList<String> timeFilters = FXCollections.observableArrayList("All Records", "By Month", "By Year");
+        timeFilter.setItems(timeFilters);
+
+        ObservableList<String> months = FXCollections.observableArrayList(
+                "January", "February", "March", "April", "May", "June", "July", "August", "September", "October",
+                "November", "December");
+        monthPeriodDropdown.setItems(months);
+
+        ArrayList<String> yearsInInvoices = new ArrayList<String>();
+        for (Invoice invoice : invoiceTable.getItems()) {
+            String invoiceYear = invoice.getInvoiceDate().split("/")[2];
+            if (!yearsInInvoices.contains(invoiceYear)) {
+                yearsInInvoices.add(invoiceYear);
+            }
+        }
+        ObservableList<String> years = FXCollections.observableArrayList(yearsInInvoices);
+        yearPeriodDropdown.setItems(years);
+
+        ArrayList<String> univsInInvoices = new ArrayList<String>();
+        for (Invoice invoice : invoiceTable.getItems()) {
+            String invoiceUniversity = invoice.getInstitutionDetails().values().stream().findFirst().orElse("");
+            // System.out.println(invoiceUniversity);
+            if (!univsInInvoices.contains(invoiceUniversity)) {
+                univsInInvoices.add(invoiceUniversity);
+            }
+        }
+        ObservableList<String> univs = FXCollections.observableArrayList(univsInInvoices);
+        uniAverageComboBox.setItems(univs);
+
         logOutButton.setOnAction(_ -> closeApplication());
     }
 }
