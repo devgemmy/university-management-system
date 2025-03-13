@@ -18,40 +18,16 @@ import java.util.ResourceBundle;
 
 public class GenerateNewInvoiceController implements Initializable {
     @FXML
-    private Button allInvoiceButton;
+    private Button allInvoiceButton, resetButton, generateInvoiceButton;
 
     @FXML
-    private Pane studentCourseInfo;
+    private Pane studentCourseInfo, foodSelectionInfo, sportsActivitiesInfo, submitNewInvoice;
 
     @FXML
-    private Pane foodSelectionInfo;
+    private TextField studentNameField, courseFeeField;
 
     @FXML
-    private Pane sportsActivitiesInfo;
-
-    @FXML
-    private Pane submitNewInvoice;
-
-    @FXML
-    private MenuButton courseMenuButton;
-
-    @FXML
-    private TextField studentNameField;
-
-    @FXML
-    private ComboBox<String> institutionComboBox;
-
-    @FXML
-    private ComboBox<String> courseComboBox;
-
-    @FXML
-    private TextField courseFeeField;
-
-    @FXML
-    private Button resetButton;
-
-    @FXML
-    private Button generateInvoiceButton;
+    private ComboBox<String> institutionComboBox, courseComboBox;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -83,9 +59,6 @@ public class GenerateNewInvoiceController implements Initializable {
         institutionComboBox.setValue(null);
         courseComboBox.setValue(null);
         courseFeeField.clear();
-
-        // Reset any other fields in the panes
-        // You can add more reset logic here
     }
 
     public void handleGenerateInvoice(ActionEvent event) {
@@ -105,7 +78,7 @@ public class GenerateNewInvoiceController implements Initializable {
 
         try {
             // Parse course fee
-            double courseFee = Double.parseDouble(courseFeeField.getText());
+            // double courseFee = Double.parseDouble(courseFeeField.getText());
 
             // Here you would typically:
             // 1. Create a new Invoice object

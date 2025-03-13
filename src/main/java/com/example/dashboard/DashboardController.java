@@ -335,7 +335,7 @@ public class DashboardController implements Initializable {
                 DashboardApp.class.getResource("invoice-details-view.fxml"));
         Stage newInvoiceStage = new Stage();
         newInvoiceStage.setScene(new Scene(viewInvFXMLLoader.load(), 1200, 1000)); // Set the scene for the new stage
-        newInvoiceStage.setTitle("UMS - Generate New Invoice");
+        newInvoiceStage.setTitle("UMS - View Invoice Details");
         newInvoiceStage.setResizable(false);
         newInvoiceStage.show();
     }
@@ -348,13 +348,7 @@ public class DashboardController implements Initializable {
         System.out.println("Delete Invoice Clicked");
     }
 
-    // Initialise Data and required functions.
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        loadTotalCostsChart();
-        loadAverageCostsChart();
-        loadTableData();
-
+    private void initializeDashboardValues() {
         ObservableList<String> categories = FXCollections.observableArrayList("Courses", "Sports", "Food", "Date");
         categoryComboBox.setItems(categories);
 
@@ -389,6 +383,23 @@ public class DashboardController implements Initializable {
         }
         ObservableList<String> univs = FXCollections.observableArrayList(univsInInvoices);
         uniAverageComboBox.setItems(univs);
+
+        // titlePerSelect.setText("Total costs in " + yearPeriodDropdown.getValue() + "
+        // for " + searchField.getText() + "students: ");
+        titlePerSelect.setText("Total costs in 2022 for Business students: ");
+        totalFeesPerSelect.setText("£55,350,000.00");
+        totalSportsPerSelect.setText("£350,000.50");
+        totalFoodPerSelect.setText("£1,150,050.00");
+        totalCosterSelect.setText("£61,045,850.85");
+    }
+
+    // Initialise Data and required functions.
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        loadTotalCostsChart();
+        loadAverageCostsChart();
+        loadTableData();
+        initializeDashboardValues();
 
         logOutButton.setOnAction(_ -> closeApplication());
     }
