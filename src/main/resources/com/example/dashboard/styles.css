@@ -1,8 +1,8 @@
 /* General Styles */
-/* .root {
+.root {
     -fx-font-family: "Avenir";
     -fx-background-color: #f4f4f4;
-} */
+}
 
 /* Header Styles */
 /* .hbox {
@@ -46,4 +46,22 @@
 .cost-label {
     -fx-font-size: 20px;
     -fx-font-family: "Avenir";
+}
+
+.course-table-view .column-header,
+.course-table-view .column-header .filler,
+.course-table-view .column-header-background .filler {
+    -fx-background-color: #ECF8F8;
+}
+
+.sports-table-view .column-header,
+.sports-table-view .column-header .filler,
+.sports-table-view .column-header-background .filler {
+    -fx-background-color: #FFF0DF;
+}
+
+.food-table-view .column-header,
+.food-table-view .column-header .filler,
+.food-table-view .column-header-background .filler {
+    -fx-background-color: #FFBE88;
 }
