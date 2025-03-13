@@ -67,7 +67,7 @@
                   <Font name="Avenir Heavy" size="18.0" />
                </font>
             </Text>
-            <Button fx:id="deleteInvoiceButton" defaultButton="true" ellipsisString="" layoutX="24.0" layoutY="158.0" lineSpacing="1.0" onAction="" prefHeight="44.0" prefWidth="204.0" style="-fx-background-color: #003F5A; -fx-border-color: #007A7A; -fx-text-fill: #FFFFFF; -fx-border-radius: 4px;" text="Delete Invoice Record" textAlignment="CENTER" textFill="#003f5a" textOverrun="WORD_ELLIPSIS" wrapText="true">
+            <Button fx:id="deleteInvoiceButton" defaultButton="true" ellipsisString="" layoutX="24.0" layoutY="158.0" lineSpacing="1.0" prefHeight="44.0" prefWidth="204.0" style="-fx-background-color: #003F5A; -fx-border-color: #007A7A; -fx-text-fill: #FFFFFF; -fx-border-radius: 4px;" text="Delete Invoice Record" textAlignment="CENTER" textFill="#003f5a" textOverrun="WORD_ELLIPSIS" wrapText="true">
                <font>
                   <Font name="Avenir Roman" size="14.0" />
                </font>

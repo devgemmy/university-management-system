@@ -391,6 +391,58 @@ public class DashboardController implements Initializable {
         totalSportsPerSelect.setText("£350,000.50");
         totalFoodPerSelect.setText("£1,150,050.00");
         totalCosterSelect.setText("£61,045,850.85");
+
+        // Parse sports and food costs
+        // double totalSportsCost = getFoodOrSportsCosts(sportsActivity);
+        // double totalFoodCost = getFoodOrSportsCosts(foodItems);
+
+        // Insert into FINANCES table
+        /*
+         * String insertQuery =
+         * "INSERT INTO FINANCES (studentName, courseInvFees, totalSportsCost, totalFoodCost, invoiceDate) VALUES (?, ?, ?, ?, ?)"
+         * ;
+         * try (PreparedStatement insertStmt = conn.prepareStatement(insertQuery,
+         * Statement.RETURN_GENERATED_KEYS)) {
+         * insertStmt.setString(1, studentName);
+         * insertStmt.setDouble(2, courseInvFees);
+         * insertStmt.setDouble(3, totalSportsCost);
+         * insertStmt.setDouble(4, totalFoodCost);
+         * insertStmt.setDate(5, invoiceDate);
+         * 
+         * int rowsInserted = insertStmt.executeUpdate();
+         * if (rowsInserted > 0) {
+         * System.out.println("Data successfully inserted into FINANCE table.");
+         * }
+         * }
+         */
+    }
+
+    // Method to parse and sum costs from a given string
+    private static double getFoodOrSportsCosts(String costStr) {
+        ArrayList<Double> costs = new ArrayList<>();
+        double total = 0.0;
+
+        if (costStr != null && !costStr.isEmpty()) {
+            String[] items = costStr.split(";");
+            for (String item : items) {
+                String[] parts = item.split("\\(");
+                if (parts.length == 2) {
+                    try {
+                        double cost = Double.parseDouble(parts[1].replace(")", ""));
+                        costs.add(cost);
+                        total += cost;
+                    } catch (NumberFormatException e) {
+                        System.err.println("Error parsing cost in: " + item);
+                    }
+                }
+            }
+        }
+
+        // Print ArrayList and total cost for debugging
+        System.out.println("Parsed Costs: " + costs);
+        System.out.println("Total Cost: " + total);
+
+        return total;
     }
 
     // Initialise Data and required functions.
