@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="625ce67e-43fd-4b9b-90fb-c5df264de445" name="Changes" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="CSS File" />
+        <option value="JavaFXApplication" />
+        <option value="FxmlFile" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;devgemmy&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;git@github.com:devgemmy/university-management-system.git&quot;,
+    &quot;accountId&quot;: &quot;f1a16f0c-7478-40e9-a6fd-522124a78de6&quot;
+  }
+}</component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/src/main/java/com/example/dashboard/DashboardController.java" root0="SKIP_INSPECTION" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 4
+}</component>
+  <component name="ProjectId" id="2tUCHg16VnqnjvdElCL0Q5uiNh9" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.DashboardApp.executor&quot;: &quot;Run&quot;,
+    &quot;Application.HelloApplication.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_directory_selection&quot;: &quot;/Users/macbookair/IdeaProjects/Finances/src/main/java/com/example/dashboard&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/macbookair/IdeaProjects/Finances&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  },
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;sqlite&quot;
+    ]
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/resources/com/example/dashboard" />
+      <recent name="$PROJECT_DIR$/src/main/resources/com/example/dashboard/views" />
+    </key>
+    <key name="ExtractSuperBase.RECENT_KEYS">
+      <recent name="com.example.dashboard" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.DashboardApp">
+    <configuration name="DashboardApp" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.example.dashboard.DashboardApp" />
+      <module name="Finances" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.example.dashboard.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="HelloApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.example.dashboard.HelloApplication" />
+      <module name="Finances" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.example.dashboard.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.DashboardApp" />
+        <item itemvalue="Application.HelloApplication" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-125ca727e0f0-intellij.indexing.shared.core-IU-243.23654.189" />
+        <option value="bundled-js-predefined-d6986cc7102b-822845ee3bb5-JavaScript-IU-243.23654.189" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="625ce67e-43fd-4b9b-90fb-c5df264de445" name="Changes" comment="" />
+      <created>1740397179847</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1740397179847</updated>
+      <workItem from="1740397180846" duration="432000" />
+      <workItem from="1740398338851" duration="26311000" />
+      <workItem from="1740695214951" duration="127000" />
+      <workItem from="1740695347392" duration="1254000" />
+      <workItem from="1740696614882" duration="9485000" />
+      <workItem from="1740746818231" duration="94033000" />
+      <workItem from="1741797623708" duration="118000" />
+      <workItem from="1741797754608" duration="674000" />
+      <workItem from="1741959606170" duration="2067000" />
+      <workItem from="1741982799403" duration="14000" />
+    </task>
+    <task id="LOCAL-00001" summary="Dashboard view and logic.">
+      <option name="closed" value="true" />
+      <created>1740524326498</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1740524326498</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Common and uncommon project files">
+      <option name="closed" value="true" />
+      <created>1740784233662</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1740784233662</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Project indpection">
+      <option name="closed" value="true" />
+      <created>1740784255717</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1740784255717</updated>
+    </task>
+    <task id="LOCAL-00004" summary="javafx graphics added">
+      <option name="closed" value="true" />
+      <created>1740784277545</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1740784277545</updated>
+    </task>
+    <task id="LOCAL-00005" summary="SQLite database setup">
+      <option name="closed" value="true" />
+      <created>1740784297632</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1740784297632</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Descriptive Report-like markdown">
+      <option name="closed" value="true" />
+      <created>1740784323774</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1740784323774</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Errors fixed and testing files separated">
+      <option name="closed" value="true" />
+      <created>1740784355602</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1740784355602</updated>
+    </task>
+    <task id="LOCAL-00008" summary="SQLite db integration pending">
+      <option name="closed" value="true" />
+      <created>1740784445756</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1740784445756</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Dashboard view setup">
+      <option name="closed" value="true" />
+      <created>1740784474367</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1740784474367</updated>
+    </task>
+    <task id="LOCAL-00010" summary="to be deleted">
+      <option name="closed" value="true" />
+      <created>1740784495712</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1740784495712</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Demo files temporarily added">
+      <option name="closed" value="true" />
+      <created>1741646134879</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1741646134879</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Dashboard page updated">
+      <option name="closed" value="true" />
+      <created>1741646184568</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1741646184568</updated>
+    </task>
+    <task id="LOCAL-00013" summary="piechart and barchart updated and ready">
+      <option name="closed" value="true" />
+      <created>1741713962388</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1741713962388</updated>
+    </task>
+    <task id="LOCAL-00014" summary="keeping transitional code">
+      <option name="closed" value="true" />
+      <created>1741713994016</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1741713994016</updated>
+    </task>
+    <task id="LOCAL-00015" summary="generate invoice view fxml and controller created">
+      <option name="closed" value="true" />
+      <created>1741714019977</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1741714019977</updated>
+    </task>
+    <task id="LOCAL-00016" summary="invoice class created for table">
+      <option name="closed" value="true" />
+      <created>1741714036798</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1741714036798</updated>
+    </task>
+    <task id="LOCAL-00017" summary="updates">
+      <option name="closed" value="true" />
+      <created>1741714058228</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1741714058228</updated>
+    </task>
+    <task id="LOCAL-00018" summary="Fixed table display on the dashboard">
+      <option name="closed" value="true" />
+      <created>1741792318430</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1741792318430</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Dashboard view and logic." />
+    <MESSAGE value="Common and uncommon project files" />
+    <MESSAGE value="Project indpection" />
+    <MESSAGE value="javafx graphics added" />
+    <MESSAGE value="SQLite database setup" />
+    <MESSAGE value="Descriptive Report-like markdown" />
+    <MESSAGE value="Errors fixed and testing files separated" />
+    <MESSAGE value="SQLite db integration pending" />
+    <MESSAGE value="Dashboard view setup" />
+    <MESSAGE value="to be deleted" />
+    <MESSAGE value="Demo files temporarily added" />
+    <MESSAGE value="Dashboard page updated" />
+    <MESSAGE value="piechart and barchart updated and ready" />
+    <MESSAGE value="keeping transitional code" />
+    <MESSAGE value="generate invoice view fxml and controller created" />
+    <MESSAGE value="invoice class created for table" />
+    <MESSAGE value="updates" />
+    <MESSAGE value="Fixed table display on the dashboard" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed table display on the dashboard" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>
