@@ -1,0 +1,185 @@
+/* Main Application Styles */
+.root {
+    -fx-font-family: "Avenir Roman", "Arial", sans-serif;
+}
+
+/* Header Styles */
+.header-pane {
+    -fx-background-color: #e8f1f1;
+}
+
+/* Button Styles */
+.transparent-button {
+    -fx-background-color: transparent;
+    -fx-border-color: #007A7A;
+    -fx-text-fill: #007A7A;
+    -fx-border-radius: 4px;
+    -fx-font-size: 13px;
+}
+
+.primary-button {
+    -fx-background-color: #007878;
+    -fx-border-color: #007A7A;
+    -fx-text-fill: #FFFFFF;
+    -fx-border-radius: 5px;
+    -fx-font-size: 13px;
+}
+
+.food-button {
+    -fx-background-color: #DE6600;
+    -fx-border-color: #DE6600;
+    -fx-text-fill: #FFFFFF;
+    -fx-border-radius: 4px;
+    -fx-font-size: 12px;
+}
+
+.sports-button {
+    -fx-background-color: #FFA84A;
+    -fx-border-color: #FFA84A;
+    -fx-text-fill: #FFFFFF;
+    -fx-border-radius: 4px;
+    -fx-font-size: 12px;
+}
+
+/* ComboBox Styles */
+.filter-combo-box {
+    -fx-background-color: #FFFFFF;
+    -fx-text-fill: #007A7A;
+}
+
+/* Table Styles */
+.invoice-table {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #007A7A;
+}
+
+/* Chart Styles */
+.cost-label {
+    -fx-font-weight: bold;
+}
+
+/* User Avatar */
+.user-avatar {
+    -fx-fill: #003f5a;
+}
+
+.user-avatar-text {
+    -fx-fill: WHITE;
+    -fx-font-size: 18px;
+}
+
+/* Labels */
+.total-cost-label {
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+}
+
+/* Search Field */
+.search-field {
+    -fx-prompt-text-fill: #757575;
+}
+
+/* Pane Styles */
+.summary-pane {
+    -fx-border-width: 26px;
+}
+
+/* Chart Specific Styles */
+.pie-chart {
+    -fx-background-color: transparent;
+    -fx-padding: 15px;
+    -fx-alignment: center-left;
+}
+
+.pie-chart .chart-content {
+    -fx-padding: 15px;
+    -fx-alignment: center-left;
+}
+
+.pie-chart-label {
+    -fx-background-color: rgba(255, 255, 255, 0.95);
+    -fx-padding: 4px 8px;
+    -fx-font-weight: bold;
+    -fx-font-size: 11px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 3, 0, 0, 1);
+    -fx-background-radius: 12px;
+    -fx-border-radius: 12px;
+    -fx-border-color: rgba(0, 0, 0, 0.1);
+    -fx-border-width: 1px;
+    -fx-text-alignment: center;
+}
+
+.pie-chart .chart-pie {
+    -fx-border-color: white;
+    -fx-border-width: 1px;
+}
+
+/* Default colors for pie slices */
+.pie-chart .data0.chart-pie { -fx-pie-color: #ff6b4a; } /* Courses - Orange */
+.pie-chart .data1.chart-pie { -fx-pie-color: #9370DB; } /* Sports - Purple */
+.pie-chart .data2.chart-pie { -fx-pie-color: #4169E1; } /* Food - Blue */
+
+/* Hover effect for pie slices */
+.pie-chart .chart-pie:hover {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 8, 0, 0, 0);
+    -fx-cursor: hand;
+    -fx-opacity: 0.9;
+}
+
+.bar-chart {
+    -fx-legend-side: TOP;
+}
+
+/* General Styles */
+/* .hbox {
+    -fx-spacing: 10px;
+    -fx-padding: 10px;
+    -fx-alignment: center-left;
+    -fx-background-color: #ffffff;
+    -fx-border-color: #d1d1d1;
+    -fx-border-width: 0 0 1px 0;
+}
+
+.button {
+    -fx-background-color: #007bff;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-padding: 8px 15px;
+    -fx-border-radius: 5px;
+}
+.button:hover {
+    -fx-background-color: #0056b3;
+} */
+
+/* Table Styles */
+/* .table-view {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #d1d1d1;
+}
+.table-column {
+    -fx-alignment: CENTER;
+} */
+
+/* Footer Styles */
+/* .cost-label {
+    -fx-font-size: 20px;
+    -fx-font-family: "Avenir";
+}
+
+.course-table-view .column-header,
+.course-table-view .column-header .filler,
+.course-table-view .column-header-background .filler {
+    -fx-background-color: #ECF8F8;
+}
+
+.sports-table-view .column-header,
+.sports-table-view .column-header .filler,
+.sports-table-view .column-header-background .filler {
+    -fx-background-color: #FFF0DF;
+}
+
+.food-table-view .column-header,
+.food-table-view .column-header .filler,
+.food-table-view .column-header-background .filler {
+    -fx-background-color: #FFBE88;
+} */

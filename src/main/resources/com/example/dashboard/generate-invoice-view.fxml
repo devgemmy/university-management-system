@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="1000.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.dashboard.GenerateNewInvoiceController">
+    <children>
+        <Pane prefHeight="78.0" prefWidth="1200" style="-fx-background-color: #e8f1f1;">
+            <children>
+                <Button fx:id="allInvoiceButton" defaultButton="true" ellipsisString="" layoutX="26.0" layoutY="20.0" lineSpacing="1.0" onAction="#seeAllInvoices" prefHeight="35.0" prefWidth="136.0" style="-fx-background-color: transparent; -fx-border-color: #007A7A; -fx-text-fill: #007A7A; -fx-border-radius: 4px;" text="View All Invoices" textAlignment="CENTER" textFill="#007878" textOverrun="WORD_ELLIPSIS" wrapText="true">
+                    <font>
+                        <Font name="Avenir Roman" size="13.0" />
+                    </font>
+                </Button>
+
+                <Circle fill="#003f5a" layoutX="1158.0" layoutY="36.0" radius="21.0" stroke="BLACK" strokeType="INSIDE" />
+                <Text fill="WHITE" layoutX="1146.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="AA">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Text>
+            </children>
+            <cursor>
+                <Cursor fx:constant="DEFAULT" />
+            </cursor>
+        </Pane>
+        
+        <Label layoutX="48.0" layoutY="95.0" prefHeight="17.0" prefWidth="244.0" text="Generate Invoice">
+            <font>
+                <Font name="Avenir Heavy" size="30.0" />
+            </font>
+        </Label>
+        
+        <Pane fx:id="studentCourseInfo" layoutX="30.0" layoutY="151.0" prefHeight="215.0" prefWidth="1140.0" style="-fx-background-color: #f5f5f5;">
+            <children>
+                 
+                    <TextField fx:id="courseFeeField" layoutX="20.0" layoutY="126.0" prefHeight="45.0" prefWidth="300" promptText="Course Fees" style="-fx-background-color: #FFFFFF; -fx-border-color: #757575; -fx-border-radius: 8px;" />
+                 
+                    <ComboBox fx:id="courseComboBox" layoutX="365.0" layoutY="126.0" onAction="#handleCourseSelection" prefHeight="45.0" prefWidth="300" promptText="Select Course (ID)" style="-fx-background-color: #FFFFFF; -fx-border-color: #757575; -fx-border-radius: 8px;" />
+                <VBox layoutX="20" layoutY="20" spacing="10" />
+                 <Label layoutX="20.0" layoutY="11.0" style="-fx-font-weight: bold;" text="Student Course Information" textFill="#007a7a">
+                     <font>
+                         <Font name="Avenir Roman" size="18.0" />
+                     </font>
+                 </Label>
+                 
+                    <TextField fx:id="studentNameField" layoutX="20.0" layoutY="43.0" prefHeight="45.0" prefWidth="300" promptText="Student Name" style="-fx-background-color: #FFFFFF; -fx-border-color: #757575; -fx-border-radius: 8px;" />
+                 
+                    <ComboBox fx:id="institutionComboBox" layoutX="366.0" layoutY="43.0" onAction="#handleInstitutionSelection" prefHeight="45.0" prefWidth="300" promptText="Select Institution" style="-fx-background-color: #FFFFFF; -fx-border-color: #757575; -fx-border-radius: 8px;" />
+            <DatePicker fx:id="invoiceDatePicker" layoutX="751.0" layoutY="43.0" prefHeight="45.0" prefWidth="300.0" promptText="Select Date" style="-fx-background-color: #FFFFFF; -fx-border-radius: 12px; -fx-border-color: #757575;" />
+            <Label fx:id="studentFieldErr" layoutX="20.0" layoutY="91.0" text="This field is does not allow numbers" textFill="#dc4067" />
+            <Label fx:id="feeFieldErr" layoutX="20.0" layoutY="177.0" text="This field is empty" textFill="#dc4067" />
+            <Label fx:id="institutionFieldErr" layoutX="367.0" layoutY="93.0" text="This field is empty" textFill="#dc4067" />
+            <Label fx:id="courseFieldErr" layoutX="368.0" layoutY="176.0" text="This field is empty" textFill="#dc4067" />
+            <Label fx:id="dateFieldErr" layoutX="754.0" layoutY="94.0" text="This field is empty" textFill="#dc4067" />
+            </children>
+        </Pane>
+        
+        <Pane fx:id="foodSelectionInfo" layoutX="31.0" layoutY="638.0" prefHeight="250.0" prefWidth="1140.0" style="-fx-background-color: #f5f5f5;">
+            <children>
+                <Label layoutX="20.0" layoutY="18.0" style="-fx-font-weight: bold;" text="Food Selection" textFill="#ffa94a">
+                    <font>
+                        <Font name="Avenir Roman" size="18.0" />
+                    </font>
+                </Label>
+            <ComboBox fx:id="courseComboBox12" layoutX="18.0" layoutY="50.0" onAction="#handleCourseSelection" prefHeight="45.0" prefWidth="300" promptText="Food Name" style="-fx-background-color: #FFFFFF; -fx-border-color: #757575; -fx-border-radius: 8px;" />
+            <TextField fx:id="courseFeeField12" layoutX="365.0" layoutY="49.0" prefHeight="45.0" prefWidth="300" promptText="Food Price" style="-fx-background-color: #FFFFFF; -fx-border-color: #757575; -fx-border-radius: 8px;" />
+            <ComboBox fx:id="courseComboBox111" layoutX="19.0" layoutY="130.0" onAction="#handleCourseSelection" prefHeight="45.0" prefWidth="300" promptText="Food Name" style="-fx-background-color: #FFFFFF; -fx-border-color: #757575; -fx-border-radius: 8px;" />
+            <TextField fx:id="courseFeeField111" layoutX="366.0" layoutY="129.0" prefHeight="45.0" prefWidth="300" promptText="Food Price" style="-fx-background-color: #FFFFFF; -fx-border-color: #757575; -fx-border-radius: 8px;" />
+            <Button layoutX="707.0" layoutY="140.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="166.0" style="-fx-background-color: #007A7A; -fx-border-radius: 12px;" text="Add Food Item" textFill="WHITE">
+               <font>
+                  <Font name="Avenir Roman" size="13.0" />
+               </font>
+            </Button>
+            <Button layoutX="707.0" layoutY="197.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="166.0" style="-fx-background-color: #DC4067; -fx-border-radius: 12px;" text="Delete this empty row" textFill="WHITE">
+               <font>
+                  <Font name="Avenir Roman" size="13.0" />
+               </font>
+            </Button>
+            <Label fx:id="foodFieldErr" layoutX="18.0" layoutY="100.0" text="This field is empty" textFill="#dc4067" />
+            <Label fx:id="foodPriceFieldErr" layoutX="368.0" layoutY="102.0" text="This field is empty" textFill="#dc4067" />
+                <!-- Add food selection components here -->
+            </children>
+        </Pane>
+        
+        <Pane fx:id="sportsActivitiesInfo" layoutX="29.0" layoutY="377.0" prefHeight="250.0" prefWidth="1140.0" style="-fx-background-color: #f5f5f5;">
+            <children>
+                <Label layoutX="20.0" layoutY="17.0" style="-fx-font-weight: bold;" text="Sports Activities" textFill="#de6600">
+                    <font>
+                        <Font name="Avenir Roman" size="18.0" />
+                    </font>
+                </Label>
+            <ComboBox fx:id="courseComboBox1" layoutX="19.0" layoutY="50.0" onAction="#handleCourseSelection" prefHeight="45.0" prefWidth="300" promptText="Sport Name" style="-fx-background-color: #FFFFFF; -fx-border-color: #757575; -fx-border-radius: 8px;" />
+            <TextField fx:id="courseFeeField1" layoutX="366.0" layoutY="49.0" prefHeight="45.0" prefWidth="300" promptText="Sport Price" style="-fx-background-color: #FFFFFF; -fx-border-color: #757575; -fx-border-radius: 8px;" />
+            <ComboBox fx:id="courseComboBox11" layoutX="20.0" layoutY="131.0" onAction="#handleCourseSelection" prefHeight="45.0" prefWidth="300" promptText="Sport Name" style="-fx-background-color: #FFFFFF; -fx-border-color: #757575; -fx-border-radius: 8px;" />
+            <TextField fx:id="courseFeeField11" layoutX="367.0" layoutY="130.0" prefHeight="45.0" prefWidth="300" promptText="Sport Price" style="-fx-background-color: #FFFFFF; -fx-border-color: #757575; -fx-border-radius: 8px;" />
+            <Button layoutX="709.0" layoutY="139.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="166.0" style="-fx-background-color: #007A7A; -fx-border-radius: 12px;" text="Add Sports Activity" textFill="WHITE">
+               <font>
+                  <Font name="Avenir Roman" size="13.0" />
+               </font>
+            </Button>
+            <Button layoutX="709.0" layoutY="197.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="166.0" style="-fx-background-color: #DC4067; -fx-border-radius: 12px;" text="Delete this empty row" textFill="WHITE">
+               <font>
+                  <Font name="Avenir Roman" size="13.0" />
+               </font>
+            </Button>
+            <Label fx:id="sportFieldErr" layoutX="21.0" layoutY="100.0" text="This field is empty" textFill="#dc4067" />
+            <Label fx:id="sportPriceFieldErr" layoutX="368.0" layoutY="101.0" text="This field is empty" textFill="#dc4067" />
+                <!-- Add sports activities components here -->
+            </children>
+        </Pane>
+        
+        <Pane fx:id="submitNewInvoice" layoutX="32.0" layoutY="905.0" prefHeight="65.0" prefWidth="1140.0">
+            <children>
+                <Button fx:id="resetButton" layoutX="19.0" layoutY="5.0" onAction="#handleReset" prefHeight="54.0" prefWidth="130.0" style="-fx-background-color: #DE6600; -fx-border-radius: 12px;" text="Reset" textFill="WHITE">
+                    <font>
+                        <Font name="Avenir Roman" size="18.0" />
+                    </font>
+                </Button>
+                <Button fx:id="generateInvoiceButton" layoutX="176.0" layoutY="5.0" onAction="#handleGenerateInvoice" prefHeight="54.0" prefWidth="241.0" style="-fx-background-color: #003F5A; -fx-border-radius: 12px;" text="Generate New Invoice" textFill="WHITE">
+                    <font>
+                        <Font name="Avenir Roman" size="18.0" />
+                    </font>
+                </Button>
+            </children>
+        </Pane>
+    </children>
+</AnchorPane>

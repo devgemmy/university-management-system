@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+
+<AnchorPane prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.dashboard.LoginController">
+   <children>
+      <Button fx:id="closeAppButton" onAction="#closeApplication" text="Close App" style="-fx-background-color: #d32f2f; -fx-text-fill: white; -fx-padding: 8px 16px; -fx-background-radius: 5px;" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0"/>
+      
+      <VBox alignment="CENTER" layoutX="250.0" layoutY="100.0" prefWidth="300.0" spacing="20.0">
+         <children>
+            <Label text="Administrative Log In" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #1a237e;"/>
+            
+            <TextField fx:id="emailField" promptText="Email Address" style="-fx-padding: 10px; -fx-background-radius: 5px;">
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+            </TextField>
+            
+            <PasswordField fx:id="passwordField" promptText="Password" style="-fx-padding: 10px; -fx-background-radius: 5px;">
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </PasswordField>
+            
+            <Button fx:id="loginButton" onAction="#handleLogin" text="Sign In" style="-fx-background-color: #1a237e; -fx-text-fill: white; -fx-padding: 10px 20px; -fx-background-radius: 5px; -fx-font-weight: bold; -fx-min-width: 200px;">
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+            </Button>
+            
+            <Label fx:id="errorLabel" textFill="RED" wrapText="true" alignment="CENTER">
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </Label>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane> 

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="1000.0" prefWidth="1200.0" style="-fx-background-color: #f5f5f5;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.dashboard.AdminServicesController">
+    <VBox spacing="20" AnchorPane.topAnchor="20" AnchorPane.leftAnchor="20" AnchorPane.rightAnchor="20">
+        <!-- Header with Logout and Font Size -->
+        <HBox spacing="10" AnchorPane.topAnchor="20" AnchorPane.leftAnchor="20" AnchorPane.rightAnchor="20">
+            <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
+                <Button fx:id="logoutButton" text="Log Out" onAction="#handleLogout" style="-fx-background-color: #004d40; -fx-text-fill: white;"/>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT">
+                <Button fx:id="fontSizeButton" text="AA" onAction="#handleFontSize" style="-fx-background-color: #004d40; -fx-text-fill: white;"/>
+            </HBox>
+        </HBox>
+
+        <!-- Title -->
+        <Text text="Administrative Services" style="-fx-font-size: 32px; -fx-font-weight: bold;" textAlignment="CENTER" wrappingWidth="1160"/>
+
+        <!-- Services Grid -->
+        <GridPane hgap="20" vgap="20" alignment="CENTER">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="400" prefWidth="400"/>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="400" prefWidth="400"/>
+            </columnConstraints>
+
+            <!-- Applicant Details Card -->
+            <VBox styleClass="service-card" style="-fx-background-color: #e8f5e9; -fx-padding: 20; -fx-background-radius: 10;" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                <Text text="Applicant Details" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+                <Text text="108 Applicants" style="-fx-font-size: 18px;" />
+                <Button text="View Restaurants" onAction="#handleApplicantDetails" style="-fx-background-color: #00796b; -fx-text-fill: white;"/>
+            </VBox>
+
+            <!-- Attendance Monitoring Card -->
+            <VBox styleClass="service-card" style="-fx-background-color: #fff3e0; -fx-padding: 20; -fx-background-radius: 10;" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                <Text text="Attendance Monitoring" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+                <Text text="835 Absent Students" style="-fx-font-size: 18px;"/>
+                <Text text="1017 Present Students" style="-fx-font-size: 18px;"/>
+                <Button text="View Attendance Records" onAction="#handleAttendance" style="-fx-background-color: #ef6c00; -fx-text-fill: white;"/>
+            </VBox>
+
+            <!-- Course Selection Card -->
+            <VBox styleClass="service-card" style="-fx-background-color: #fbe9e7; -fx-padding: 20; -fx-background-radius: 10;" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                <Text text="Course Selection" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+                <Text text="492 Universities" style="-fx-font-size: 18px;"/>
+                <Text text="5008 Courses" style="-fx-font-size: 18px;"/>
+                <Button text="Manage Courses" onAction="#handleCourseSelection" style="-fx-background-color: #ff5722; -fx-text-fill: white;"/>
+            </VBox>
+
+            <!-- Finance Management Card -->
+            <VBox styleClass="service-card" style="-fx-background-color: #e8f5e9; -fx-padding: 20; -fx-background-radius: 10;" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                <Text text="Finance Management" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+                <Text text="136 Invoices" style="-fx-font-size: 18px;"/>
+                <Text text="Average Costs: £12,500" style="-fx-font-size: 18px;"/>
+                <Button text="Manage Invoices" onAction="#handleFinanceManagement" style="-fx-background-color: #00796b; -fx-text-fill: white;"/>
+            </VBox>
+
+            <!-- Restaurants Card -->
+            <VBox styleClass="service-card" style="-fx-background-color: #ffe0b2; -fx-padding: 20; -fx-background-radius: 10;" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                <Text text="Restaurants" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+                <Text text="48 Meals" style="-fx-font-size: 18px;"/>
+                <Text text="192 Orders" style="-fx-font-size: 18px;"/>
+                <Button text="View Restaurants" onAction="#handleRestaurants" style="-fx-background-color: #fb8c00; -fx-text-fill: white;"/>
+            </VBox>
+
+            <!-- Sports School Card -->
+            <VBox styleClass="service-card" style="-fx-background-color: #fbe9e7; -fx-padding: 20; -fx-background-radius: 10;" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                <Text text="Sports School" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+                <Text text="115 Sports" style="-fx-font-size: 18px;"/>
+                <Text text="512 Active Students" style="-fx-font-size: 18px;"/>
+                <Button text="Manage Sports Activities" onAction="#handleSportsSchool" style="-fx-background-color: #ff5722; -fx-text-fill: white;"/>
+            </VBox>
+        </GridPane>
+    </VBox>
+</AnchorPane> 
