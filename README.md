@@ -1,4 +1,4 @@
-# 📚 UMS (University Management System) Finance System Documentation
+# 📚 UMS Finance System Documentation
 
 ## Project Overview
 
