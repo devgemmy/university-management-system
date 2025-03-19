@@ -6,6 +6,8 @@
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
@@ -17,10 +19,17 @@
     <children>
         <Pane prefHeight="78.0" prefWidth="1200" style="-fx-background-color: #e8f1f1;">
             <children>
-                <Button fx:id="allInvoiceButton" defaultButton="true" ellipsisString="" layoutX="26.0" layoutY="20.0" lineSpacing="1.0" onAction="#seeAllInvoices" prefHeight="35.0" prefWidth="136.0" style="-fx-background-color: transparent; -fx-border-color: #007A7A; -fx-text-fill: #007A7A; -fx-border-radius: 4px;" text="View All Invoices" textAlignment="CENTER" textFill="#007878" textOverrun="WORD_ELLIPSIS" wrapText="true">
+                <Button fx:id="allInvoiceButton" defaultButton="true" ellipsisString="" layoutX="26.0" layoutY="20.0" lineSpacing="1.0" onAction="#seeAllInvoices" prefHeight="35.0" prefWidth="155.0" style="-fx-background-color: transparent; -fx-border-color: #007A7A; -fx-text-fill: #007A7A; -fx-border-radius: 4px;" text=" View All Invoices" textAlignment="CENTER" textFill="#007878" textOverrun="WORD_ELLIPSIS" wrapText="true">
                     <font>
                         <Font name="Avenir Roman" size="13.0" />
                     </font>
+               <graphic>
+                  <ImageView fitHeight="17.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../assets/icons/back-arrow.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
                 </Button>
 
                 <Circle fill="#003f5a" layoutX="1158.0" layoutY="36.0" radius="21.0" stroke="BLACK" strokeType="INSIDE" />
@@ -62,7 +71,7 @@
             <Label fx:id="feeFieldErr" layoutX="20.0" layoutY="177.0" text="This field is empty" textFill="#dc4067" />
             <Label fx:id="institutionFieldErr" layoutX="367.0" layoutY="93.0" text="This field is empty" textFill="#dc4067" />
             <Label fx:id="courseFieldErr" layoutX="368.0" layoutY="176.0" text="This field is empty" textFill="#dc4067" />
-            <Label fx:id="dateFieldErr" layoutX="754.0" layoutY="94.0" text="This field is empty" textFill="#dc4067" />
+            <Label fx:id="dateFieldErr" layoutX="753.0" layoutY="93.0" text="This date field  is empty" textFill="#dc4067" />
             </children>
         </Pane>
         
@@ -76,7 +85,7 @@
             <ComboBox fx:id="courseComboBox12" layoutX="18.0" layoutY="50.0" onAction="#handleCourseSelection" prefHeight="45.0" prefWidth="300" promptText="Food Name" style="-fx-background-color: #FFFFFF; -fx-border-color: #757575; -fx-border-radius: 8px;" />
             <TextField fx:id="courseFeeField12" layoutX="365.0" layoutY="49.0" prefHeight="45.0" prefWidth="300" promptText="Food Price" style="-fx-background-color: #FFFFFF; -fx-border-color: #757575; -fx-border-radius: 8px;" />
             <ComboBox fx:id="courseComboBox111" layoutX="19.0" layoutY="130.0" onAction="#handleCourseSelection" prefHeight="45.0" prefWidth="300" promptText="Food Name" style="-fx-background-color: #FFFFFF; -fx-border-color: #757575; -fx-border-radius: 8px;" />
-            <TextField fx:id="courseFeeField111" layoutX="366.0" layoutY="129.0" prefHeight="45.0" prefWidth="300" promptText="Food Price" style="-fx-background-color: #FFFFFF; -fx-border-color: #757575; -fx-border-radius: 8px;" />
+            <TextField fx:id="courseFeeField111" layoutX="366.0" layoutY="130.0" prefHeight="45.0" prefWidth="300" promptText="Food Price" style="-fx-background-color: #FFFFFF; -fx-border-color: #757575; -fx-border-radius: 8px;" />
             <Button layoutX="707.0" layoutY="140.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="166.0" style="-fx-background-color: #007A7A; -fx-border-radius: 12px;" text="Add Food Item" textFill="WHITE">
                <font>
                   <Font name="Avenir Roman" size="13.0" />

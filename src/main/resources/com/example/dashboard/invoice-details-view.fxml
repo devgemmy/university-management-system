@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.Cursor?>
 <?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
@@ -8,6 +7,7 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
@@ -22,8 +22,18 @@
     <children>
         <Pane prefHeight="78.0" prefWidth="1200" styleClass="header-pane">
             <children>
-                <Button fx:id="backToDashboardButton" layoutX="26.0" layoutY="20.0" prefHeight="35.0" prefWidth="136.0" styleClass="transparent-button" text="View all Invoices" onAction="#backToDashboard" />
-                <Circle layoutX="1158.0" layoutY="36.0" radius="21.0" styleClass="user-avatar" />
+                <Button fx:id="backToDashboardButton" layoutX="26.0" layoutY="20.0" onAction="#backToDashboard" prefHeight="35.0" prefWidth="146.0" style="-fx-background-color: transparent; -fx-border-color: #007A7A; -fx-text-fill: #007A7A; -fx-border-radius: 4px;" styleClass="transparent-button" text=" View all Invoices">
+               <font>
+                  <Font name="Avenir Roman" size="13.0" />
+               </font>
+               <graphic>
+                  <ImageView fitHeight="16.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../assets/icons/back-arrow.png" />
+                     </image>
+                  </ImageView>
+               </graphic></Button>
+                <Circle fill="#003f5a" layoutX="1158.0" layoutY="36.0" radius="21.0" styleClass="user-avatar" />
                 <Text layoutX="1146.0" layoutY="41.0" styleClass="user-avatar-text" text="AA" />
             </children>
         </Pane>
@@ -31,7 +41,7 @@
         <Pane layoutX="97.0" layoutY="102.0" prefHeight="230.0" prefWidth="590.0">
             <children>
                 <Text fx:id="invoiceIdLabel" fill="#757575" layoutX="21.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Invoice ID: " wrappingWidth="198.1986083984375" />
-                <Text fx:id="studentNameLabel" layoutX="21.0" layoutY="66.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Student Name" wrappingWidth="222.15267944335938">
+                <Text fx:id="studentNameLabel" layoutX="21.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Student Name" wrappingWidth="524.58056640625">
                     <font>
                         <Font name="Avenir Heavy" size="31.0" />
                     </font>
@@ -74,8 +84,8 @@
                 </TableView>
                 <Pane prefHeight="73.0" prefWidth="450.0" style="-fx-background-color: #FFFFFF;">
                     <children>
-                        <TextField layoutX="261.0" layoutY="13.0" prefHeight="35.0" prefWidth="145.0" promptText="Fee" />
-                        <ComboBox layoutX="38.0" layoutY="12.0" prefHeight="35.0" prefWidth="200.0" promptText="Course Name (ID)" />
+                        <TextField layoutX="261.0" layoutY="12.0" prefHeight="35.0" prefWidth="145.0" promptText="Fee" style="-fx-background-color: #FFFFFF; -fx-border-color: #757575; -fx-border-radius: 8px;" />
+                        <ComboBox layoutX="38.0" layoutY="12.0" prefHeight="35.0" prefWidth="200.0" promptText="Course Name (ID)" style="-fx-background-color: #FFFFFF; -fx-border-color: #757575; -fx-border-radius: 8px;" />
                         <Label layoutX="41.0" layoutY="50.0" text="This field is empty" textFill="#dc4067" />
                         <Label layoutX="262.0" layoutY="50.0" text="This field is empty" textFill="#dc4067" />
                     </children>
@@ -114,7 +124,7 @@
                 <Pane prefHeight="73.0" prefWidth="450.0" style="-fx-background-color: #FFFFFF;">
                     <children>
                         <TextField layoutX="261.0" layoutY="13.0" prefHeight="35.0" prefWidth="145.0" promptText="Fee" />
-                        <ComboBox layoutX="38.0" layoutY="12.0" prefHeight="35.0" prefWidth="200.0" promptText="Course Name (ID)" />
+                        <ComboBox layoutX="38.0" layoutY="12.0" prefHeight="35.0" prefWidth="200.0" promptText="Course Name (ID)" style="-fx-background-color: #FFFFFF; -fx-border-color: #757575;" />
                         <Label layoutX="41.0" layoutY="50.0" text="This field is empty" textFill="#dc4067" />
                         <Label layoutX="262.0" layoutY="50.0" text="This field is empty" textFill="#dc4067" />
                     </children>

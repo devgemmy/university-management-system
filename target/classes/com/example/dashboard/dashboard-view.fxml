@@ -13,10 +13,11 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
@@ -27,10 +28,17 @@
       <Label fx:id="costLabel" layoutX="236.0" layoutY="234.0" text="Label" />
       <Pane prefHeight="78.0" prefWidth="1200" style="-fx-background-color: #e8f1f1;">
          <children>
-            <Button fx:id="adminButton" defaultButton="true" ellipsisString="" layoutX="26.0" layoutY="22.0" lineSpacing="1.0" prefWidth="200.0" style="-fx-background-color: transparent; -fx-border-color: #007A7A; -fx-text-fill: #007A7A; -fx-border-radius: 4px;" text="View Administrative Services" textAlignment="CENTER" textFill="#007878" textOverrun="WORD_ELLIPSIS" wrapText="true" onAction="#handleAdminServices">
+            <Button fx:id="adminButton" defaultButton="true" ellipsisString="" layoutX="26.0" layoutY="17.0" lineSpacing="1.0" onAction="#handleAdminServices" prefHeight="42.0" prefWidth="200.0" style="-fx-background-color: transparent; -fx-border-color: #007A7A; -fx-text-fill: #007A7A; -fx-border-radius: 4px;" text="   View Admin Services" textAlignment="CENTER" textFill="#007878" textOverrun="WORD_ELLIPSIS" wrapText="true">
                <font>
                   <Font name="Avenir Roman" size="13.0" />
                </font>
+               <graphic>
+                  <ImageView fitHeight="20.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../assets/icons/back-arrow.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
             </Button>
 
             <ComboBox fx:id="timeFilter" layoutX="570.0" layoutY="23.0" onAction="#setTimeFilter" promptText="All Records" style="-fx-background-color: #FFFFFF; -fx-text-fill: #007A7A;" />
@@ -62,7 +70,7 @@
                      </font>
                   </Button>
 
-                  <ComboBox fx:id="orderByComboBox" layoutX="875.0" layoutY="10.0" onAction="#sortDataByCategory" promptText="ASC" style="-fx-background-color: #FFFFFF;" />
+                  <ComboBox fx:id="orderByComboBox" layoutX="895.0" layoutY="10.0" onAction="#sortDataByCategory" promptText="ASC" style="-fx-background-color: #FFFFFF;" />
                   
                   <ComboBox fx:id="categoryComboBox" layoutX="785.0" layoutY="10.0" onAction="#sortDataByCategory" promptText="Date" style="-fx-background-color: #FFF; -fx-text-fill: #007A7A;" />
                </children>
@@ -86,11 +94,11 @@
 
             <Pane prefHeight="45.0" prefWidth="1131.0" style="-fx-border-width: 26px;">
                <children>
-                  <Label fx:id="titlePerSelect" layoutX="14.0" prefHeight="28.0" prefWidth="235.0"/>
+                  <Label fx:id="titlePerSelect" layoutX="14.0" prefHeight="28.0" prefWidth="235.0" />
                   <Label fx:id="totalFeesPerSelect" layoutX="658.0" layoutY="6.0" prefHeight="17.0" prefWidth="104.0" />
                   <Label fx:id="totalFoodPerSelect" layoutX="891.0" layoutY="6.0" prefHeight="17.0" prefWidth="100.0" />
                   <Label fx:id="totalSportsPerSelect" layoutX="781.0" layoutY="6.0" prefHeight="17.0" prefWidth="92.0" />
-                  <Label fx:id="totalCosterSelect" layoutX="1004.0" layoutY="6.0" prefHeight="17.0" prefWidth="104.0" >
+                  <Label fx:id="totalCosterSelect" layoutX="1004.0" layoutY="6.0" prefHeight="17.0" prefWidth="104.0">
                      <font>
                         <Font name="System Bold" size="13.0" />
                      </font>
@@ -102,7 +110,7 @@
          <children>
             <BarChart fx:id="averageUniCostsBarChart" layoutY="28.0" prefHeight="343.0" prefWidth="672.0" style="-fx-background-color: white;">
               <xAxis>
-                <CategoryAxis fx:id="xAxis" label="Cost Categories" side="BOTTOM" />
+                <CategoryAxis label="Cost Categories" side="BOTTOM" fx:id="xAxis" />
               </xAxis>
               <yAxis>
                 <NumberAxis fx:id="yAxis" label="Amount (£)" side="LEFT" />
@@ -115,7 +123,7 @@
             <ComboBox fx:id="uniAverageComboBox" layoutX="51.0" onAction="#loadAverageCostsChart" promptText="Select University" style="-fx-background-color: #FFFFFF; -fx-pref-width: 200;" />
          </children>
       </Group>
-      <Pane layoutX="1109.0" layoutY="610.0" prefHeight="70.0" prefWidth="70.0" style="-fx-background-color: #FFFFFF; -fx-border-radius: 8px; -fx-border-color: #F1F2F9;">
+      <Pane layoutX="1129.0" layoutY="928.0" opacity="0.0" prefHeight="70.0" prefWidth="70.0" style="-fx-background-color: #FFFFFF; -fx-border-radius: 8px; -fx-border-color: #F1F2F9;">
          <children>
             <Label fx:id="viewInvoiceBtn" layoutX="13.0" layoutY="10.0" text="View" textFill="#007a7a">
                <font>

@@ -1,80 +1,211 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.text.Text?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="1000.0" prefWidth="1200.0" style="-fx-background-color: #f5f5f5;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.dashboard.AdminServicesController">
-    <VBox spacing="20" AnchorPane.topAnchor="20" AnchorPane.leftAnchor="20" AnchorPane.rightAnchor="20">
+<AnchorPane prefHeight="1000.0" prefWidth="1200.0" style="-fx-background-color: #f5f5f5;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.dashboard.AdminServicesController">
+    <VBox layoutX="22.0" layoutY="79.0" spacing="20" AnchorPane.leftAnchor="22.0" AnchorPane.rightAnchor="18.0" AnchorPane.topAnchor="79.0">
         <!-- Header with Logout and Font Size -->
-        <HBox spacing="10" AnchorPane.topAnchor="20" AnchorPane.leftAnchor="20" AnchorPane.rightAnchor="20">
-            <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
-                <Button fx:id="logoutButton" text="Log Out" onAction="#handleLogout" style="-fx-background-color: #004d40; -fx-text-fill: white;"/>
-            </HBox>
-            <HBox alignment="CENTER_RIGHT">
-                <Button fx:id="fontSizeButton" text="AA" onAction="#handleFontSize" style="-fx-background-color: #004d40; -fx-text-fill: white;"/>
-            </HBox>
+        <HBox spacing="10" AnchorPane.leftAnchor="20" AnchorPane.rightAnchor="20" AnchorPane.topAnchor="20">
+            <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS" />
+            <HBox alignment="CENTER_RIGHT" />
         </HBox>
-
-        <!-- Title -->
-        <Text text="Administrative Services" style="-fx-font-size: 32px; -fx-font-weight: bold;" textAlignment="CENTER" wrappingWidth="1160"/>
+      <Pane prefHeight="44.0" prefWidth="1160.0">
+         <children>
+            <Text layoutX="355.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Administrative Services" textAlignment="CENTER" wrappingWidth="462.97837043411573">
+               <font>
+                  <Font name="Avenir Heavy" size="40.0" />
+               </font>
+            </Text>
+         </children>
+      </Pane>
 
         <!-- Services Grid -->
-        <GridPane hgap="20" vgap="20" alignment="CENTER">
+        <GridPane alignment="CENTER" hgap="20" prefHeight="835.0" prefWidth="1160.0" style="-fx-padding: 50px;" vgap="20">
             <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="400" prefWidth="400"/>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="400" prefWidth="400"/>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="400" prefWidth="400" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="400" prefWidth="400" />
             </columnConstraints>
 
             <!-- Applicant Details Card -->
-            <VBox styleClass="service-card" style="-fx-background-color: #e8f5e9; -fx-padding: 20; -fx-background-radius: 10;" GridPane.columnIndex="0" GridPane.rowIndex="0">
-                <Text text="Applicant Details" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
-                <Text text="108 Applicants" style="-fx-font-size: 18px;" />
-                <Button text="View Restaurants" onAction="#handleApplicantDetails" style="-fx-background-color: #00796b; -fx-text-fill: white;"/>
+            <VBox prefHeight="209.0" prefWidth="520.0" style="-fx-background-color: #E3FAE3; -fx-padding: 20; -fx-background-radius: 10;" styleClass="service-card" GridPane.columnIndex="0" GridPane.rowIndex="0">
+            <Pane prefHeight="200.0" prefWidth="200.0">
+               <children>
+                      <Button layoutX="16.0" layoutY="143.0" onAction="#handleApplicantDetails" prefHeight="35.0" prefWidth="140.0" style="-fx-background-color: #00796b; -fx-text-fill: white;" text="View Restaurants">
+                     <font>
+                        <Font name="Avenir Roman" size="14.0" />
+                     </font>
+                  </Button>
+                      <Text layoutX="17.0" layoutY="126.0" style="-fx-font-size: 18px;" text="108 Applicants">
+                     <font>
+                        <Font name="Avenir Light" size="13.0" />
+                     </font>
+                  </Text>
+                      <Text layoutX="63.0" layoutY="35.0" style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Applicant Details" wrappingWidth="205.0">
+                     <font>
+                        <Font name="Avenir Roman" size="13.0" />
+                     </font>
+                  </Text>
+                  <ImageView fitHeight="35.0" fitWidth="45.0" layoutX="18.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../assets/icons/applicant-deats.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
             </VBox>
 
             <!-- Attendance Monitoring Card -->
-            <VBox styleClass="service-card" style="-fx-background-color: #fff3e0; -fx-padding: 20; -fx-background-radius: 10;" GridPane.columnIndex="1" GridPane.rowIndex="0">
-                <Text text="Attendance Monitoring" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
-                <Text text="835 Absent Students" style="-fx-font-size: 18px;"/>
-                <Text text="1017 Present Students" style="-fx-font-size: 18px;"/>
-                <Button text="View Attendance Records" onAction="#handleAttendance" style="-fx-background-color: #ef6c00; -fx-text-fill: white;"/>
+            <VBox style="-fx-background-color: #FFCB9F; -fx-padding: 20; -fx-background-radius: 10;" styleClass="service-card" GridPane.columnIndex="1" GridPane.rowIndex="0">
+            <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-padding: 10px;">
+               <children>
+                      <Button layoutX="30.0" layoutY="145.0" onAction="#handleAttendance" prefHeight="35.0" prefWidth="215.0" style="-fx-background-color: #DE6600; -fx-text-fill: white;" text="View Attendance Records">
+                     <font>
+                        <Font name="Avenir Roman" size="14.0" />
+                     </font>
+                  </Button>
+                      <Text layoutX="79.0" layoutY="36.0" style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Attendance Monitoring" />
+                      <Text layoutX="31.0" layoutY="100.0" style="-fx-font-size: 18px;" text="835 Absent Students" />
+                      <Text layoutX="31.0" layoutY="128.0" style="-fx-font-size: 18px;" text="1017 Present Students" />
+                  <ImageView fitHeight="35.0" fitWidth="45.0" layoutX="29.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../assets/icons/attendance.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+            <padding>
+               <Insets top="9.0" />
+            </padding>
             </VBox>
 
             <!-- Course Selection Card -->
-            <VBox styleClass="service-card" style="-fx-background-color: #fbe9e7; -fx-padding: 20; -fx-background-radius: 10;" GridPane.columnIndex="0" GridPane.rowIndex="1">
-                <Text text="Course Selection" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
-                <Text text="492 Universities" style="-fx-font-size: 18px;"/>
-                <Text text="5008 Courses" style="-fx-font-size: 18px;"/>
-                <Button text="Manage Courses" onAction="#handleCourseSelection" style="-fx-background-color: #ff5722; -fx-text-fill: white;"/>
+            <VBox prefHeight="219.0" prefWidth="570.0" style="-fx-background-color: #FFF0DF; -fx-padding: 20; -fx-background-radius: 10;" styleClass="service-card" GridPane.columnIndex="0" GridPane.rowIndex="1">
+            <Pane prefHeight="200.0" prefWidth="200.0">
+               <children>
+                      <Button layoutX="24.0" layoutY="146.0" onAction="#handleCourseSelection" prefHeight="35.0" prefWidth="140.0" style="-fx-background-color: #FFA84A; -fx-text-fill: white;" text="Manage Courses">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Button>
+                      <Text layoutX="26.0" layoutY="130.0" style="-fx-font-size: 18px;" text="5008 Courses" />
+                      <Text layoutX="26.0" layoutY="101.0" style="-fx-font-size: 18px;" text="492 Universities" />
+                      <Text layoutX="70.0" layoutY="40.0" style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Course Selection" wrappingWidth="205.0">
+                     <font>
+                        <Font name="Avenir Roman" size="13.0" />
+                     </font>
+                  </Text>
+                  <ImageView fitHeight="35.0" fitWidth="45.0" layoutX="24.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../assets/icons/course-select.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
             </VBox>
 
             <!-- Finance Management Card -->
-            <VBox styleClass="service-card" style="-fx-background-color: #e8f5e9; -fx-padding: 20; -fx-background-radius: 10;" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                <Text text="Finance Management" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
-                <Text text="136 Invoices" style="-fx-font-size: 18px;"/>
-                <Text text="Average Costs: £12,500" style="-fx-font-size: 18px;"/>
-                <Button text="Manage Invoices" onAction="#handleFinanceManagement" style="-fx-background-color: #00796b; -fx-text-fill: white;"/>
+            <VBox style="-fx-background-color: #E3FAE3; -fx-padding: 20; -fx-background-radius: 10;" styleClass="service-card" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <Pane prefHeight="200.0" prefWidth="200.0">
+               <children>
+                      <Button layoutX="30.0" layoutY="146.0" onAction="#handleFinanceManagement" prefHeight="35.0" prefWidth="140.0" style="-fx-background-color: #00796b; -fx-text-fill: white;" text="Manage Invoices">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Button>
+                      <Text layoutX="77.0" layoutY="35.0" style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Finance Management" />
+                      <Text layoutX="30.0" layoutY="100.0" style="-fx-font-size: 18px;" text="136 Invoices" />
+                      <Text layoutX="30.0" layoutY="129.0" style="-fx-font-size: 18px;" text="Average Costs: £12,500" />
+                  <ImageView fitHeight="35.0" fitWidth="45.0" layoutX="30.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../assets/icons/finance.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
             </VBox>
 
             <!-- Restaurants Card -->
-            <VBox styleClass="service-card" style="-fx-background-color: #ffe0b2; -fx-padding: 20; -fx-background-radius: 10;" GridPane.columnIndex="0" GridPane.rowIndex="2">
-                <Text text="Restaurants" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
-                <Text text="48 Meals" style="-fx-font-size: 18px;"/>
-                <Text text="192 Orders" style="-fx-font-size: 18px;"/>
-                <Button text="View Restaurants" onAction="#handleRestaurants" style="-fx-background-color: #fb8c00; -fx-text-fill: white;"/>
+            <VBox prefHeight="231.0" prefWidth="570.0" style="-fx-background-color: #FFCB9F; -fx-padding: 20; -fx-background-radius: 10;" styleClass="service-card" GridPane.columnIndex="0" GridPane.rowIndex="2">
+            <Pane prefHeight="200.0" prefWidth="200.0">
+               <children>
+                      <Button layoutX="29.0" layoutY="148.0" onAction="#handleRestaurants" prefHeight="35.0" prefWidth="140.0" style="-fx-background-color: #DE6600; -fx-text-fill: white;" text="View Restaurants">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Button>
+                      <Text layoutX="72.0" layoutY="37.0" style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Restaurants" />
+                      <Text layoutX="32.0" layoutY="103.0" style="-fx-font-size: 18px;" text="48 Meals" />
+                      <Text layoutX="30.0" layoutY="133.0" style="-fx-font-size: 18px;" text="192 Orders" />
+                  <ImageView fitHeight="35.0" fitWidth="45.0" layoutX="29.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../assets/icons/restaurant.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
             </VBox>
 
             <!-- Sports School Card -->
-            <VBox styleClass="service-card" style="-fx-background-color: #fbe9e7; -fx-padding: 20; -fx-background-radius: 10;" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                <Text text="Sports School" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
-                <Text text="115 Sports" style="-fx-font-size: 18px;"/>
-                <Text text="512 Active Students" style="-fx-font-size: 18px;"/>
-                <Button text="Manage Sports Activities" onAction="#handleSportsSchool" style="-fx-background-color: #ff5722; -fx-text-fill: white;"/>
+            <VBox style="-fx-background-color: #FFF0DF; -fx-padding: 20; -fx-background-radius: 10;" styleClass="service-card" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <Pane prefHeight="200.0" prefWidth="200.0">
+               <children>
+                      <Button layoutX="35.0" layoutY="145.0" onAction="#handleSportsSchool" prefHeight="35.0" prefWidth="176.0" style="-fx-background-color: #FFA84A; -fx-text-fill: white;" text="Manage Sports Activities">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Button>
+                      <Text layoutX="90.0" layoutY="36.0" style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Sports School" />
+                      <Text layoutX="37.0" layoutY="99.0" style="-fx-font-size: 18px;" text="115 Sports" />
+                      <Text layoutX="37.0" layoutY="129.0" style="-fx-font-size: 18px;" text="512 Active Students" />
+                  <ImageView fitHeight="35.0" fitWidth="45.0" layoutX="41.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../assets/icons/sports.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
             </VBox>
+         <rowConstraints>
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+         </rowConstraints>
         </GridPane>
     </VBox>
-</AnchorPane> 
+   <Pane layoutX="-1.0" prefHeight="78.0" prefWidth="1200" style="-fx-background-color: #e8f1f1;">
+      <children>
+         <Circle fill="#003f5a" layoutX="1158.0" layoutY="36.0" radius="21.0" stroke="BLACK" strokeType="INSIDE" />
+         <Text fill="WHITE" layoutX="1146.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="AA">
+            <font>
+               <Font size="18.0" />
+            </font>
+         </Text>
+             <Button fx:id="logoutButton" layoutX="36.0" layoutY="21.0" onAction="#handleLogout" prefHeight="34.0" prefWidth="107.0" style="-fx-background-color: transparent; -fx-text-fill: #007A7A; -fx-border-color: #007A7A; -fx-border-radius: 4px;" text=" Log Out" textAlignment="RIGHT">
+            <graphic>
+               <ImageView fitHeight="18.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@../../../assets/icons/back-arrow.png" />
+                  </image>
+               </ImageView>
+            </graphic>
+         </Button>
+      </children>
+      <cursor>
+         <Cursor fx:constant="DEFAULT" />
+      </cursor>
+   </Pane>
+</AnchorPane>
