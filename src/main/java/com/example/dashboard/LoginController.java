@@ -8,7 +8,7 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import javafx.application.Platform;
 import java.io.IOException;
-import java.sql.*;
+// import java.sql.*;
 
 /**
  * Controller for the login view
@@ -55,16 +55,16 @@ public class LoginController {
      * 
      * @return Connection object or null if connection fails
      */
-    private Connection connectToDatabase() {
-        try {
-            String dbPath = System.getProperty("user.dir") + "/UMS-DB.db";
-            String url = "jdbc:sqlite:" + dbPath;
-            return DriverManager.getConnection(url);
-        } catch (SQLException e) {
-            System.err.println("Database connection failed: " + e.getMessage());
-            return null;
-        }
-    }
+    // private Connection connectToDatabase() {
+    // try {
+    // String dbPath = System.getProperty("user.dir") + "/UMS-DB.db";
+    // String url = "jdbc:sqlite:" + dbPath;
+    // return DriverManager.getConnection(url);
+    // } catch (SQLException e) {
+    // System.err.println("Database connection failed: " + e.getMessage());
+    // return null;
+    // }
+    // }
 
     /**
      * Handles the login button click
@@ -99,3 +99,9 @@ public class LoginController {
 
     // logOutButton.setOnAction(_ -> closeApplication());
 }
+
+/*
+ * -closeApplication(): void
+ * -handleLogin(): void
+ * 
+ */

@@ -254,9 +254,10 @@ public class ViewInvoiceController {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("dashboard-view.fxml"));
         Parent root = loader.load();
         Scene scene = new Scene(root);
-        Stage stage = (Stage) backToDashboardButton.getScene().getWindow();
-        stage.setScene(scene);
-        stage.show();
+        Stage dashboardStage = (Stage) backToDashboardButton.getScene().getWindow();
+        dashboardStage.setTitle("UMS Finance - Dashboard");
+        dashboardStage.setScene(scene);
+        dashboardStage.show();
 
         // Stage closingStage = (Stage) backToDashboardButton.getScene().getWindow();
         // closingStage.close();

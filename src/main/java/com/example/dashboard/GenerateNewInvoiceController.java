@@ -421,9 +421,10 @@ public class GenerateNewInvoiceController {
     @FXML
     private void seeAllInvoices() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("dashboard-view.fxml"));
-        Stage stage = (Stage) studentNameField.getScene().getWindow();
-        stage.setScene(new Scene(loader.load(), 1200, 1000));
-        stage.show();
+        Stage dashboardStage = (Stage) studentNameField.getScene().getWindow();
+        dashboardStage.setTitle("UMS Finance - Dashboard");
+        dashboardStage.setScene(new Scene(loader.load(), 1200, 1000));
+        dashboardStage.show();
     }
 
     // Helper class to store pairs of related UI components

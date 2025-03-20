@@ -9,7 +9,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Side;
 // import javafx.geometry.Side;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -23,7 +22,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 // import javafx.scene.input.MouseEvent;
 // import javafx.scene.layout.StackPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.scene.layout.AnchorPane;
 // import javafx.scene.paint.Color;
 // import javafx.scene.text.Text;
@@ -37,14 +35,14 @@ import javafx.application.Platform;
 // import javafx.scene.layout.AnchorPane;
 // import javafx.scene.Node;
 // import javafx.scene.control.Tooltip;
-import javafx.scene.Parent;
+// import javafx.scene.Parent;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
+// import java.util.HashMap;
 // import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -1054,6 +1052,7 @@ public class DashboardController implements Initializable {
 
             FXMLLoader viewAdminLoader = new FXMLLoader(getClass().getResource("admin-services-view.fxml"));
             Stage adminStage = (Stage) adminButton.getScene().getWindow();
+            adminStage.setTitle("UMS Finance - Administrative Services");
             adminStage.setScene(new Scene(viewAdminLoader.load()));
             adminStage.show();
 
@@ -1074,3 +1073,27 @@ public class DashboardController implements Initializable {
         alert.showAndWait();
     }
 }
+
+/*
+ * 
+ * -loadTotalCostsChart(): void
+ * -loadAverageCostsChart(): void
+ * -loadTableData(): void
+ * -handleSearch(): void
+ * -handleAdminServices(): void
+ * -setTimeFilter(): void
+ * -setSortingPeriod(): void
+ * -filterInvoicesByYear(): void
+ * -sortDataByCategory(): void
+ * -viewInvoice(): void
+ * -deleteInvoice(): void
+ * -generateNewInvoice(): void
+ * -displayLabelForData(): void
+ * -calcAngle(): double
+ * -connectToDatabase(): Connection
+ * -queryTheDB(): ResultSet
+ * -initializeDashboardValues(): void
+ * -showError(): void
+ * -initialize(): void
+ * 
+ */

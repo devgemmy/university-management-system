@@ -21,11 +21,13 @@ public class InvoiceService {
 
     /**
      * Shows a confirmation dialog and deletes the invoice if confirmed.
+     * 
      * @param invoice The invoice to delete
      * @return true if the invoice was deleted successfully, false otherwise
      */
     public boolean deleteInvoiceWithConfirmation(Invoice invoice) {
-        if (invoice == null) return false;
+        if (invoice == null)
+            return false;
 
         Alert confirmDialog = new Alert(Alert.AlertType.CONFIRMATION);
         confirmDialog.setTitle("Delete Invoice");
@@ -46,4 +48,4 @@ public class InvoiceService {
         }
         return false;
     }
-} 
+}

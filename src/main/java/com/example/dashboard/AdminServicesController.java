@@ -32,9 +32,10 @@ public class AdminServicesController {
             DashboardController dashboardController = loader.getController();
 
             // Set the scene and show
-            Stage stage = (Stage) logoutButton.getScene().getWindow();
-            stage.setScene(scene);
-            stage.show();
+            Stage dashboardStage = (Stage) logoutButton.getScene().getWindow();
+            dashboardStage.setTitle("UMS Finance - Dashboard");
+            dashboardStage.setScene(scene);
+            dashboardStage.show();
 
             // Initialize the dashboard data after showing the scene
             dashboardController.initialize(null, null);
