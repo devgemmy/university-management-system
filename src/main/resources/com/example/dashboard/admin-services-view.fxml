@@ -16,7 +16,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="1000.0" prefWidth="1200.0" style="-fx-background-color: #f5f5f5;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.dashboard.AdminServicesController">
+<AnchorPane prefHeight="1000.0" prefWidth="1200.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.dashboard.AdminServicesController">
     <VBox layoutX="22.0" layoutY="79.0" spacing="20" AnchorPane.leftAnchor="22.0" AnchorPane.rightAnchor="18.0" AnchorPane.topAnchor="79.0">
         <!-- Header with Logout and Font Size -->
         <HBox spacing="10" AnchorPane.leftAnchor="20" AnchorPane.rightAnchor="20" AnchorPane.topAnchor="20">
@@ -44,7 +44,7 @@
             <VBox prefHeight="209.0" prefWidth="520.0" style="-fx-background-color: #E3FAE3; -fx-padding: 20; -fx-background-radius: 10;" styleClass="service-card" GridPane.columnIndex="0" GridPane.rowIndex="0">
             <Pane prefHeight="200.0" prefWidth="200.0">
                <children>
-                      <Button layoutX="16.0" layoutY="143.0" onAction="#handleApplicantDetails" prefHeight="35.0" prefWidth="140.0" style="-fx-background-color: #00796b; -fx-text-fill: white;" text="View Restaurants">
+                      <Button layoutX="16.0" layoutY="143.0" onAction="#viewApplicantDetails" prefHeight="35.0" prefWidth="140.0" style="-fx-background-color: #00796b; -fx-text-fill: white;" text="View Restaurants">
                      <font>
                         <Font name="Avenir Roman" size="14.0" />
                      </font>
@@ -72,7 +72,7 @@
             <VBox style="-fx-background-color: #FFCB9F; -fx-padding: 20; -fx-background-radius: 10;" styleClass="service-card" GridPane.columnIndex="1" GridPane.rowIndex="0">
             <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-padding: 10px;">
                <children>
-                      <Button layoutX="30.0" layoutY="145.0" onAction="#handleAttendance" prefHeight="35.0" prefWidth="215.0" style="-fx-background-color: #DE6600; -fx-text-fill: white;" text="View Attendance Records">
+                      <Button layoutX="30.0" layoutY="145.0" onAction="#viewAttendance" prefHeight="35.0" prefWidth="215.0" style="-fx-background-color: #DE6600; -fx-text-fill: white;" text="View Attendance Records">
                      <font>
                         <Font name="Avenir Roman" size="14.0" />
                      </font>
@@ -96,7 +96,7 @@
             <VBox prefHeight="219.0" prefWidth="570.0" style="-fx-background-color: #FFF0DF; -fx-padding: 20; -fx-background-radius: 10;" styleClass="service-card" GridPane.columnIndex="0" GridPane.rowIndex="1">
             <Pane prefHeight="200.0" prefWidth="200.0">
                <children>
-                      <Button layoutX="24.0" layoutY="146.0" onAction="#handleCourseSelection" prefHeight="35.0" prefWidth="140.0" style="-fx-background-color: #FFA84A; -fx-text-fill: white;" text="Manage Courses">
+                      <Button layoutX="24.0" layoutY="146.0" onAction="#viewCourseSelection" prefHeight="35.0" prefWidth="140.0" style="-fx-background-color: #FFA84A; -fx-text-fill: white;" text="Manage Courses">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -121,7 +121,7 @@
             <VBox style="-fx-background-color: #E3FAE3; -fx-padding: 20; -fx-background-radius: 10;" styleClass="service-card" GridPane.columnIndex="1" GridPane.rowIndex="1">
             <Pane prefHeight="200.0" prefWidth="200.0">
                <children>
-                      <Button layoutX="30.0" layoutY="146.0" onAction="#handleFinanceManagement" prefHeight="35.0" prefWidth="140.0" style="-fx-background-color: #00796b; -fx-text-fill: white;" text="Manage Invoices">
+                      <Button layoutX="30.0" layoutY="146.0" onAction="#viewFinanceDashboard" prefHeight="35.0" prefWidth="140.0" style="-fx-background-color: #00796b; -fx-text-fill: white;" text="Manage Invoices">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -142,7 +142,7 @@
             <VBox prefHeight="231.0" prefWidth="570.0" style="-fx-background-color: #FFCB9F; -fx-padding: 20; -fx-background-radius: 10;" styleClass="service-card" GridPane.columnIndex="0" GridPane.rowIndex="2">
             <Pane prefHeight="200.0" prefWidth="200.0">
                <children>
-                      <Button layoutX="29.0" layoutY="148.0" onAction="#handleRestaurants" prefHeight="35.0" prefWidth="140.0" style="-fx-background-color: #DE6600; -fx-text-fill: white;" text="View Restaurants">
+                      <Button layoutX="29.0" layoutY="148.0" onAction="#viewRestaurants" prefHeight="35.0" prefWidth="140.0" style="-fx-background-color: #DE6600; -fx-text-fill: white;" text="View Restaurants">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -163,7 +163,7 @@
             <VBox style="-fx-background-color: #FFF0DF; -fx-padding: 20; -fx-background-radius: 10;" styleClass="service-card" GridPane.columnIndex="1" GridPane.rowIndex="2">
             <Pane prefHeight="200.0" prefWidth="200.0">
                <children>
-                      <Button layoutX="35.0" layoutY="145.0" onAction="#handleSportsSchool" prefHeight="35.0" prefWidth="176.0" style="-fx-background-color: #FFA84A; -fx-text-fill: white;" text="Manage Sports Activities">
+                      <Button layoutX="35.0" layoutY="145.0" onAction="#viewSportsSchool" prefHeight="35.0" prefWidth="176.0" style="-fx-background-color: #FFA84A; -fx-text-fill: white;" text="Manage Sports Activities">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -194,7 +194,7 @@
                <Font size="18.0" />
             </font>
          </Text>
-             <Button fx:id="logoutButton" layoutX="36.0" layoutY="21.0" onAction="#handleLogout" prefHeight="34.0" prefWidth="107.0" style="-fx-background-color: transparent; -fx-text-fill: #007A7A; -fx-border-color: #007A7A; -fx-border-radius: 4px;" text=" Log Out" textAlignment="RIGHT">
+             <Button fx:id="logoutButton" layoutX="36.0" layoutY="21.0" onAction="#appLogout" prefHeight="34.0" prefWidth="107.0" style="-fx-background-color: transparent; -fx-text-fill: #007A7A; -fx-border-color: #007A7A; -fx-border-radius: 4px;" text=" Log Out" textAlignment="RIGHT">
             <graphic>
                <ImageView fitHeight="18.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                   <image>

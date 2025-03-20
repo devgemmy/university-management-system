@@ -23,13 +23,14 @@ public class AdminServicesController {
      * Navigates to the main dashboard
      */
     @FXML
-    private void handleFinanceManagement() {
+    private void viewFinanceDashboard() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("dashboard-view.fxml"));
+            FXMLLoader loader = new FXMLLoader(
+                    AdminServicesController.class.getResource("/com/example/dashboard/dashboard-view.fxml"));
             Scene scene = new Scene(loader.load(), 1200, 1000);
 
             // Get the controller and ensure it's initialized
-            DashboardController dashboardController = loader.getController();
+            // DashboardController dashboardController = loader.getController();
 
             // Set the scene and show
             Stage dashboardStage = (Stage) logoutButton.getScene().getWindow();
@@ -38,14 +39,15 @@ public class AdminServicesController {
             dashboardStage.show();
 
             // Initialize the dashboard data after showing the scene
-            dashboardController.initialize(null, null);
+            // dashboardController.initialize(null, null);
         } catch (IOException e) {
             showError("Error loading Finance Management dashboard: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
     /**
-     * Shows "Coming Soon" alert for services not yet implemented
+     * Shows "Coming Soon" alert for services not yet integrated
      */
     private void showComingSoon(String service) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -67,36 +69,33 @@ public class AdminServicesController {
     }
 
     @FXML
-    private void handleApplicantDetails() {
+    private void viewApplicantDetails() {
         showComingSoon("Applicant Details");
     }
 
     @FXML
-    private void handleAttendance() {
+    private void viewAttendance() {
         showComingSoon("Attendance Monitoring");
     }
 
     @FXML
-    private void handleCourseSelection() {
+    private void viewCourseSelection() {
         showComingSoon("Course Selection");
     }
 
     @FXML
-    private void handleRestaurants() {
+    private void viewRestaurants() {
         showComingSoon("Restaurants");
     }
 
     @FXML
-    private void handleSportsSchool() {
+    private void viewSportsSchool() {
         showComingSoon("Sports School");
     }
 
-    /**
-     * Handles logout button click
-     * Returns to login screen
-     */
+    // Handles logout button click and returns to login screen
     @FXML
-    private void handleLogout() {
+    private void appLogout() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("login-view.fxml"));
             Stage stage = (Stage) logoutButton.getScene().getWindow();
@@ -105,21 +104,6 @@ public class AdminServicesController {
             stage.show();
         } catch (IOException e) {
             showError("Error returning to login: " + e.getMessage());
-        }
-    }
-
-    /**
-     * Handles font size button click
-     * Toggles between normal and large font sizes
-     */
-    @FXML
-    private void handleFontSize() {
-        // Toggle between normal and large font sizes
-        Scene scene = fontSizeButton.getScene();
-        if (scene.getRoot().getStyle().contains("-fx-font-size: 16px;")) {
-            scene.getRoot().setStyle("-fx-font-size: 12px;");
-        } else {
-            scene.getRoot().setStyle("-fx-font-size: 16px;");
         }
     }
 }
