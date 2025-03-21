@@ -21,7 +21,7 @@
             
                   <PasswordField fx:id="passwordField" layoutX="28.0" layoutY="156.0" prefHeight="37.0" prefWidth="388.0" promptText="Enter Password" style="-fx-padding: 10px; -fx-background-radius: 5px;" />
             
-                  <Label fx:id="errorLabel" alignment="CENTER" layoutX="28.0" layoutY="209.0" prefHeight="25.0" prefWidth="217.0" textFill="RED" wrapText="true" />
+                  <Label fx:id="errorLabel" alignment="CENTER" layoutX="28.0" layoutY="209.0" prefHeight="25.0" prefWidth="390.0" textFill="RED" wrapText="true" />
             <Text fill="#007a7a" layoutX="28.0" layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Administrative Login" wrappingWidth="184.1780014038086">
                <font>
                   <Font name="Avenir Heavy" size="18.0" />

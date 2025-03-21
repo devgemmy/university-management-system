@@ -92,7 +92,7 @@ public class LoginController {
                 errorLabel.setVisible(true);
             }
         } else {
-            errorLabel.setText("Invalid email or password");
+            errorLabel.setText("Your email or password is invalid or this account doesn't exist. Try again.");
             errorLabel.setVisible(true);
         }
     }
