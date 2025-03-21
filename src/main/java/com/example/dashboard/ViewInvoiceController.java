@@ -71,14 +71,14 @@ public class ViewInvoiceController {
 
     // Controllers and utilities
     private Invoice currentInvoice;
-    private DatabaseController databaseController;
+    private DatabaseModel databaseModel;
     private NumberFormat currencyFormatter;
     private InvoiceService invoiceService;
 
     @FXML
     public void initialize() {
         currencyFormatter = NumberFormat.getCurrencyInstance(Locale.UK);
-        databaseController = DatabaseController.getInstance();
+        databaseModel = DatabaseModel.getInstance();
         invoiceService = InvoiceService.getInstance();
         setupDeleteButton();
 

@@ -66,13 +66,13 @@ public class GenerateNewInvoiceController {
     @FXML
     private Label foodPriceFieldErr;
 
-    private DatabaseController dbController;
+    private DatabaseModel dbController;
     private Map<String, String> institutionsMap; // Maps UKPRN to institution name
     private Map<String, Map<String, String>> coursesMap; // Maps institution to available courses
 
     @FXML
     public void initialize() {
-        dbController = new DatabaseController();
+        dbController = new DatabaseModel();
 
         // Hide error labels initially
         hideAllErrorLabels();

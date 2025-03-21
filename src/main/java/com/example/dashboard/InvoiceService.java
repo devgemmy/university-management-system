@@ -6,10 +6,10 @@ import java.util.Optional;
 
 public class InvoiceService {
     private static InvoiceService instance;
-    private final DatabaseController databaseController;
+    private final DatabaseModel databaseModel;
 
     private InvoiceService() {
-        this.databaseController = DatabaseController.getInstance();
+        this.databaseModel = DatabaseModel.getInstance();
     }
 
     public static InvoiceService getInstance() {
@@ -36,7 +36,7 @@ public class InvoiceService {
 
         Optional<ButtonType> result = confirmDialog.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            boolean deleted = databaseController.deleteInvoice(invoice.getInvoiceID());
+            boolean deleted = databaseModel.deleteInvoice(invoice.getInvoiceID());
             if (deleted) {
                 Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
                 successAlert.setTitle("Success");

@@ -7,13 +7,13 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class InvoiceServiceTest {
-    private DatabaseController databaseController;
+    private DatabaseModel databaseModel;
     private String testInvoiceId;
 
     @BeforeEach
     void setUp() throws Exception {
-        // Initialize database controller
-        databaseController = DatabaseController.getInstance();
+        // Initialize database Model
+        databaseModel = DatabaseModel.getInstance();
 
         // Create test invoice data
         Map<String, Object> invoiceData = new HashMap<>();
@@ -38,23 +38,23 @@ public class InvoiceServiceTest {
         invoiceData.put("foodItems", foodItems);
 
         // Generate test invoice
-        testInvoiceId = databaseController.generateInvoice(invoiceData);
+        testInvoiceId = databaseModel.generateInvoice(invoiceData);
         assertNotNull(testInvoiceId, "Test invoice should be created successfully");
     }
 
     @Test
     void testDeleteInvoice() {
         // Verify the invoice exists before deletion
-        Invoice invoice = databaseController.getInvoiceById(testInvoiceId);
+        Invoice invoice = databaseModel.getInvoiceById(testInvoiceId);
         assertNotNull(invoice, "Test invoice should exist before deletion");
         assertEquals("Test Student", invoice.getStudentName(), "Student name should match");
 
         // Delete the invoice
-        boolean result = databaseController.deleteInvoice(testInvoiceId);
+        boolean result = databaseModel.deleteInvoice(testInvoiceId);
         assertTrue(result, "Invoice deletion should be successful");
 
         // Verify the invoice no longer exists
-        Invoice deletedInvoice = databaseController.getInvoiceById(testInvoiceId);
+        Invoice deletedInvoice = databaseModel.getInvoiceById(testInvoiceId);
         assertNull(deletedInvoice, "Invoice should not exist after deletion");
     }
 }

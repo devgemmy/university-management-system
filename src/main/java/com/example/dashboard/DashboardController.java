@@ -140,7 +140,7 @@ public class DashboardController implements Initializable {
     @FXML
     private Label loadingLabel;
 
-    private DatabaseController dbController;
+    private DatabaseModel dbController;
 
     // Add loading state control
     private volatile boolean isLoading = false;
@@ -1335,7 +1335,7 @@ public class DashboardController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Initialize database controller
         if (dbController == null) {
-            dbController = new DatabaseController();
+            dbController = new DatabaseModel();
         }
 
         try {

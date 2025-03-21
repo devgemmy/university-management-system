@@ -9,7 +9,7 @@ public class InvoiceGenerationTest {
     public static void main(String[] args) {
         try {
             // Get database connection
-            Connection conn = DatabaseController.connect();
+            Connection conn = DatabaseModel.connect();
             conn.setAutoCommit(false);
 
             try {
@@ -26,8 +26,8 @@ public class InvoiceGenerationTest {
                 // Set test data for INVOICES
                 invoicesStmt.setString(1, "Test Student");
                 invoicesStmt.setString(2, "COMP101 (9250.00)"); // CourseID (Cost) format
-                invoicesStmt.setString(3, "150.00");
-                invoicesStmt.setString(4, "75.00");
+                invoicesStmt.setString(3, "Flight archery (22.85);Baseball racing (20.24)"); // Sports with costs format
+                invoicesStmt.setString(4, "Cod Fish (5.25);Caesar Wrap (14.78)"); // Food with costs format
                 invoicesStmt.setString(5, LocalDate.now().toString());
 
                 int result = invoicesStmt.executeUpdate();
@@ -48,16 +48,23 @@ public class InvoiceGenerationTest {
 
                     PreparedStatement financesStmt = conn.prepareStatement(insertFinancesSQL);
 
+                    // Calculate total sports cost
+                    double totalSportsCost = 22.85 + 20.24; // Sum of all sports costs
+
+                    // Calculate total food cost
+                    double totalFoodCost = 5.25 + 14.78; // Sum of all food costs
+
                     // Set test data for FINANCES
                     financesStmt.setString(1, invoiceId);
                     financesStmt.setString(2, "Test Student");
                     financesStmt.setString(3, "COMP101");
                     financesStmt.setString(4, "Computer Science");
                     financesStmt.setDouble(5, 9250.00);
-                    financesStmt.setString(6, "Gym (100.00); Swimming (50.00)");
-                    financesStmt.setDouble(7, 150.00);
-                    financesStmt.setString(8, "Meal Plan A (75.00)");
-                    financesStmt.setDouble(9, 75.00);
+                    financesStmt.setString(6, "Flight archery (22.85);Baseball racing (20.24)"); // Exact same format as
+                                                                                                 // INVOICES
+                    financesStmt.setDouble(7, totalSportsCost); // Sum of all sports costs
+                    financesStmt.setString(8, "Cod Fish (5.25);Caesar Wrap (14.78)"); // Exact same format as INVOICES
+                    financesStmt.setDouble(9, totalFoodCost); // Sum of all food costs
                     financesStmt.setString(10, "10007777");
                     financesStmt.setString(11, "Test University");
                     financesStmt.setString(12, LocalDate.now().toString());
