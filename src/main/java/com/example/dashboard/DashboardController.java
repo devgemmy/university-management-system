@@ -1436,6 +1436,8 @@ public class DashboardController implements Initializable {
             // .map(entry -> courseName + " (" + entry.getValue() + ")")
             // .findFirst()
             // .orElse("");
+
+            // System.out.println(courseName);
             return new SimpleStringProperty(courseName);
         });
 

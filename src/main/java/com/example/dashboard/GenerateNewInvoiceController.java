@@ -29,13 +29,15 @@ public class GenerateNewInvoiceController {
     @FXML
     private TextField studentNameField;
     @FXML
-    private ComboBox<String> institutionComboBox;
-    @FXML
-    private ComboBox<String> courseComboBox;
+    private ComboBox<String> institutionComboBox, courseComboBox;
+
     @FXML
     private TextField courseFeeField;
     @FXML
     private DatePicker invoiceDatePicker;
+
+    @FXML
+    private Button foodThirdRow, sportThirdRow;
 
     // Panes for sports and food activities
     @FXML
@@ -66,13 +68,13 @@ public class GenerateNewInvoiceController {
     @FXML
     private Label foodPriceFieldErr;
 
-    private DatabaseModel dbController;
+    private DatabaseModel dbModel;
     private Map<String, String> institutionsMap; // Maps UKPRN to institution name
     private Map<String, Map<String, String>> coursesMap; // Maps institution to available courses
 
     @FXML
     public void initialize() {
-        dbController = new DatabaseModel();
+        dbModel = new DatabaseModel();
 
         // Hide error labels initially
         hideAllErrorLabels();
@@ -81,7 +83,7 @@ public class GenerateNewInvoiceController {
         invoiceDatePicker.setValue(LocalDate.now());
 
         // Load institutions
-        institutionsMap = dbController.getInstitutions();
+        institutionsMap = dbModel.getInstitutions();
         institutionComboBox.setItems(FXCollections.observableArrayList(institutionsMap.values()));
 
         // Initialize sports and food fields
@@ -105,41 +107,44 @@ public class GenerateNewInvoiceController {
     }
 
     private void initializeSportsFields() {
-        List<String> sportsActivities = dbController.getSportsActivities();
+        List<String> sportsActivities = dbModel.getSportsActivities();
 
         // Initialize the first two sports fields
-        ComboBox<String> sport1 = (ComboBox<String>) sportsActivitiesInfo.lookup("#courseComboBox1");
-        TextField price1 = (TextField) sportsActivitiesInfo.lookup("#courseFeeField1");
+        ComboBox<String> sport1 = (ComboBox<String>) sportsActivitiesInfo.lookup("#sportComboBox1");
+        TextField price1 = (TextField) sportsActivitiesInfo.lookup("#sportCostField1");
         sport1.setItems(FXCollections.observableArrayList(sportsActivities));
         sportsFields.add(new Pair<>(sport1, price1));
 
-        ComboBox<String> sport2 = (ComboBox<String>) sportsActivitiesInfo.lookup("#courseComboBox11");
-        TextField price2 = (TextField) sportsActivitiesInfo.lookup("#courseFeeField11");
+        ComboBox<String> sport2 = (ComboBox<String>) sportsActivitiesInfo.lookup("#sportComboBox2");
+        TextField price2 = (TextField) sportsActivitiesInfo.lookup("#sportCostField2");
         sport2.setItems(FXCollections.observableArrayList(sportsActivities));
         sportsFields.add(new Pair<>(sport2, price2));
 
         // Add button handler
-        Button addSportBtn = (Button) sportsActivitiesInfo.lookup("Button");
-        addSportBtn.setOnAction(e -> addNewSportField());
+        // Button addSportBtn = (Button) sportsActivitiesInfo.lookup("Button");
+        // addSportBtn.setOnAction(e -> addNewSportField());
     }
 
     private void initializeFoodFields() {
-        List<String> foodItems = dbController.getFoodItems();
+        List<String> foodItems = dbModel.getFoodItems();
 
         // Initialize the first two food fields
-        ComboBox<String> food1 = (ComboBox<String>) foodSelectionInfo.lookup("#courseComboBox12");
-        TextField price1 = (TextField) foodSelectionInfo.lookup("#courseFeeField12");
+        ComboBox<String> food1 = (ComboBox<String>) foodSelectionInfo.lookup("#foodComboBox1");
+        TextField price1 = (TextField) foodSelectionInfo.lookup("#foodCostField1");
         food1.setItems(FXCollections.observableArrayList(foodItems));
         foodFields.add(new Pair<>(food1, price1));
 
-        ComboBox<String> food2 = (ComboBox<String>) foodSelectionInfo.lookup("#courseComboBox111");
-        TextField price2 = (TextField) foodSelectionInfo.lookup("#courseFeeField111");
+        ComboBox<String> food2 = (ComboBox<String>) foodSelectionInfo.lookup("#foodComboBox2");
+        TextField price2 = (TextField) foodSelectionInfo.lookup("#foodCostField2");
         food2.setItems(FXCollections.observableArrayList(foodItems));
         foodFields.add(new Pair<>(food2, price2));
 
         // Add button handler
-        Button addFoodBtn = (Button) foodSelectionInfo.lookup("Button");
-        addFoodBtn.setOnAction(e -> addNewFoodField());
+        // Button addFoodBtn = (Button) foodSelectionInfo.lookup("Button");
+        // addFoodBtn.setOnAction(e -> {
+        // addNewFoodField();
+        // foodThirdRow.setVisible(true);
+        // });
     }
 
     private void addValidationListeners() {
@@ -167,7 +172,7 @@ public class GenerateNewInvoiceController {
         String selectedInstitution = institutionComboBox.getValue();
         if (selectedInstitution != null) {
             String ukprn = getUKPRNForInstitution(selectedInstitution);
-            Map<String, String> courses = dbController.getCoursesByInstitution(ukprn);
+            Map<String, String> courses = dbModel.getCoursesByInstitution(ukprn);
             courseComboBox.setItems(FXCollections.observableArrayList(courses.keySet()));
             institutionFieldErr.setVisible(false);
         }
@@ -187,63 +192,79 @@ public class GenerateNewInvoiceController {
         courseFieldErr.setVisible(false);
     }
 
-    private void addNewSportField() {
-        ComboBox<String> sportCombo = new ComboBox<>();
-        TextField priceField = new TextField();
+    // private void addNewSportField() {
+    // ComboBox<String> sportCombo = new ComboBox<>();
+    // TextField priceField = new TextField();
 
-        sportCombo.setPromptText("Sport Name");
-        priceField.setPromptText("Sport Price");
+    // sportCombo.setPromptText("Sport Name");
+    // priceField.setPromptText("Sport Price");
 
-        // Set styles
-        sportCombo.setPrefHeight(45);
-        sportCombo.setPrefWidth(300);
-        sportCombo.setStyle("-fx-background-color: #FFFFFF; -fx-border-color: #757575; -fx-border-radius: 8px;");
+    // // Set Layout
+    // sportCombo.setLayoutX(20.0);
+    // sportCombo.setLayoutY(190.0);
+    // priceField.setLayoutX(367.0);
+    // priceField.setLayoutY(190.0);
 
-        priceField.setPrefHeight(45);
-        priceField.setPrefWidth(300);
-        priceField.setStyle("-fx-background-color: #FFFFFF; -fx-border-color: #757575; -fx-border-radius: 8px;");
+    // // Set styles
+    // sportCombo.setPrefHeight(45);
+    // sportCombo.setPrefWidth(300);
+    // sportCombo.setStyle("-fx-background-color: #FFFFFF; -fx-border-color:
+    // #757575; -fx-border-radius: 8px;");
 
-        // Add to pane
-        VBox container = new VBox(10);
-        container.getChildren().addAll(sportCombo, priceField);
-        container.setPadding(new Insets(10));
-        sportsActivitiesInfo.getChildren().add(container);
+    // priceField.setPrefHeight(45);
+    // priceField.setPrefWidth(300);
+    // priceField.setStyle("-fx-background-color: #FFFFFF; -fx-border-color:
+    // #757575; -fx-border-radius: 8px;");
 
-        // Add to list
-        sportsFields.add(new Pair<>(sportCombo, priceField));
+    // // Add to pane
+    // VBox container = new VBox(10);
+    // container.getChildren().addAll(sportCombo, priceField);
+    // container.setPadding(new Insets(10));
+    // sportsActivitiesInfo.getChildren().add(container);
 
-        // Populate sports activities
-        sportCombo.setItems(FXCollections.observableArrayList(dbController.getSportsActivities()));
-    }
+    // // Add to list
+    // sportsFields.add(new Pair<>(sportCombo, priceField));
 
-    private void addNewFoodField() {
-        ComboBox<String> foodCombo = new ComboBox<>();
-        TextField priceField = new TextField();
+    // // Populate sports activities
+    // sportCombo.setItems(FXCollections.observableArrayList(dbModel.getSportsActivities()));
+    // }
 
-        foodCombo.setPromptText("Food Name");
-        priceField.setPromptText("Food Price");
+    // private void addNewFoodField() {
+    // ComboBox<String> foodCombo = new ComboBox<>();
+    // TextField priceField = new TextField();
 
-        // Set styles
-        foodCombo.setPrefHeight(45);
-        foodCombo.setPrefWidth(300);
-        foodCombo.setStyle("-fx-background-color: #FFFFFF; -fx-border-color: #757575; -fx-border-radius: 8px;");
+    // foodCombo.setPromptText("Food Name");
+    // priceField.setPromptText("Food Price");
 
-        priceField.setPrefHeight(45);
-        priceField.setPrefWidth(300);
-        priceField.setStyle("-fx-background-color: #FFFFFF; -fx-border-color: #757575; -fx-border-radius: 8px;");
+    // // Set Layout
+    // foodCombo.setLayoutX(19.0);
+    // foodCombo.setLayoutY(190.0);
+    // priceField.setLayoutX(366.0);
+    // priceField.setLayoutY(190.0);
 
-        // Add to pane
-        VBox container = new VBox(10);
-        container.getChildren().addAll(foodCombo, priceField);
-        container.setPadding(new Insets(10));
-        foodSelectionInfo.getChildren().add(container);
+    // // Set styles
+    // foodCombo.setPrefHeight(45);
+    // foodCombo.setPrefWidth(300);
+    // foodCombo.setStyle("-fx-background-color: #FFFFFF; -fx-border-color: #757575;
+    // -fx-border-radius: 8px;");
 
-        // Add to list
-        foodFields.add(new Pair<>(foodCombo, priceField));
+    // priceField.setPrefHeight(45);
+    // priceField.setPrefWidth(300);
+    // priceField.setStyle("-fx-background-color: #FFFFFF; -fx-border-color:
+    // #757575; -fx-border-radius: 8px;");
 
-        // Populate food items
-        foodCombo.setItems(FXCollections.observableArrayList(dbController.getFoodItems()));
-    }
+    // // Add to pane
+    // VBox container = new VBox(10);
+    // container.getChildren().addAll(foodCombo, priceField);
+    // container.setPadding(new Insets(10));
+    // foodSelectionInfo.getChildren().add(container);
+
+    // // Add to list
+    // foodFields.add(new Pair<>(foodCombo, priceField));
+
+    // // Populate food items
+    // foodCombo.setItems(FXCollections.observableArrayList(dbModel.getFoodItems()));
+    // }
 
     @FXML
     private void handleReset() {
@@ -320,7 +341,7 @@ public class GenerateNewInvoiceController {
             invoiceData.put("foodItems", foodItems);
 
             // Generate invoice
-            String invoiceId = dbController.generateInvoice(invoiceData);
+            String invoiceId = dbModel.generateInvoice(invoiceData);
 
             // Show success message
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -357,7 +378,7 @@ public class GenerateNewInvoiceController {
                         WHERE k.TITLE = ? AND i.LEGAL_NAME = ?
                     """;
 
-            try (Connection conn = dbController.getConnection();
+            try (Connection conn = dbModel.getConnection();
                     PreparedStatement stmt = conn.prepareStatement(query)) {
                 stmt.setString(1, courseName);
                 stmt.setString(2, institutionName);
@@ -418,6 +439,7 @@ public class GenerateNewInvoiceController {
     /**
      * Returns to the dashboard view showing all invoices
      */
+
     @FXML
     private void seeAllInvoices() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("dashboard-view.fxml"));
@@ -425,6 +447,9 @@ public class GenerateNewInvoiceController {
         dashboardStage.setTitle("UMS Finance - Dashboard");
         dashboardStage.setScene(new Scene(loader.load(), 1200, 1000));
         dashboardStage.show();
+
+        sportThirdRow.setVisible(false);
+        foodThirdRow.setVisible(false);
     }
 
     // Helper class to store pairs of related UI components

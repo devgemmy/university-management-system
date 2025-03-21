@@ -24,7 +24,7 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.control.ProgressIndicator?>
 
-<AnchorPane prefHeight="1000.0" prefWidth="1200" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.dashboard.DashboardController">
+<AnchorPane prefHeight="1000.0" prefWidth="1200" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.dashboard.DashboardController" style="-fx-background-color: #FFFFFF;">
    <children>
       <PieChart fx:id="totalCostsChart" layoutX="86.0" layoutY="115.0" prefHeight="342.0" prefWidth="366.0" />
       <Label fx:id="costLabel" layoutX="236.0" layoutY="234.0" text="Label" />
@@ -72,9 +72,9 @@
                      </font>
                   </Button>
 
-                  <ComboBox fx:id="orderByComboBox" layoutX="895.0" layoutY="10.0" onAction="#sortDataByCategory" promptText="ASC" style="-fx-background-color: #FFFFFF;" />
+                  <ComboBox fx:id="orderByComboBox" layoutX="895.0" layoutY="10.0" onAction="#sortDataByCategory" promptText="ASC" style="-fx-background-color: #F5F5F5;" />
                   
-                  <ComboBox fx:id="categoryComboBox" layoutX="785.0" layoutY="10.0" onAction="#sortDataByCategory" promptText="Date" style="-fx-background-color: #FFF; -fx-text-fill: #007A7A;" />
+                  <ComboBox fx:id="categoryComboBox" layoutX="785.0" layoutY="10.0" onAction="#sortDataByCategory" promptText="Date" style="-fx-background-color: #F5F5F5; -fx-text-fill: #007A7A;" />
                </children>
             </Pane>
 
@@ -122,7 +122,7 @@
                </opaqueInsets>
             </BarChart>
 
-            <ComboBox fx:id="uniAverageComboBox" layoutX="51.0" onAction="#loadAverageCostsChart" promptText="Select University" style="-fx-background-color: #FFFFFF; -fx-pref-width: 200;" />
+            <ComboBox fx:id="uniAverageComboBox" layoutX="51.0" onAction="#loadAverageCostsChart" promptText="Select University" style="-fx-background-color: #F5F5F5; -fx-pref-width: 200;" />
          </children>
       </Group>
       <!-- <Pane layoutX="1129.0" layoutY="928.0" opacity="0.0" prefHeight="70.0" prefWidth="70.0" style="-fx-background-color: #FFFFFF; -fx-border-radius: 8px; -fx-border-color: #F1F2F9;">
