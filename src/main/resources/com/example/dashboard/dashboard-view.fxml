@@ -18,9 +18,11 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
+<?import javafx.scene.control.ProgressIndicator?>
 
 <AnchorPane prefHeight="1000.0" prefWidth="1200" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.dashboard.DashboardController">
    <children>
@@ -123,7 +125,7 @@
             <ComboBox fx:id="uniAverageComboBox" layoutX="51.0" onAction="#loadAverageCostsChart" promptText="Select University" style="-fx-background-color: #FFFFFF; -fx-pref-width: 200;" />
          </children>
       </Group>
-      <Pane layoutX="1129.0" layoutY="928.0" opacity="0.0" prefHeight="70.0" prefWidth="70.0" style="-fx-background-color: #FFFFFF; -fx-border-radius: 8px; -fx-border-color: #F1F2F9;">
+      <!-- <Pane layoutX="1129.0" layoutY="928.0" opacity="0.0" prefHeight="70.0" prefWidth="70.0" style="-fx-background-color: #FFFFFF; -fx-border-radius: 8px; -fx-border-color: #F1F2F9;">
          <children>
             <Label fx:id="viewInvoiceBtn" layoutX="13.0" layoutY="10.0" text="View" textFill="#007a7a">
                <font>
@@ -136,7 +138,21 @@
                </font>
             </Label>
          </children>
-      </Pane>
+      </Pane> -->
    </children>
+
+   <!-- Loading Overlay - Moved to root level -->
+   <AnchorPane fx:id="loadingOverlay" visible="false" style="-fx-background-color: rgba(255, 255, 255, 0.8);" AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+       <children>
+           <VBox alignment="CENTER" spacing="10" AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+               <ProgressIndicator />
+               <Label fx:id="loadingLabel" text="Loading data, please wait..." style="-fx-font-size: 14px;">
+                   <VBox.margin>
+                       <Insets top="10.0" />
+                   </VBox.margin>
+               </Label>
+           </VBox>
+       </children>
+   </AnchorPane>
 
 </AnchorPane>
