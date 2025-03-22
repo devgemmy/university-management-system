@@ -4,16 +4,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.*;
 import javafx.scene.layout.Pane;
-import javafx.geometry.Insets;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -70,7 +67,8 @@ public class GenerateNewInvoiceController {
 
     private DatabaseModel dbModel;
     private Map<String, String> institutionsMap; // Maps UKPRN to institution name
-    private Map<String, Map<String, String>> coursesMap; // Maps institution to available courses
+    // private Map<String, Map<String, String>> coursesMap; // Maps institution to
+    // available courses
 
     @FXML
     public void initialize() {
@@ -106,6 +104,7 @@ public class GenerateNewInvoiceController {
         foodPriceFieldErr.setVisible(false);
     }
 
+    @SuppressWarnings("unchecked")
     private void initializeSportsFields() {
         List<String> sportsActivities = dbModel.getSportsActivities();
 
@@ -125,6 +124,7 @@ public class GenerateNewInvoiceController {
         // addSportBtn.setOnAction(e -> addNewSportField());
     }
 
+    @SuppressWarnings("unchecked")
     private void initializeFoodFields() {
         List<String> foodItems = dbModel.getFoodItems();
 
@@ -149,7 +149,8 @@ public class GenerateNewInvoiceController {
 
     private void addValidationListeners() {
         // Student name validation - allow letters, spaces, and common punctuation
-        studentNameField.textProperty().addListener((obs, old, newValue) -> {
+        // obs, old
+        studentNameField.textProperty().addListener((_, _, newValue) -> {
             if (newValue != null && !newValue.matches("[a-zA-Z\\s\\-',.()]*")) {
                 studentFieldErr.setVisible(true);
             } else {
@@ -158,7 +159,8 @@ public class GenerateNewInvoiceController {
         });
 
         // Course fee validation
-        courseFeeField.textProperty().addListener((obs, old, newValue) -> {
+        // obs, old
+        courseFeeField.textProperty().addListener((_, _, newValue) -> {
             if (newValue != null && !newValue.matches("\\d*\\.?\\d*")) {
                 feeFieldErr.setVisible(true);
             } else {

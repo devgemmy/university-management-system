@@ -648,6 +648,7 @@ public class DashboardController implements Initializable {
                 invoiceTable.setEditable(false);
                 updateTotalLabels(finalTotalCourseFees, finalTotalSportsCosts, finalTotalFoodCosts);
                 loadTotalCostsChart();
+                // updatePieChart();
                 loadYearlyBarChart();
                 setLoading(false);
             });
@@ -681,25 +682,27 @@ public class DashboardController implements Initializable {
         System.out.println("Grand Total: £" + String.format("%,.2f", grandTotal));
     }
 
-    private void updatePieChart(double totalCourseFees, double totalSportsCosts, double totalFoodCosts) {
-        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
-                new PieChart.Data("Course Fees", totalCourseFees),
-                new PieChart.Data("Sports Costs", totalSportsCosts),
-                new PieChart.Data("Food Costs", totalFoodCosts));
+    // private void updatePieChart(double totalCourseFees, double totalSportsCosts,
+    // double totalFoodCosts) {
+    // ObservableList<PieChart.Data> pieChartData =
+    // FXCollections.observableArrayList(
+    // new PieChart.Data("Course Fees", totalCourseFees),
+    // new PieChart.Data("Sports Costs", totalSportsCosts),
+    // new PieChart.Data("Food Costs", totalFoodCosts));
 
-        totalCostsChart.setData(pieChartData);
+    // totalCostsChart.setData(pieChartData);
 
-        // Apply consistent colors
-        pieChartData.forEach(data -> {
-            String color = switch (data.getName()) {
-                case "Course Fees" -> "#007A7A"; // Green for Courses
-                case "Sports Costs" -> "#FFA84A"; // Yellow for Sports
-                case "Food Costs" -> "#DE6600"; // Orange for Food
-                default -> "#000000";
-            };
-            data.getNode().setStyle("-fx-pie-color: " + color + ";");
-        });
-    }
+    // // Apply consistent colors
+    // pieChartData.forEach(data -> {
+    // String color = switch (data.getName()) {
+    // case "Course Fees" -> "#007A7A"; // Green for Courses
+    // case "Sports Costs" -> "#FFA84A"; // Yellow for Sports
+    // case "Food Costs" -> "#DE6600"; // Orange for Food
+    // default -> "#000000";
+    // };
+    // data.getNode().setStyle("-fx-pie-color: " + color + ";");
+    // });
+    // }
 
     private int getMonthNumber(String monthName) {
         return switch (monthName) {
@@ -753,6 +756,7 @@ public class DashboardController implements Initializable {
 
     // This method for executing SQL queries safely and prevents SQL injection by
     // using prepared statements
+    @SuppressWarnings("exports")
     public ResultSet queryTheDB(String query, String param) throws SQLException {
         Connection conn = connectToDatabase();
         PreparedStatement sqlStatement = conn.prepareStatement(query);
@@ -948,7 +952,8 @@ public class DashboardController implements Initializable {
         yearPeriodDropdown.setItems(years);
 
         // Add listener to yearPeriodDropdown
-        yearPeriodDropdown.valueProperty().addListener((observable, oldValue, newValue) -> {
+        // observable, oldValue, newValue
+        yearPeriodDropdown.valueProperty().addListener((_, _, newValue) -> {
             if (newValue != null) {
                 filterInvoicesByYear(newValue);
             }
@@ -1349,7 +1354,8 @@ public class DashboardController implements Initializable {
         monthPeriodDropdown.setDisable(true);
 
         // Add search field listener
-        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+        // observable, oldValue, newValue
+        searchField.textProperty().addListener((_, _, _) -> {
             handleSearch();
         });
 
@@ -1380,7 +1386,8 @@ public class DashboardController implements Initializable {
         uniAverageComboBox.setValue("All Universities"); // Set default selection
 
         // Setup listener for university selection changes
-        uniAverageComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
+        // observable, oldValue, newValue
+        uniAverageComboBox.valueProperty().addListener((_, _, newValue) -> {
             if (newValue != null) {
                 loadAverageCostsChart();
             }
@@ -1603,14 +1610,16 @@ public class DashboardController implements Initializable {
         });
 
         // Add month period dropdown listener
-        monthPeriodDropdown.valueProperty().addListener((observable, oldValue, newValue) -> {
+        // observable, oldValue, newValue
+        monthPeriodDropdown.valueProperty().addListener((_, _, newValue) -> {
             if (newValue != null && !isLoading && "By Month".equals(timeFilter.getValue())) {
                 loadTableData();
             }
         });
 
         // Add search field listener with debounce
-        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+        // observable, oldValue, newValue
+        searchField.textProperty().addListener((_, _, _) -> {
             if (!isLoading) {
                 // Cancel any existing timer
                 if (searchTimer != null) {
@@ -1628,7 +1637,8 @@ public class DashboardController implements Initializable {
         });
 
         // Add time filter listener
-        timeFilter.valueProperty().addListener((observable, oldValue, newValue) -> {
+        // observable, oldValue, newValue
+        timeFilter.valueProperty().addListener((_, _, newValue) -> {
             if (newValue != null && !isLoading) {
                 setTimeFilter(null);
             }

@@ -5,8 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.sql.Statement;
-import java.sql.DriverManager;
-import java.nio.file.Paths;
+// import java.sql.DriverManager;
+// import java.nio.file.Paths;
 import java.util.Random;
 import java.util.HashSet;
 import java.util.Set;
@@ -26,12 +26,12 @@ public class DatabaseTestData {
             "Chloe Williams", "Andrew Zhang", "Grace Thomas", "Ryan Murphy", "Hannah Kim"
     };
 
-    private static final String DB_URL = "jdbc:sqlite:"
-            + Paths.get(System.getProperty("user.dir"), "UMS-DB.db").toString();
+    // private static final String DB_URL = "jdbc:sqlite:"
+    // + Paths.get(System.getProperty("user.dir"), "UMS-DB.db").toString();
 
-    private Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(DB_URL);
-    }
+    // private Connection getConnection() throws SQLException {
+    // return DriverManager.getConnection(DB_URL);
+    // }
 
     private static class InstitutionInfo {
         String ukprn;
@@ -59,7 +59,7 @@ public class DatabaseTestData {
     }
 
     public static void populateTestData() {
-        DatabaseModel dbController = DatabaseModel.getInstance();
+        DatabaseModel dbModel = DatabaseModel.getInstance();
         Connection conn = null;
         Random random = new Random();
         int retryCount = 0;
@@ -76,7 +76,7 @@ public class DatabaseTestData {
                     }
                 }
 
-                conn = dbController.getConnection();
+                conn = dbModel.getConnection();
                 conn.setAutoCommit(false);
 
                 // Load institution and course data

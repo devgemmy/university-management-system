@@ -122,7 +122,7 @@ public class ViewInvoiceController {
         courseIndexColumn.setCellValueFactory(cellData -> cellData.getValue().indexProperty().asObject());
         courseDetailsColumn.setCellValueFactory(cellData -> cellData.getValue().courseNameProperty());
         courseFeesColumn.setCellValueFactory(cellData -> cellData.getValue().feeProperty().asObject());
-        courseFeesColumn.setCellFactory(column -> new TableCell<>() {
+        courseFeesColumn.setCellFactory(_ -> new TableCell<>() {
             @Override
             protected void updateItem(Double price, boolean empty) {
                 super.updateItem(price, empty);
@@ -139,7 +139,7 @@ public class ViewInvoiceController {
         foodIndexColumn.setCellValueFactory(cellData -> cellData.getValue().indexProperty().asObject());
         foodItemColumn.setCellValueFactory(cellData -> cellData.getValue().foodNameProperty());
         foodPriceColumn.setCellValueFactory(cellData -> cellData.getValue().priceProperty().asObject());
-        foodPriceColumn.setCellFactory(column -> new TableCell<>() {
+        foodPriceColumn.setCellFactory(_ -> new TableCell<>() {
             @Override
             protected void updateItem(Double price, boolean empty) {
                 super.updateItem(price, empty);
@@ -156,7 +156,7 @@ public class ViewInvoiceController {
         sportIndexColumn.setCellValueFactory(cellData -> cellData.getValue().indexProperty().asObject());
         sportActivityColumn.setCellValueFactory(cellData -> cellData.getValue().activityNameProperty());
         sportPriceColumn.setCellValueFactory(cellData -> cellData.getValue().priceProperty().asObject());
-        sportPriceColumn.setCellFactory(column -> new TableCell<>() {
+        sportPriceColumn.setCellFactory(_ -> new TableCell<>() {
             @Override
             protected void updateItem(Double price, boolean empty) {
                 super.updateItem(price, empty);
@@ -174,19 +174,21 @@ public class ViewInvoiceController {
         availableCourses = new HashMap<>();
 
         // Add price validation for all fields
-        courseFeeField.textProperty().addListener((observable, oldValue, newValue) -> {
+        // observable
+        courseFeeField.textProperty().addListener((_, oldValue, newValue) -> {
             if (!newValue.matches("\\d*(\\.\\d{0,2})?")) {
                 courseFeeField.setText(oldValue);
             }
         });
 
-        foodPriceField.textProperty().addListener((observable, oldValue, newValue) -> {
+        // observable
+        foodPriceField.textProperty().addListener((_, oldValue, newValue) -> {
             if (!newValue.matches("\\d*(\\.\\d{0,2})?")) {
                 foodPriceField.setText(oldValue);
             }
         });
 
-        sportsPriceField.textProperty().addListener((observable, oldValue, newValue) -> {
+        sportsPriceField.textProperty().addListener((_, oldValue, newValue) -> {
             if (!newValue.matches("\\d*(\\.\\d{0,2})?")) {
                 sportsPriceField.setText(oldValue);
             }
@@ -474,7 +476,7 @@ public class ViewInvoiceController {
     }
 
     private void setupDeleteButton() {
-        deleteInvoiceButton.setOnAction(event -> deleteInvoice());
+        deleteInvoiceButton.setOnAction(_ -> deleteInvoice());
     }
 
     @FXML
@@ -807,7 +809,7 @@ public class ViewInvoiceController {
     }
 
     private void setupCourseDeleteColumn() {
-        courseDeleteColumn.setCellFactory(param -> new TableCell<>() {
+        courseDeleteColumn.setCellFactory(_ -> new TableCell<>() {
             private final Button deleteButton = new Button("Delete");
 
             @Override
@@ -823,7 +825,7 @@ public class ViewInvoiceController {
                 deleteButton.setDisable(entry.indexProperty().get() == 1);
                 deleteButton.setStyle("-fx-font-size: 11px; -fx-text-fill: #FFF; -fx-background-color: #dc4067");
 
-                deleteButton.setOnAction(event -> {
+                deleteButton.setOnAction(_ -> {
                     Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
                     confirmation.setTitle("Delete Course");
                     confirmation.setHeaderText("Delete Course");
@@ -889,7 +891,7 @@ public class ViewInvoiceController {
     }
 
     private void setupFoodDeleteColumn() {
-        foodDeleteColumn.setCellFactory(param -> new TableCell<>() {
+        foodDeleteColumn.setCellFactory(_ -> new TableCell<>() {
             private final Button deleteButton = new Button("Delete");
 
             @Override
@@ -902,7 +904,7 @@ public class ViewInvoiceController {
 
                 deleteButton.setStyle("-fx-font-size: 11px; -fx-text-fill: #FFF; -fx-background-color: #dc4067");
 
-                deleteButton.setOnAction(event -> {
+                deleteButton.setOnAction(_ -> {
                     Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
                     confirmation.setTitle("Delete Food Item");
                     confirmation.setHeaderText("Delete Food Item");
@@ -937,7 +939,7 @@ public class ViewInvoiceController {
     }
 
     private void setupSportDeleteColumn() {
-        sportDeleteColumn.setCellFactory(param -> new TableCell<>() {
+        sportDeleteColumn.setCellFactory(_ -> new TableCell<>() {
             private final Button deleteButton = new Button("Delete");
 
             @Override
@@ -950,7 +952,7 @@ public class ViewInvoiceController {
 
                 deleteButton.setStyle("-fx-font-size: 11px; -fx-text-fill: #FFF; -fx-background-color: #dc4067");
 
-                deleteButton.setOnAction(event -> {
+                deleteButton.setOnAction(_ -> {
                     Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
                     confirmation.setTitle("Delete Sport Activity");
                     confirmation.setHeaderText("Delete Sport Activity");

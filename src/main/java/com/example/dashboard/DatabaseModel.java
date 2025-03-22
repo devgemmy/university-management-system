@@ -6,20 +6,17 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.lang.reflect.Method;
+// import java.lang.reflect.Method;
 import java.nio.file.Paths;
-import java.time.LocalDate;
+// import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
-import java.util.Random;
+// import java.util.Random;
 import java.time.Month;
-import java.util.regex.Pattern;
-import java.util.regex.Matcher;
-
-import java.nio.file.Paths;
-import java.time.Month;
+// import java.nio.file.Paths;
+// import java.time.Month;
 // import java.util.regex.Pattern;
 // import java.util.regex.Matcher;
 import java.util.stream.Collectors;
@@ -74,7 +71,7 @@ public class DatabaseModel {
     public Connection getConnection() throws SQLException {
         // if (connection == null || connection.isClosed()) {
         try {
-            String url = "jdbc:sqlite:" + dbPath;
+            // String url = "jdbc:sqlite:" + dbPath;
             // connection = DriverManager.getConnection(url);
             connection = DriverManager.getConnection(DB_URL + "?busy_timeout=30000");
             System.out.println("Database connection established successfully.");
@@ -410,7 +407,7 @@ public class DatabaseModel {
 
         queryBuilder.append(" ORDER BY invoiceDate");
 
-        try (Connection conn = this.connect();
+        try (Connection conn = DatabaseModel.connect();
                 PreparedStatement pstmt = conn.prepareStatement(queryBuilder.toString())) {
 
             // Set parameters
@@ -815,7 +812,7 @@ public class DatabaseModel {
                 "totalSportsCost = ? " +
                 "WHERE invoiceID = ?";
 
-        try (Connection conn = this.connect();
+        try (Connection conn = DatabaseModel.connect();
                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             // Convert maps to strings for storage
@@ -929,61 +926,6 @@ public class DatabaseModel {
             System.err.println("Error getting all universities average costs: " + e.getMessage());
         }
         return allData;
-    }
-
-    private double parseCost(String costString) {
-        if (costString == null || costString.trim().isEmpty()) {
-            return 0.0;
-        }
-        try {
-            // Split by semicolons to handle each activity separately
-            String[] activities = costString.split(";");
-            for (String activity : activities) {
-                activity = activity.trim();
-                // Find the last closing parenthesis
-                int lastCloseParen = activity.lastIndexOf(')');
-                if (lastCloseParen == -1)
-                    continue;
-
-                // Find the matching opening parenthesis
-                int openParen = activity.lastIndexOf('(', lastCloseParen);
-                if (openParen == -1)
-                    continue;
-
-                // Extract the content between the last set of parentheses
-                String costValue = activity.substring(openParen + 1, lastCloseParen).trim();
-                try {
-                    return Double.parseDouble(costValue);
-                } catch (NumberFormatException e) {
-                    // If parsing fails, continue to next activity
-                    continue;
-                }
-            }
-
-            return 25.0; // Default cost if no valid cost found
-        } catch (Exception e) {
-            System.err.println("Error parsing cost from: " + costString + " - Using default cost");
-            return 25.0; // Default cost for invalid formats
-        }
-    }
-
-    private double calculateTotalCost(String itemsString) {
-        if (itemsString == null || itemsString.isEmpty()) {
-            return 0.0;
-        }
-
-        double total = 0.0;
-        String[] items = itemsString.split(";");
-        for (String item : items) {
-            if (item == null || item.trim().isEmpty())
-                continue;
-            total += parseCost(item.trim());
-        }
-        return total;
-    }
-
-    private int getInvItemsCount(HashMap<String, Double> getTotalCosts) {
-        return getTotalCosts.size();
     }
 
     // Get total costs for a specific university
