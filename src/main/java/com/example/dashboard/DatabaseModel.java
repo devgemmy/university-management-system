@@ -1013,3 +1013,38 @@ public class DatabaseModel {
         }
     }
 }
+
+/*
+ * List of Methods:
+ * -getInstance(): DatabaseModel
+ * -connect(): Connection
+ * -getConnection(): Connection
+ * -closeConnection(): void
+ * -createFinancesTable(): void
+ * -populateFinancesFromExistingData(): void
+ * -testConnection(): boolean
+ * -getAllInvoices(): List<Invoice>
+ * -createInvoiceFromResultSet(rs: ResultSet): Invoice
+ * -getTotalCosts(): Map<String, Double>
+ * -getAverageCostsByUniversity(universityName: String): Map<String, Map<String,
+ * Double>>
+ * -getFilteredInvoices(timeFilter: String, monthPeriod: String, yearPeriod:
+ * String): List<Map<String, Object>>
+ * -getFilteredInvoicesByDateRange(institution: String, startDate: String,
+ * endDate: String): List<Map<String, Object>>
+ * -getInstitutions(): Map<String, String>
+ * -getCoursesByInstitution(ukprn: String): Map<String, String>
+ * -getSportsActivities(): List<String>
+ * -getFoodItems(): List<String>
+ * -generateInvoice(invoiceData: Map<String, Object>): String
+ * -getInvoiceById(invoiceId: String): Invoice
+ * -deleteInvoice(invoiceId: String): boolean
+ * -updateInvoice(invoice: Invoice): boolean
+ * -calculateTotalFees(): double
+ * -calculateTotalSportsFees(): double
+ * -calculateTotalFoodCosts(): double
+ * -getAllUniversitiesAverageCosts(): Map<String, Map<String, Map<String,
+ * Double>>>
+ * -getTotalCostsByUniversity(universityName: String): Map<String, Double>
+ * -syncInvoicesToFinances(): void
+ */

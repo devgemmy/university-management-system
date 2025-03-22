@@ -107,3 +107,16 @@ public class AdminServicesController {
         }
     }
 }
+
+/*
+ * List of Methods:
+ * -viewFinanceDashboard(): void
+ * -showComingSoon(service: String): void
+ * -showError(message: String): void
+ * -viewApplicantDetails(): void
+ * -viewAttendance(): void
+ * -viewCourseSelection(): void
+ * -viewRestaurants(): void
+ * -viewSportsSchool(): void
+ * -appLogout(): void
+ */

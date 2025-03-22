@@ -34,7 +34,7 @@
                   </ImageView>
                </graphic></Button>
                 <Circle fill="#003f5a" layoutX="1158.0" layoutY="36.0" radius="21.0" styleClass="user-avatar" />
-                <Text layoutX="1146.0" layoutY="41.0" styleClass="user-avatar-text" text="AA" style="-fx-text-fill: #FFFFFF;"/>
+                <Text fill="WHITE" layoutX="1149.0" layoutY="40.0" style="-fx-text-fill: #FFFFFF;" styleClass="user-avatar-text" text="AA" wrappingWidth="17.689453125" />
             </children>
         </Pane>
         <PieChart fx:id="costDistributionChart" layoutX="731.0" layoutY="101.0" prefHeight="235.0" prefWidth="360.0" style="-fx-background-color: transparent;" />
@@ -80,7 +80,7 @@
                         <TableColumn fx:id="courseIndexColumn" prefWidth="30.0" text="#" />
                         <TableColumn fx:id="courseDetailsColumn" prefWidth="240.0" text="Course Details" />
                         <TableColumn fx:id="courseFeesColumn" prefWidth="100.0" text="Course Fees" />
-                        <TableColumn fx:id="courseDeleteColumn" prefWidth="70.0" text="" />
+                        <TableColumn fx:id="courseDeleteColumn" prefWidth="79.0" text="" />
                     </columns>
                 </TableView>
                 <Pane prefHeight="73.0" prefWidth="450.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #989898;">
@@ -120,7 +120,7 @@
                         <TableColumn fx:id="foodIndexColumn" prefWidth="30.0" text="#" />
                         <TableColumn fx:id="foodItemColumn" prefWidth="230.0" text="Food Item" />
                         <TableColumn fx:id="foodPriceColumn" prefWidth="100.0" text="Prices" />
-                        <TableColumn fx:id="foodDeleteColumn" prefWidth="70.0" text="" />
+                        <TableColumn fx:id="foodDeleteColumn" prefWidth="89.0" text="" />
                     </columns>
                 </TableView>
                 <Pane prefHeight="73.0" prefWidth="450.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #989898;">
@@ -159,7 +159,7 @@
                         <TableColumn fx:id="sportIndexColumn" prefWidth="30.0" text="#" />
                         <TableColumn fx:id="sportActivityColumn" prefWidth="240.0" text="Sports Activities" />
                         <TableColumn fx:id="sportPriceColumn" prefWidth="100.0" text="Prices" />
-                        <TableColumn fx:id="sportDeleteColumn" prefWidth="70.0" text="" />
+                        <TableColumn fx:id="sportDeleteColumn" prefWidth="79.0" text="" />
                     </columns>
                 </TableView>
                 <Pane prefHeight="73.0" prefWidth="450.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #989898;">

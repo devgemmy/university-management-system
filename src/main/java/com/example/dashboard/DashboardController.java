@@ -1132,6 +1132,9 @@ public class DashboardController implements Initializable {
             // Update status message
             String statusMessage = String.format("Found %d matching records", filteredInvoices.size());
             System.out.println(statusMessage);
+            if (filteredInvoices.size() == 0) {
+                showError(statusMessage);
+            }
 
             // Update pie chart with new totals
             loadTotalCostsChart();
@@ -1650,30 +1653,29 @@ public class DashboardController implements Initializable {
 }
 
 /*
- * Requirements:
- * -loadTotalCostsChart(): void
- * -loadAverageCostsChart(): void
- * -loadYearlyBarChart(): void
- * -styleBarChartSeries(series: XYChart.Series<String, Number>, color: String):
+ * List of Methods:
+ * - loadTotalCostsChart(): void
+ * - loadAverageCostsChart(): void
+ * - loadYearlyBarChart(): void
+ * - styleBarChartSeries(series: XYChart.Series<String, Number>, color: String):
  * void
- * -resetChartToDefault(): void
- * -handleAdminServices(): void
- * -showError(message: String): void
- * -initializeDataCache(): void
- * -setupEventListeners(): void
- * -setLoading(loading: boolean): void
- * -initializeDashboardValues(): void
- * -initializeTableColumns(): void
- * -handleSearch(): void
- * -filterInvoicesByYear(selectedYear: String): void
- * -setSortingPeriod(): void
- * -setTimeFilter(event: ActionEvent): void
- * -getMonthNumber(monthName: String): int
- * -queryTheDB(query: String, param: String): ResultSet
- * -connectToDatabase(): Connection
- * -generateNewInvoice(): void
- * -viewInvoice(invoice: Invoice): void
- * -sortDataByCategory(event: ActionEvent): void
- * -initialize(url: URL, resourceBundle: ResourceBundle): void
- * 
+ * - resetChartToDefault(): void
+ * - handleAdminServices(): void
+ * - showError(message: String): void
+ * - initializeDataCache(): void
+ * - setupEventListeners(): void
+ * - setLoading(loading: boolean): void
+ * - initializeDashboardValues(): void
+ * - initializeTableColumns(): void
+ * - handleSearch(): void
+ * - filterInvoicesByYear(selectedYear: String): void
+ * - setSortingPeriod(): void
+ * - setTimeFilter(event: ActionEvent): void
+ * - getMonthNumber(monthName: String): int
+ * - queryTheDB(query: String, param: String): ResultSet
+ * - connectToDatabase(): Connection
+ * - generateNewInvoice(): void
+ * - viewInvoice(invoice: Invoice): void
+ * - sortDataByCategory(event: ActionEvent): void
+ * - initialize(url: URL, resourceBundle: ResourceBundle): void
  */

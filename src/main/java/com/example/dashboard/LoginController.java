@@ -78,6 +78,7 @@ public class LoginController {
 
         // For demo purposes, using simple validation
         if (email.equals("admin@ums.com") && password.equals("uni123")) {
+            System.out.println("Your email and password are correct! Logging in now");
             try {
                 // Load the administrative services view instead of dashboard
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("admin-services-view.fxml"));
