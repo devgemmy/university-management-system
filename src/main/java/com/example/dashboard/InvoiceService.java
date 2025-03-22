@@ -19,12 +19,9 @@ public class InvoiceService {
         return instance;
     }
 
-    /**
-     * Shows a confirmation dialog and deletes the invoice if confirmed.
-     * 
-     * @param invoice The invoice to delete
-     * @return true if the invoice was deleted successfully, false otherwise
-     */
+    // This method shows a confirmation dialog and deletes the invoice if confirmed.
+    // A param invoice: The invoice to delete true if the invoice was deleted
+    // successfully, false otherwise
     public boolean deleteInvoiceWithConfirmation(Invoice invoice) {
         if (invoice == null)
             return false;
@@ -47,5 +44,17 @@ public class InvoiceService {
             return deleted;
         }
         return false;
+    }
+
+    /**
+     * Updates an existing invoice in the database
+     * 
+     * @param invoice The invoice to update
+     * @return true if the invoice was updated successfully, false otherwise
+     */
+    public boolean updateInvoice(Invoice invoice) {
+        if (invoice == null)
+            return false;
+        return databaseModel.updateInvoice(invoice);
     }
 }

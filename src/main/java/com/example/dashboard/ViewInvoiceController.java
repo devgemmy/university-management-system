@@ -16,12 +16,13 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.HashMap;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.stream.Collectors;
 
-/**
- * Controller for the invoice details view
- * Shows detailed information about a specific invoice including
- * course details, sports activities, and food items
- */
+// The Controller for the invoice details view shows detailed information about a specific invoice including ourse details, sports activities, and food items
 public class ViewInvoiceController {
     // UI Components for displaying invoice information
     @FXML
@@ -50,35 +51,64 @@ public class ViewInvoiceController {
     private TableColumn<CourseEntry, String> courseDetailsColumn;
     @FXML
     private TableColumn<CourseEntry, Double> courseFeesColumn;
+    @FXML
+    private TableColumn<CourseEntry, Void> courseDeleteColumn;
 
     @FXML
-    private TableView<FoodEntry> courseDtsTable1;
+    private TableView<FoodEntry> foodDtsTable;
     @FXML
     private TableColumn<FoodEntry, Integer> foodIndexColumn;
     @FXML
     private TableColumn<FoodEntry, String> foodItemColumn;
     @FXML
     private TableColumn<FoodEntry, Double> foodPriceColumn;
+    @FXML
+    private TableColumn<FoodEntry, Void> foodDeleteColumn;
 
     @FXML
-    private TableView<SportEntry> courseDtsTable2;
+    private TableView<SportEntry> sportDtsTable;
     @FXML
     private TableColumn<SportEntry, Integer> sportIndexColumn;
     @FXML
     private TableColumn<SportEntry, String> sportActivityColumn;
     @FXML
     private TableColumn<SportEntry, Double> sportPriceColumn;
+    @FXML
+    private TableColumn<SportEntry, Void> sportDeleteColumn;
+
+    @FXML
+    private ComboBox<String> courseSelectionComboBox;
+    @FXML
+    private TextField courseFeeField;
+    @FXML
+    private Button addCourseButton;
+
+    @FXML
+    private ComboBox<String> foodSelectionComboBox;
+    @FXML
+    private TextField foodPriceField;
+    @FXML
+    private Button addFoodButton;
+
+    @FXML
+    private ComboBox<String> sportsSelectionComboBox;
+    @FXML
+    private TextField sportsPriceField;
+    @FXML
+    private Button addSportsButton;
 
     // Controllers and utilities
     private Invoice currentInvoice;
-    private DatabaseModel databaseModel;
+    private DatabaseModel dbModel;
     private NumberFormat currencyFormatter;
     private InvoiceService invoiceService;
+    private Map<String, String> availableCourses;
+    // private ObservableList<String> availableFoodItems;
+    // private ObservableList<String> availableSportsActivities;
 
     @FXML
     public void initialize() {
         currencyFormatter = NumberFormat.getCurrencyInstance(Locale.UK);
-        databaseModel = DatabaseModel.getInstance();
         invoiceService = InvoiceService.getInstance();
         setupDeleteButton();
 
@@ -97,6 +127,7 @@ public class ViewInvoiceController {
                 }
             }
         });
+        setupCourseDeleteColumn();
 
         // Food table
         foodIndexColumn.setCellValueFactory(cellData -> cellData.getValue().indexProperty().asObject());
@@ -113,6 +144,7 @@ public class ViewInvoiceController {
                 }
             }
         });
+        setupFoodDeleteColumn();
 
         // Sports table
         sportIndexColumn.setCellValueFactory(cellData -> cellData.getValue().indexProperty().asObject());
@@ -129,18 +161,45 @@ public class ViewInvoiceController {
                 }
             }
         });
+        setupSportDeleteColumn();
+
+        // Initialize controllers
+        dbModel = DatabaseModel.getInstance();
+        availableCourses = new HashMap<>();
+
+        // Add price validation for all fields
+        courseFeeField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*(\\.\\d{0,2})?")) {
+                courseFeeField.setText(oldValue);
+            }
+        });
+
+        foodPriceField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*(\\.\\d{0,2})?")) {
+                foodPriceField.setText(oldValue);
+            }
+        });
+
+        sportsPriceField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*(\\.\\d{0,2})?")) {
+                sportsPriceField.setText(oldValue);
+            }
+        });
     }
 
-    /**
-     * Transforms invoice data into a format suitable for display
-     * Creates a map with all necessary information for the UI
-     */
+    // This method transforms invoice data into a format suitable for display and
+    // creates a map with all necessary information for the UI
     private Map<String, Object> transformInvoiceForDisplay(Invoice invoice) {
         Map<String, Object> displayData = new HashMap<>();
 
         // Transform course details
         Map<String, Object> courseInfo = new HashMap<>();
-        courseInfo.put("name", invoice.getCourseList().get("courseName"));
+        String courseName = invoice.getCourseList().get("courseName");
+        // Debug log
+        System.out.println("Course name from invoice: " + courseName);
+        System.out.println("Course fee from invoice: " + invoice.getCourseInvFees());
+        // courseInfo.put("name", invoice.getCourseList().get("courseName"));
+        courseInfo.put("name", courseName);
         courseInfo.put("fee", invoice.getCourseInvFees());
         displayData.put("course", courseInfo);
 
@@ -160,10 +219,8 @@ public class ViewInvoiceController {
         return displayData;
     }
 
-    /**
-     * Loads all invoice details into the UI components
-     * Updates labels, tables, and charts with invoice data
-     */
+    // This method loads all invoice details into the UI components and pdates
+    // labels, tables, and charts with invoice data
     public void loadInvoiceDetails() {
         if (currentInvoice == null)
             return;
@@ -183,23 +240,87 @@ public class ViewInvoiceController {
         updatePieChart();
     }
 
-    /**
-     * Loads course details into the course table
-     * Shows course name and associated fees
-     */
+    // This loads course details into the course table and shows course name and
+    // associated fees
     private void loadCourseDetails(Map<String, Object> displayData) {
         ObservableList<CourseEntry> courseEntries = FXCollections.observableArrayList();
-        Map<String, Object> courseInfo = (Map<String, Object>) displayData.get("course");
-        if (courseInfo != null && courseInfo.get("name") != null) {
-            courseEntries.add(new CourseEntry(1, (String) courseInfo.get("name"), (Double) courseInfo.get("fee")));
+
+        // Map<String, Object> courseInfo = (Map<String, Object>)
+        // displayData.get("course");
+        // if (courseInfo != null && courseInfo.get("name") != null) {
+        // courseEntries.add(new CourseEntry(1, (String) courseInfo.get("name"),
+        // (Double) courseInfo.get("fee")));
+        // }
+
+        try {
+            Map<String, Object> courseInfo = (Map<String, Object>) displayData.get("course");
+            if (courseInfo != null) {
+                String coursesString = (String) courseInfo.get("name");
+                System.out.println("Processing courses string: " + coursesString);
+
+                if (coursesString != null && !coursesString.isEmpty()) {
+                    // Split into individual courses if multiple exist
+                    String[] courses = coursesString.contains(";") ? coursesString.split(";")
+                            : new String[] { coursesString };
+
+                    int index = 1;
+                    double totalFees = 0.0;
+
+                    for (String course : courses) {
+                        course = course.trim();
+                        String[] parts = course.split(",");
+
+                        if (parts.length == 2) {
+                            String courseName = parts[0].trim();
+                            // Remove any amounts in brackets from the course name
+                            courseName = courseName.replaceAll("\\s*\\([^)]*\\)", "").trim();
+                            try {
+                                double courseFee = Double.parseDouble(parts[1].trim());
+                                courseEntries.add(new CourseEntry(index++, courseName, courseFee));
+                                totalFees += courseFee;
+                                System.out.println("Added course: " + courseName + " with fee: " + courseFee);
+                            } catch (NumberFormatException e) {
+                                System.err.println("Error parsing fee for course: " + course);
+                            }
+                        } else {
+                            System.err.println("Invalid course format: " + course);
+                        }
+                    }
+
+                    // Update total fees if needed
+                    if (Math.abs(totalFees - currentInvoice.getCourseInvFees()) > 0.01) {
+                        currentInvoice.setCourseInvFees(totalFees);
+                        updateCourseFeeInDatabase(totalFees);
+                    }
+                } else {
+                    System.out.println("No courses found for invoice: " + currentInvoice.getInvoiceID());
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("Error loading course details: " + e.getMessage());
+            e.printStackTrace();
+            showError("Failed to load course details: " + e.getMessage());
         }
+
         courseDtsTable.setItems(courseEntries);
     }
 
-    /**
-     * Loads food items into the food table
-     * Shows each food item and its cost
-     */
+    private void updateCourseFeeInDatabase(double totalFees) {
+        try (Connection conn = dbModel.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(
+                        "UPDATE FINANCES SET courseInvFees = ? WHERE invoiceID = ?")) {
+            stmt.setDouble(1, totalFees);
+            stmt.setString(2, currentInvoice.getInvoiceID());
+            stmt.executeUpdate();
+            System.out.println("Updated course fees in database to: " + totalFees);
+        } catch (SQLException e) {
+            System.err.println("Failed to update course fees in database: " + e.getMessage());
+            showError("Failed to update course fees: " + e.getMessage());
+        }
+    }
+
+    // This method loads food items into the food table and shows each food item and
+    // its cost
     private void loadFoodItems(Map<String, Object> displayData) {
         ObservableList<FoodEntry> foodEntries = FXCollections.observableArrayList();
         int index = 1;
@@ -207,13 +328,11 @@ public class ViewInvoiceController {
         for (Map.Entry<String, Double> entry : foodItems.entrySet()) {
             foodEntries.add(new FoodEntry(index++, entry.getKey(), entry.getValue()));
         }
-        courseDtsTable1.setItems(foodEntries);
+        foodDtsTable.setItems(foodEntries);
     }
 
-    /**
-     * Loads sports activities into the sports table
-     * Shows each activity and its cost
-     */
+    // This functon loads sports activities into the sports table shows each
+    // activity and its cost
     private void loadSportsActivities(Map<String, Object> displayData) {
         ObservableList<SportEntry> sportEntries = FXCollections.observableArrayList();
         int index = 1;
@@ -221,34 +340,39 @@ public class ViewInvoiceController {
         for (Map.Entry<String, Double> entry : sportsActivities.entrySet()) {
             sportEntries.add(new SportEntry(index++, entry.getKey(), entry.getValue()));
         }
-        courseDtsTable2.setItems(sportEntries);
+        sportDtsTable.setItems(sportEntries);
     }
 
-    /**
-     * Updates the pie chart showing cost distribution
-     * Shows relative proportions of course fees, sports costs, and food costs
-     */
+    // This function updates the pie chart showing cost distribution and shows
+    // relative proportions of course fees, sports costs, and food costs
     private void updatePieChart() {
         ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
                 new PieChart.Data("Course Fees", currentInvoice.getCourseInvFees()),
                 new PieChart.Data("Sports Activities", currentInvoice.getTotalSportsCost()),
                 new PieChart.Data("Food Items", currentInvoice.getTotalFoodCost()));
         costDistributionChart.setData(pieChartData);
+
+        // Apply consistent colors to each slice
+        pieChartData.forEach(data -> {
+            String color = switch (data.getName()) {
+                case "Course Fees" -> "#007A7A"; // Green for Courses
+                case "Sports Activities" -> "#FFA84A"; // Yellow for Sports
+                case "Food Items" -> "#DE6600"; // Orange for Food
+                default -> "#000000";
+            };
+            data.getNode().setStyle("-fx-pie-color: " + color + ";");
+        });
     }
 
-    /**
-     * Calculates the total cost of the invoice
-     * Sums course fees, sports costs, and food costs
-     */
+    // This calculates the total cost of the invoice and sums course fees, sports
+    // costs, and food costs
     private double calculateTotalCosts() {
         return currentInvoice.getCourseInvFees() +
                 currentInvoice.getTotalSportsCost() +
                 currentInvoice.getTotalFoodCost();
     }
 
-    /**
-     * Returns to the dashboard view
-     */
+    // Returns to the dashboard view
     @FXML
     private void backToDashboard() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("dashboard-view.fxml"));
@@ -263,10 +387,8 @@ public class ViewInvoiceController {
         // closingStage.close();
     }
 
-    /**
-     * Handles invoice deletion with confirmation dialog
-     * Returns to dashboard if deletion is successful
-     */
+    // This handles invoice deletion with confirmation dialog and returns to
+    // dashboard if deletion is successful
     @FXML
     private void deleteInvoice() {
         if (currentInvoice == null)
@@ -284,25 +406,544 @@ public class ViewInvoiceController {
         }
     }
 
-    /**
-     * Sets the invoice to be displayed and loads its details
-     */
+    // Sets the invoice to be displayed and loads its details
     public void setInvoice(Invoice invoice) {
         this.currentInvoice = invoice;
+        // Debug log
+        System.out.println("Setting invoice: " + invoice.getInvoiceID());
+        System.out.println("Institution Details: " + invoice.getInstitutionDetails());
+        System.out.println("Institution ID: " + invoice.getInstitutionDetails().get("institutionID"));
+
+        // Initialize combo boxes
+        loadAvailableCourses();
+        loadAvailableFoodItems();
+        loadAvailableSportsActivities();
+
+        // Load invoice details
         loadInvoiceDetails();
+
+        if (courseSelectionComboBox != null) {
+            courseSelectionComboBox.setPromptText("Select Course");
+            courseSelectionComboBox.setVisibleRowCount(10);
+        }
     }
 
-    /**
-     * Sets up the delete button functionality
-     */
     private void setupDeleteButton() {
         deleteInvoiceButton.setOnAction(event -> deleteInvoice());
     }
+
+    @FXML
+    private void handleAddCourse() {
+        String selectedCourse = courseSelectionComboBox.getValue();
+        String feeText = courseFeeField.getText();
+
+        if (selectedCourse == null || currentInvoice == null) {
+            showError("Please select a course");
+            return;
+        }
+
+        if (feeText == null || feeText.isEmpty()) {
+            showError("Please enter the course fee");
+            return;
+        }
+
+        try {
+            double courseFee = Double.parseDouble(feeText);
+
+            // Get the course name without the ID
+            String courseName = selectedCourse;
+            if (selectedCourse.contains(" (")) {
+                courseName = selectedCourse.substring(0, selectedCourse.lastIndexOf(" ("));
+            }
+
+            // Get current course string and fees
+            String currentCourses = currentInvoice.getCourseList().get("courseName");
+            double currentFees = currentInvoice.getCourseInvFees();
+
+            // Format new course entry
+            String newCourseEntry = courseName + ", " + courseFee;
+            String updatedCourses = (currentCourses == null || currentCourses.isEmpty())
+                    ? newCourseEntry
+                    : currentCourses + "; " + newCourseEntry;
+
+            double newTotalFees = currentFees + courseFee;
+
+            // Update database
+            try (Connection conn = dbModel.getConnection();
+                    PreparedStatement stmt = conn.prepareStatement(
+                            "UPDATE FINANCES SET courseName = ?, courseInvFees = ? WHERE invoiceID = ?")) {
+                stmt.setString(1, updatedCourses);
+                stmt.setDouble(2, newTotalFees);
+                stmt.setString(3, currentInvoice.getInvoiceID());
+                stmt.executeUpdate();
+
+                // Update invoice object
+                Map<String, String> courseList = currentInvoice.getCourseList();
+                courseList.put("courseName", updatedCourses);
+                currentInvoice.setCourseList(courseList);
+                currentInvoice.setCourseInvFees(newTotalFees);
+
+                // Refresh the display
+                loadInvoiceDetails();
+                updatePieChart();
+
+                // Clear input fields
+                courseSelectionComboBox.setValue(null);
+                courseFeeField.clear();
+
+            } catch (SQLException e) {
+                System.err.println("Error adding course: " + e.getMessage());
+                showError("Failed to add course: " + e.getMessage());
+            }
+        } catch (NumberFormatException e) {
+            showError("Invalid course fee format");
+        }
+    }
+
+    @FXML
+    private void handleAddFood() {
+        String selectedFood = foodSelectionComboBox.getValue();
+        String priceText = foodPriceField.getText();
+
+        if (selectedFood == null || priceText == null || priceText.isEmpty()) {
+            showError("Please select a food item and enter its price");
+            return;
+        }
+
+        try {
+            double price = Double.parseDouble(priceText);
+
+            // Update the database
+            String updateQuery = "UPDATE FINANCES SET foodItems = ?, totalFoodCost = ? WHERE invoiceID = ?";
+            try (Connection conn = dbModel.getConnection();
+                    PreparedStatement stmt = conn.prepareStatement(updateQuery)) {
+
+                // Get current food items and update
+                Map<String, Double> foodItems = new HashMap<>(currentInvoice.getFoodItems());
+                foodItems.put(selectedFood, price);
+                String foodItemsStr = convertFoodItemsToString(foodItems);
+                double totalFoodCost = foodItems.values().stream().mapToDouble(Double::doubleValue).sum();
+                // double totalFoodCost = 0;
+                // for (double cost : foodItems.values()) {
+                // totalFoodCost += cost;
+                // }
+
+                stmt.setString(1, foodItemsStr);
+                stmt.setDouble(2, totalFoodCost);
+                stmt.setString(3, currentInvoice.getInvoiceID());
+                stmt.executeUpdate();
+
+                // Update the current invoice object
+                currentInvoice.setFoodItems(foodItems);
+                // currentInvoice.setTotalFoodCost(totalFoodCost);
+
+                // Refresh the display
+                loadInvoiceDetails();
+                updatePieChart();
+
+                // Clear input fields
+                foodSelectionComboBox.setValue(null);
+                foodPriceField.clear();
+
+            } catch (SQLException e) {
+                showError("Failed to update food items: " + e.getMessage());
+            }
+        } catch (NumberFormatException e) {
+            showError("Invalid price format");
+        }
+    }
+
+    @FXML
+    private void handleAddSport() {
+        String selectedSport = sportsSelectionComboBox.getValue();
+        String priceText = sportsPriceField.getText();
+
+        if (selectedSport == null || priceText == null || priceText.isEmpty()) {
+            showError("Please select a sport activity and enter its price");
+            return;
+        }
+
+        try {
+            double price = Double.parseDouble(priceText);
+
+            // Update the database
+            String updateQuery = "UPDATE FINANCES SET sportsActivity = ?, totalSportsCost = ? WHERE invoiceID = ?";
+            try (Connection conn = dbModel.getConnection();
+                    PreparedStatement stmt = conn.prepareStatement(updateQuery)) {
+
+                // Get current sports activities and update
+                Map<String, Double> sportsActivities = new HashMap<>(currentInvoice.getSportsActivities());
+                sportsActivities.put(selectedSport, price);
+                String sportsActivitiesStr = convertSportsActivitiesToString(sportsActivities);
+                double totalSportsCost = sportsActivities.values().stream().mapToDouble(Double::doubleValue).sum();
+                // double totalSportsCost = 0;
+                // for (double cost : sportsActivities.values()) {
+                // totalSportsCost += cost;
+                // }
+
+                stmt.setString(1, sportsActivitiesStr);
+                stmt.setDouble(2, totalSportsCost);
+                stmt.setString(3, currentInvoice.getInvoiceID());
+                stmt.executeUpdate();
+
+                // Update the current invoice object
+                currentInvoice.setSportsActivities(sportsActivities);
+                // currentInvoice.setTotalSportsCost(totalSportsCost);
+
+                // Refresh the display
+                loadInvoiceDetails();
+                updatePieChart();
+
+                // Clear input fields
+                sportsSelectionComboBox.setValue(null);
+                sportsPriceField.clear();
+
+            } catch (SQLException e) {
+                showError("Failed to update sports activities: " + e.getMessage());
+            }
+        } catch (NumberFormatException e) {
+            showError("Invalid price format");
+        }
+    }
+
+    private void loadAvailableCourses() {
+        if (currentInvoice == null)
+            return;
+
+        // Get institution ID directly from the invoice
+        String institutionId = currentInvoice.getInstitutionDetails().get("institutionID");
+        System.out.println("Loading courses for institution ID: " + institutionId);
+
+        if (institutionId == null || institutionId.isEmpty()) {
+            System.err.println("No institution ID available - skipping course loading");
+            return;
+        }
+
+        try {
+            // Try to find courses using both UKPRN and PUBUKPRN
+            String courseQuery = """
+                        SELECT DISTINCT k.KISCOURSEID, k.TITLE
+                        FROM KISCOURSE k
+                        WHERE k.UKPRN = ? OR k.PUBUKPRN = ?
+                        ORDER BY k.TITLE
+                    """;
+
+            try (Connection conn = dbModel.getConnection();
+                    PreparedStatement pstmt = conn.prepareStatement(courseQuery)) {
+
+                pstmt.setString(1, institutionId);
+                pstmt.setString(2, institutionId);
+                ResultSet rs = pstmt.executeQuery();
+
+                availableCourses.clear();
+                ObservableList<String> courseNames = FXCollections.observableArrayList();
+
+                while (rs.next()) {
+                    String courseId = rs.getString("KISCOURSEID");
+                    String courseName = rs.getString("TITLE");
+                    if (courseId != null && !courseId.isEmpty() && courseName != null && !courseName.isEmpty()) {
+                        String displayName = courseName + " (" + courseId + ")";
+                        availableCourses.put(displayName, courseId);
+                        courseNames.add(displayName);
+                    }
+                }
+
+                System.out.println("Found " + courseNames.size() + " courses for institution ID: " + institutionId);
+
+                if (!courseNames.isEmpty()) {
+                    courseSelectionComboBox.setItems(courseNames);
+                    courseSelectionComboBox.setVisibleRowCount(Math.min(10, courseNames.size()));
+                } else {
+                    System.err.println("No valid courses found for institution ID: " + institutionId);
+                    // Try to find the institution in the INSTITUTION table to verify it exists
+                    String instQuery = "SELECT LEGAL_NAME FROM INSTITUTION WHERE UKPRN = ? OR PUBUKPRN = ?";
+                    try (PreparedStatement instStmt = conn.prepareStatement(instQuery)) {
+                        instStmt.setString(1, institutionId);
+                        instStmt.setString(2, institutionId);
+                        ResultSet instRs = instStmt.executeQuery();
+                        if (instRs.next()) {
+                            System.out.println(
+                                    "Institution exists but has no courses: " + instRs.getString("LEGAL_NAME"));
+                        } else {
+                            System.err.println("Institution not found in database");
+                        }
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.err.println("Failed to load available courses: " + e.getMessage());
+            showError("Failed to load courses: Database error");
+        }
+    }
+
+    private void loadAvailableFoodItems() {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            String query = "SELECT [Food Item] FROM FOODS";
+            conn = dbModel.getConnection();
+            pstmt = conn.prepareStatement(query);
+            rs = pstmt.executeQuery();
+
+            ObservableList<String> foodItems = FXCollections.observableArrayList();
+
+            while (rs.next()) {
+                String foodName = rs.getString("Food Item");
+                foodItems.add(foodName);
+            }
+
+            System.out.println("Found " + foodItems.size() + " food items");
+            foodSelectionComboBox.setItems(foodItems);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            showError("Failed to load available food items: " + e.getMessage());
+        } finally {
+            try {
+                if (rs != null)
+                    rs.close();
+                if (pstmt != null)
+                    pstmt.close();
+                if (conn != null)
+                    conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void loadAvailableSportsActivities() {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            String query = "SELECT [Sports Activities] FROM SPORTS";
+            conn = dbModel.getConnection();
+            pstmt = conn.prepareStatement(query);
+            rs = pstmt.executeQuery();
+
+            ObservableList<String> sportsActivities = FXCollections.observableArrayList();
+
+            while (rs.next()) {
+                String sportName = rs.getString("Sports Activities");
+                sportsActivities.add(sportName);
+            }
+
+            System.out.println("Found " + sportsActivities.size() + " sports activities");
+            sportsSelectionComboBox.setItems(sportsActivities);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            showError("Failed to load available sports activities: " + e.getMessage());
+        } finally {
+            try {
+                if (rs != null)
+                    rs.close();
+                if (pstmt != null)
+                    pstmt.close();
+                if (conn != null)
+                    conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private String convertFoodItemsToString(Map<String, Double> foodItems) {
+        return foodItems.entrySet().stream()
+                .map(entry -> entry.getKey() + "(" + entry.getValue() + ")")
+                .collect(Collectors.joining("; "));
+    }
+
+    private String convertSportsActivitiesToString(Map<String, Double> sportsActivities) {
+        return sportsActivities.entrySet().stream()
+                .map(entry -> entry.getKey() + "(" + entry.getValue() + ")")
+                .collect(Collectors.joining("; "));
+    }
+
+    private void setupCourseDeleteColumn() {
+        courseDeleteColumn.setCellFactory(param -> new TableCell<>() {
+            private final Button deleteButton = new Button("Delete");
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                    return;
+                }
+
+                CourseEntry entry = getTableView().getItems().get(getIndex());
+                // Disable delete button for the first course
+                deleteButton.setDisable(entry.indexProperty().get() == 1);
+
+                deleteButton.setOnAction(event -> {
+                    Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
+                    confirmation.setTitle("Delete Course");
+                    confirmation.setHeaderText("Delete Course");
+                    confirmation.setContentText("Are you sure you want to delete this course?");
+
+                    Optional<ButtonType> result = confirmation.showAndWait();
+                    if (result.isPresent() && result.get() == ButtonType.OK) {
+                        CourseEntry courseEntry = getTableView().getItems().get(getIndex());
+                        getTableView().getItems().remove(courseEntry);
+
+                        // Update indices for remaining items
+                        int newIndex = 1;
+                        ObservableList<CourseEntry> remainingCourses = getTableView().getItems();
+                        for (CourseEntry remainingEntry : remainingCourses) {
+                            remainingEntry.indexProperty().set(newIndex++);
+                        }
+
+                        // Rebuild course string and update total fees
+                        StringBuilder courseNameBuilder = new StringBuilder();
+                        double totalFees = 0.0;
+                        boolean first = true;
+
+                        for (CourseEntry course : remainingCourses) {
+                            if (!first) {
+                                courseNameBuilder.append("; ");
+                            }
+                            courseNameBuilder.append(course.courseNameProperty().get())
+                                    .append(", ")
+                                    .append(course.feeProperty().get());
+                            totalFees += course.feeProperty().get();
+                            first = false;
+                        }
+
+                        // Update the invoice object
+                        Map<String, String> courseList = currentInvoice.getCourseList();
+                        courseList.put("courseName", courseNameBuilder.toString());
+                        currentInvoice.setCourseList(courseList);
+                        currentInvoice.setCourseInvFees(totalFees);
+
+                        // Update database
+                        try (Connection conn = dbModel.getConnection();
+                                PreparedStatement stmt = conn.prepareStatement(
+                                        "UPDATE FINANCES SET courseName = ?, courseInvFees = ? WHERE invoiceID = ?")) {
+                            stmt.setString(1, courseNameBuilder.toString());
+                            stmt.setDouble(2, totalFees);
+                            stmt.setString(3, currentInvoice.getInvoiceID());
+                            stmt.executeUpdate();
+
+                            // Update UI
+                            updatePieChart();
+                            totalCostsLabel.setText("Total Costs: " + currencyFormatter.format(calculateTotalCosts()));
+
+                        } catch (SQLException e) {
+                            System.err.println("Error updating course deletion: " + e.getMessage());
+                            showError("Failed to update course deletion: " + e.getMessage());
+                        }
+                    }
+                });
+
+                setGraphic(deleteButton);
+            }
+        });
+    }
+
+    private void setupFoodDeleteColumn() {
+        foodDeleteColumn.setCellFactory(param -> new TableCell<>() {
+            private final Button deleteButton = new Button("Delete");
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                    return;
+                }
+
+                deleteButton.setOnAction(event -> {
+                    Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
+                    confirmation.setTitle("Delete Food Item");
+                    confirmation.setHeaderText("Delete Food Item");
+                    confirmation.setContentText("Are you sure you want to delete this food item?");
+
+                    Optional<ButtonType> result = confirmation.showAndWait();
+                    if (result.isPresent() && result.get() == ButtonType.OK) {
+                        FoodEntry foodEntry = getTableView().getItems().get(getIndex());
+                        getTableView().getItems().remove(foodEntry);
+
+                        // Update indices for remaining items
+                        int newIndex = 1;
+                        for (FoodEntry remainingEntry : getTableView().getItems()) {
+                            remainingEntry.indexProperty().set(newIndex++);
+                        }
+
+                        // Update the database and totals
+                        Map<String, Double> foodItems = new HashMap<>();
+                        for (FoodEntry entry : getTableView().getItems()) {
+                            foodItems.put(entry.foodNameProperty().get(), entry.priceProperty().get());
+                        }
+                        currentInvoice.setFoodItems(foodItems);
+                        invoiceService.updateInvoice(currentInvoice);
+                        updatePieChart();
+                        totalCostsLabel.setText("Total Costs: " + currencyFormatter.format(calculateTotalCosts()));
+                    }
+                });
+
+                setGraphic(deleteButton);
+            }
+        });
+    }
+
+    private void setupSportDeleteColumn() {
+        sportDeleteColumn.setCellFactory(param -> new TableCell<>() {
+            private final Button deleteButton = new Button("Delete");
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                    return;
+                }
+
+                deleteButton.setOnAction(event -> {
+                    Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
+                    confirmation.setTitle("Delete Sport Activity");
+                    confirmation.setHeaderText("Delete Sport Activity");
+                    confirmation.setContentText("Are you sure you want to delete this sport activity?");
+
+                    Optional<ButtonType> result = confirmation.showAndWait();
+                    if (result.isPresent() && result.get() == ButtonType.OK) {
+                        SportEntry sportEntry = getTableView().getItems().get(getIndex());
+                        getTableView().getItems().remove(sportEntry);
+
+                        // Update indices for remaining items
+                        int newIndex = 1;
+                        for (SportEntry remainingEntry : getTableView().getItems()) {
+                            remainingEntry.indexProperty().set(newIndex++);
+                        }
+
+                        // Update the database and totals
+                        Map<String, Double> sportsActivities = new HashMap<>();
+                        for (SportEntry entry : getTableView().getItems()) {
+                            sportsActivities.put(entry.activityNameProperty().get(), entry.priceProperty().get());
+                        }
+                        currentInvoice.setSportsActivities(sportsActivities);
+                        invoiceService.updateInvoice(currentInvoice);
+                        updatePieChart();
+                        totalCostsLabel.setText("Total Costs: " + currencyFormatter.format(calculateTotalCosts()));
+                    }
+                });
+
+                setGraphic(deleteButton);
+            }
+        });
+    }
+
+    private void showError(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 }
 
-/**
- * Helper class for displaying course entries in the table
- */
+// Helper classes for displaying course, food and sport entries in the table
 class CourseEntry {
     private final javafx.beans.property.IntegerProperty index;
     private final javafx.beans.property.StringProperty courseName;

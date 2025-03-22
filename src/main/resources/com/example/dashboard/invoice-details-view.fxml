@@ -18,7 +18,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="1000.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.dashboard.ViewInvoiceController">
+<AnchorPane prefHeight="1000.0" prefWidth="1200.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.dashboard.ViewInvoiceController">
     <children>
         <Pane prefHeight="78.0" prefWidth="1200" styleClass="header-pane">
             <children>
@@ -65,7 +65,7 @@
         </Pane>
         <Pane layoutX="58.0" layoutY="335.0" prefHeight="38.0" prefWidth="1068.0">
             <children>
-                <Line fx:id="invoiceDivine" endX="1140.6368408203125" endY="38.0" startX="-58.0000114440918" startY="38.0" style="-fx-fill: #545454; -fx-opacity: 0.5;" />
+                <Line fx:id="invoiceDivide" endX="1140.6368408203125" endY="38.0" startX="-58.0000114440918" startY="38.0" style="-fx-fill: #545454; -fx-opacity: 0.5;" />
                 <Label fx:id="invoiceDateLabel" layoutX="60.0" layoutY="9.0" prefHeight="20.0" prefWidth="133.0" text="Date" textFill="#545454">
                     <font>
                         <Font name="Avenir Roman" size="14.0" />
@@ -77,22 +77,23 @@
             <children>
                 <TableView fx:id="courseDtsTable" prefHeight="120.0" prefWidth="450.0">
                     <columns>
-                        <TableColumn fx:id="courseIndexColumn" prefWidth="34.40760803222656" text="#" />
-                        <TableColumn fx:id="courseDetailsColumn" prefWidth="222.4660415649414" text="Course Details" />
-                        <TableColumn fx:id="courseFeesColumn" prefWidth="145.0" text="Course Fees" />
+                        <TableColumn fx:id="courseIndexColumn" prefWidth="30.0" text="#" />
+                        <TableColumn fx:id="courseDetailsColumn" prefWidth="240.0" text="Course Details" />
+                        <TableColumn fx:id="courseFeesColumn" prefWidth="100.0" text="Course Fees" />
+                        <TableColumn fx:id="courseDeleteColumn" prefWidth="70.0" text="" />
                     </columns>
                 </TableView>
-                <Pane prefHeight="73.0" prefWidth="450.0" style="-fx-background-color: #FFFFFF;">
+                <Pane prefHeight="73.0" prefWidth="450.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #989898;">
                     <children>
-                        <TextField layoutX="261.0" layoutY="12.0" prefHeight="35.0" prefWidth="145.0" promptText="Fee" style="-fx-background-color: #FFFFFF; -fx-border-color: #757575; -fx-border-radius: 8px;" />
-                        <ComboBox layoutX="38.0" layoutY="12.0" prefHeight="35.0" prefWidth="200.0" promptText="Course Name (ID)" style="-fx-background-color: #FFFFFF; -fx-border-color: #757575; -fx-border-radius: 8px;" />
-                        <Label layoutX="41.0" layoutY="50.0" text="This field is empty" textFill="#dc4067" />
-                        <Label layoutX="262.0" layoutY="50.0" text="This field is empty" textFill="#dc4067" />
+                        <TextField fx:id="courseFeeField" layoutX="261.0" layoutY="12.0" prefHeight="35.0" prefWidth="145.0" promptText="Fee" style="-fx-background-color: #FFFFFF; -fx-border-color: #757575; -fx-border-radius: 8px;" />
+                        <ComboBox fx:id="courseSelectionComboBox" layoutX="38.0" layoutY="12.0" prefHeight="35.0" prefWidth="200.0" promptText="Select Course (ID)" style="-fx-background-color: #FFFFFF; -fx-border-color: #757575; -fx-border-radius: 8px;" />
+                        <!-- <Label layoutX="41.0" layoutY="50.0" text="This field is empty" textFill="#dc4067" />
+                        <Label layoutX="262.0" layoutY="50.0" text="This field is empty" textFill="#dc4067" /> -->
                     </children>
                     </Pane>
                     <Pane prefHeight="55.0" prefWidth="450.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #989898;">
                     <children>
-                        <Button fx:id="backToDashboardButton1" defaultButton="true" ellipsisString="" layoutX="38.0" layoutY="12.0" lineSpacing="1.0" onAction="#backToDashboard" prefHeight="19.0" prefWidth="118.0" style="-fx-background-color: #007A7A; -fx-border-color: #007A7A; -fx-text-fill: #FFFFFF; -fx-border-radius: 4px;" text="Add Course" textAlignment="CENTER" textFill="#007878" textOverrun="WORD_ELLIPSIS" wrapText="true">
+                        <Button fx:id="addCourseButton" defaultButton="true" ellipsisString="" layoutX="38.0" layoutY="12.0" lineSpacing="1.0" onAction="#handleAddCourse" prefHeight="19.0" prefWidth="118.0" style="-fx-background-color: #007A7A; -fx-border-color: #007A7A; -fx-text-fill: #FFFFFF; -fx-border-radius: 4px;" text="Add Course" textAlignment="CENTER" textFill="#007878" textOverrun="WORD_ELLIPSIS" wrapText="true">
                             <font>
                                 <Font name="Avenir Roman" size="12.0" />
                             </font>
@@ -104,34 +105,35 @@
                                     <Font name="Avenir Heavy" size="14.0" />
                                 </font>
                                 </Label>
-                                <Label prefHeight="17.0" prefWidth="62.0" text="£90.80" />
+                        <Text fx:id="courseCostsTotalLabel" strokeType="OUTSIDE" strokeWidth="0.0" text="£90.80" wrappingWidth="72.97537231445312" />
                             </children>
                         </TilePane>
                     </children>
                 </Pane>
             </children>
         </VBox>
-        <ImageView fx:id="deleteInvBtn" fitHeight="23.0" fitWidth="18.0" layoutX="523.0" layoutY="473.0" pickOnBounds="true" preserveRatio="true" />
+        <!-- <ImageView fx:id="deleteInvBtn" fitHeight="23.0" fitWidth="18.0" layoutX="523.0" layoutY="473.0" pickOnBounds="true" preserveRatio="true" /> -->
         <VBox fx:id="foodDetailsForm" layoutX="640.0" layoutY="407.0">
             <children>
-                <TableView fx:id="courseDtsTable1" prefHeight="120.0" prefWidth="450.0">
+                <TableView fx:id="foodDtsTable" prefHeight="120.0" prefWidth="450.0">
                     <columns>
-                        <TableColumn fx:id="foodIndexColumn" prefWidth="34.40760803222656" text="#" />
-                        <TableColumn fx:id="foodItemColumn" prefWidth="222.4660415649414" text="Food Item" />
-                        <TableColumn fx:id="foodPriceColumn" prefWidth="145.0" text="Prices" />
+                        <TableColumn fx:id="foodIndexColumn" prefWidth="30.0" text="#" />
+                        <TableColumn fx:id="foodItemColumn" prefWidth="240.0" text="Food Item" />
+                        <TableColumn fx:id="foodPriceColumn" prefWidth="100.0" text="Prices" />
+                        <TableColumn fx:id="foodDeleteColumn" prefWidth="70.0" text="" />
                     </columns>
                 </TableView>
-                <Pane prefHeight="73.0" prefWidth="450.0" style="-fx-background-color: #FFFFFF;">
+                <Pane prefHeight="73.0" prefWidth="450.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #989898;">
                     <children>
-                        <TextField layoutX="261.0" layoutY="13.0" prefHeight="35.0" prefWidth="145.0" promptText="Fee" />
-                        <ComboBox layoutX="38.0" layoutY="12.0" prefHeight="35.0" prefWidth="200.0" promptText="Course Name (ID)" style="-fx-background-color: #FFFFFF; -fx-border-color: #757575;" />
-                        <Label layoutX="41.0" layoutY="50.0" text="This field is empty" textFill="#dc4067" />
-                        <Label layoutX="262.0" layoutY="50.0" text="This field is empty" textFill="#dc4067" />
+                        <TextField fx:id="foodPriceField" layoutX="261.0" layoutY="13.0" prefHeight="35.0" prefWidth="145.0" promptText="Food Price" style="-fx-background-color: #FFFFFF; -fx-border-color: #757575; -fx-border-radius: 8px;" />
+                        <ComboBox fx:id="foodSelectionComboBox" layoutX="38.0" layoutY="12.0" prefHeight="35.0" prefWidth="200.0" promptText="Select Food Item" style="-fx-background-color: #FFFFFF; -fx-border-color: #757575; -fx-border-radius: 8px;" />
+                        <!-- <Label layoutX="41.0" layoutY="50.0" text="This field is empty" textFill="#dc4067" />
+                        <Label layoutX="262.0" layoutY="50.0" text="This field is empty" textFill="#dc4067" /> -->
                     </children>
                 </Pane>
                 <Pane prefHeight="55.0" prefWidth="450.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #989898;">
                     <children>
-                        <Button fx:id="backToDashboardButton11" defaultButton="true" ellipsisString="" layoutX="38.0" layoutY="12.0" lineSpacing="1.0" onAction="#backToDashboard" prefHeight="19.0" prefWidth="118.0" style="-fx-background-color: #DE6600; -fx-border-color: #DE6600; -fx-text-fill: #FFFFFF; -fx-border-radius: 4px;" text="Add Food" textAlignment="CENTER" textFill="#007878" textOverrun="WORD_ELLIPSIS" wrapText="true">
+                        <Button fx:id="addFoodButton" defaultButton="true" ellipsisString="" layoutX="38.0" layoutY="12.0" lineSpacing="1.0" onAction="#handleAddFood" prefHeight="19.0" prefWidth="118.0" style="-fx-background-color: #DE6600; -fx-border-color: #DE6600; -fx-text-fill: #FFFFFF; -fx-border-radius: 4px;" text="Add Food" textAlignment="CENTER" textFill="#007878" textOverrun="WORD_ELLIPSIS" wrapText="true">
                             <font>
                                 <Font name="Avenir Roman" size="12.0" />
                             </font>
@@ -143,7 +145,7 @@
                                     <Font name="Avenir Heavy" size="14.0" />
                                 </font>
                                 </Label>
-                                <Label prefHeight="17.0" prefWidth="62.0" text="£90.80" />
+                        <Text fx:id="foodCostsTotalLabel" strokeType="OUTSIDE" strokeWidth="0.0" text="£90.80" wrappingWidth="72.975341796875" />
                             </children>
                         </TilePane>
                     </children>
@@ -152,24 +154,23 @@
         </VBox>
         <VBox fx:id="sportsDetailsForm" layoutX="115.0" layoutY="696.0">
             <children>
-                <TableView fx:id="courseDtsTable2" prefHeight="120.0" prefWidth="450.0">
+                <TableView fx:id="sportDtsTable" prefHeight="120.0" prefWidth="450.0">
                     <columns>
-                        <TableColumn fx:id="sportIndexColumn" prefWidth="34.40760803222656" text="#" />
-                        <TableColumn fx:id="sportActivityColumn" prefWidth="222.4660415649414" text="Sport Activity" />
-                        <TableColumn fx:id="sportPriceColumn" prefWidth="145.0" text="Prices" />
+                        <TableColumn fx:id="sportIndexColumn" prefWidth="30.0" text="#" />
+                        <TableColumn fx:id="sportActivityColumn" prefWidth="240.0" text="Sports Activities" />
+                        <TableColumn fx:id="sportPriceColumn" prefWidth="100.0" text="Prices" />
+                        <TableColumn fx:id="sportDeleteColumn" prefWidth="70.0" text="" />
                     </columns>
                 </TableView>
-                <Pane prefHeight="73.0" prefWidth="450.0" style="-fx-background-color: #FFFFFF;">
+                <Pane prefHeight="73.0" prefWidth="450.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #989898;">
                     <children>
-                        <TextField layoutX="261.0" layoutY="13.0" prefHeight="35.0" prefWidth="145.0" promptText="Fee" />
-                        <ComboBox layoutX="38.0" layoutY="12.0" prefHeight="35.0" prefWidth="200.0" promptText="Course Name (ID)" />
-                        <Label layoutX="41.0" layoutY="50.0" text="This field is empty" textFill="#dc4067" />
-                        <Label layoutX="262.0" layoutY="50.0" text="This field is empty" textFill="#dc4067" />
+                        <TextField fx:id="sportsPriceField" layoutX="261.0" layoutY="13.0" prefHeight="35.0" prefWidth="145.0" promptText="Fee" style="-fx-background-color: #FFFFFF; -fx-border-color: #757575; -fx-border-radius: 8px;" />
+                        <ComboBox fx:id="sportsSelectionComboBox" layoutX="38.0" layoutY="12.0" prefHeight="35.0" prefWidth="200.0" promptText="Select Sport Activity" style="-fx-background-color: #FFFFFF; -fx-border-color: #757575; -fx-border-radius: 8px;" />
                     </children>
                 </Pane>
                 <Pane prefHeight="55.0" prefWidth="450.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #989898;">
                     <children>
-                        <Button fx:id="backToDashboardButton12" defaultButton="true" ellipsisString="" layoutX="38.0" layoutY="12.0" lineSpacing="1.0" onAction="#backToDashboard" prefHeight="19.0" prefWidth="118.0" style="-fx-background-color: #FFA84A; -fx-border-color: #FFA84A; -fx-text-fill: #FFFFFF; -fx-border-radius: 4px;" text="Add Sport" textAlignment="CENTER" textFill="#007878" textOverrun="WORD_ELLIPSIS" wrapText="true">
+                        <Button fx:id="addSportsButton" defaultButton="true" ellipsisString="" layoutX="38.0" layoutY="12.0" lineSpacing="1.0" onAction="#handleAddSport" prefHeight="19.0" prefWidth="118.0" style="-fx-background-color: #FFA84A; -fx-border-color: #FFA84A; -fx-text-fill: #FFFFFF; -fx-border-radius: 4px;" text="Add Sport Activity" textAlignment="CENTER" textFill="#007878" textOverrun="WORD_ELLIPSIS" wrapText="true">
                             <font>
                                 <Font name="Avenir Roman" size="12.0" />
                             </font>
@@ -181,7 +182,7 @@
                                     <Font name="Avenir Heavy" size="14.0" />
                                 </font>
                                 </Label>
-                                <Label prefHeight="17.0" prefWidth="62.0" text="£90.80" />
+                        <Text fx:id="sportCostsTotalLabel" strokeType="OUTSIDE" strokeWidth="0.0" text="£90.80" wrappingWidth="72.97537231445312" />
                             </children>
                         </TilePane>
                     </children>
