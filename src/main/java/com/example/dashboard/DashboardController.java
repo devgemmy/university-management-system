@@ -54,37 +54,6 @@ import java.util.ResourceBundle;
 // import java.util.Optional;
 import java.util.Set;
 import java.util.TimerTask;
-
-import javafx.beans.property.SimpleDoubleProperty;
-
-import javafx.event.EventHandler;
-
-import javafx.geometry.Side;
-
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.StackPane;
-
-import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
-
-import javafx.stage.Window;
-import javafx.stage.WindowEvent;
-import javafx.stage.StageStyle;
-import javafx.scene.Parent;
-import javafx.scene.shape.Path;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.ArcTo;
-import javafx.scene.shape.LineTo;
-import javafx.animation.RotateTransition;
-import javafx.util.Duration;
-import javafx.animation.Interpolator;
-
-import java.math.BigDecimal;
-import java.util.Optional;
-import java.util.Locale;
-import java.text.NumberFormat;
-import java.util.Arrays;
-import java.util.stream.Collectors;
 import java.util.Timer;
 
 /*
@@ -318,7 +287,8 @@ public class DashboardController implements Initializable {
                         parent.getChildren().add(label);
 
                         // Position label dynamically based on the pie slice
-                        data.getNode().boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
+                        // obs, oldNode, newNode
+                        data.getNode().boundsInParentProperty().addListener((_, _, newBounds) -> {
                             if (newBounds != null && totalCostsChart.getData() != null) {
                                 // Calculate the angle of the slice center
                                 double angle = calcAngle(data);
@@ -531,7 +501,8 @@ public class DashboardController implements Initializable {
                     Label label = new Label(String.format("£%,.2f", data.getYValue().doubleValue()));
                     label.setStyle("-fx-font-size: 11px; -fx-text-fill: black;");
 
-                    data.nodeProperty().addListener((obs, oldNode, newNode) -> {
+                    // obs, oldNode, newNode
+                    data.nodeProperty().addListener((_, _, newNode) -> {
                         if (newNode != null) {
                             displayLabelForData(label, data);
                         }
@@ -570,7 +541,8 @@ public class DashboardController implements Initializable {
             chartPane.getChildren().add(label);
 
             // Position the label
-            node.boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
+            // obs, oldNode, newNode
+            node.boundsInParentProperty().addListener((_, _, newBounds) -> {
                 if (newBounds != null) {
                     label.setLayoutX(newBounds.getMinX() + newBounds.getWidth() / 2 - label.getWidth() / 2);
                     label.setLayoutY(newBounds.getMinY() - label.getHeight());
@@ -1171,6 +1143,7 @@ public class DashboardController implements Initializable {
     // This method is dedicated method for loading and updating the yearly bar
     // chart. It shows costs by category (Courses, Sports, Food) across years. It
     // also updates based on search results and selected institution
+    @SuppressWarnings("unchecked")
     @FXML
     private void loadYearlyBarChart() {
         averageUniCostsBarChart.getData().clear();
@@ -1314,7 +1287,8 @@ public class DashboardController implements Initializable {
                 Label label = new Label(String.format("£%,.2f", data.getYValue().doubleValue()));
                 label.setStyle("-fx-font-size: 10px; -fx-text-fill: black;");
 
-                data.nodeProperty().addListener((obs, oldNode, newNode) -> {
+                // obs, oldNode, newNode
+                data.nodeProperty().addListener((_, _, newNode) -> {
                     if (newNode != null) {
                         displayLabelForData(label, data);
                     }
@@ -1596,7 +1570,7 @@ public class DashboardController implements Initializable {
 
                 // Add to yearly data
                 dataCache.yearlyData
-                        .computeIfAbsent(year, k -> new ArrayList<>())
+                        .computeIfAbsent(year, _ -> new ArrayList<>())
                         .add(invoice);
             }
 
@@ -1613,14 +1587,16 @@ public class DashboardController implements Initializable {
 
     private void setupEventListeners() {
         // Setup listener for university selection changes
-        uniAverageComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
+        // observable, oldValue, newValue
+        uniAverageComboBox.valueProperty().addListener((_, _, newValue) -> {
             if (newValue != null && !isLoading) {
                 loadYearlyBarChart();
             }
         });
 
         // Add year period dropdown listener
-        yearPeriodDropdown.valueProperty().addListener((observable, oldValue, newValue) -> {
+        // observable, oldValue, newValue
+        yearPeriodDropdown.valueProperty().addListener((_, _, newValue) -> {
             if (newValue != null && !isLoading) {
                 loadTableData();
             }

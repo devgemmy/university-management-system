@@ -41,6 +41,12 @@ public class ViewInvoiceController {
     private Button backToDashboardButton;
     @FXML
     private PieChart costDistributionChart;
+    @FXML
+    private Text courseCostsTotalLabel;
+    @FXML
+    private Text sportCostsTotalLabel;
+    @FXML
+    private Text foodCostsTotalLabel;
 
     // Tables for displaying different cost categories
     @FXML
@@ -216,6 +222,10 @@ public class ViewInvoiceController {
         displayData.put("invoiceDate", invoice.getInvoiceDate());
         displayData.put("totalCosts", calculateTotalCosts());
 
+        displayData.put("totalInvSportsCost", invoice.getTotalSportsCost());
+        displayData.put("totalInvFoodCost", invoice.getTotalFoodCost());
+        displayData.put("totalInvCourseFees", invoice.getCourseInvFees());
+
         return displayData;
     }
 
@@ -238,7 +248,42 @@ public class ViewInvoiceController {
         loadFoodItems(displayData);
         loadSportsActivities(displayData);
         updatePieChart();
+
+        // Debug log
+        System.out.println(
+                "Dynamic Invoice sport costs: " + currencyFormatter.format(displayData.get("totalInvSportsCost")));
+        System.out.println(
+                "Dynamic Invoice food costs: " + currencyFormatter.format(displayData.get("totalInvFoodCost")));
+        System.out.println(
+                "Dynamic Invoice course fees: " + currencyFormatter.format(displayData.get("totalInvCourseFees")));
+
+        // Error-Handling
+        if (sportCostsTotalLabel != null) {
+            sportCostsTotalLabel.setText(currencyFormatter.format(displayData.get("totalInvSportsCost")));
+        } else {
+            System.err.println("sportsCostsTotalLabel is null!");
+        }
+
+        if (foodCostsTotalLabel != null) {
+            foodCostsTotalLabel.setText(currencyFormatter.format(displayData.get("totalInvFoodCost")));
+        } else {
+            System.err.println("foodCostsTotalLabel is null!");
+        }
+
+        if (courseCostsTotalLabel != null) {
+            courseCostsTotalLabel.setText(currencyFormatter.format(displayData.get("totalInvCourseFees")));
+        } else {
+            System.err.println("courseCostsTotalLabel is null!");
+        }
     }
+
+    // private double calculateTotalCourseFees() {
+    // double total = 0.0;
+    // for (CourseEntry entry : courseDtsTable.getItems()) {
+    // total += entry.feeProperty().get();
+    // }
+    // return total;
+    // }
 
     // This loads course details into the course table and shows course name and
     // associated fees
@@ -776,6 +821,7 @@ public class ViewInvoiceController {
                 CourseEntry entry = getTableView().getItems().get(getIndex());
                 // Disable delete button for the first course
                 deleteButton.setDisable(entry.indexProperty().get() == 1);
+                deleteButton.setStyle("-fx-font-size: 11px; -fx-text-fill: #FFF; -fx-background-color: #dc4067");
 
                 deleteButton.setOnAction(event -> {
                     Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
@@ -854,6 +900,8 @@ public class ViewInvoiceController {
                     return;
                 }
 
+                deleteButton.setStyle("-fx-font-size: 11px; -fx-text-fill: #FFF; -fx-background-color: #dc4067");
+
                 deleteButton.setOnAction(event -> {
                     Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
                     confirmation.setTitle("Delete Food Item");
@@ -899,6 +947,8 @@ public class ViewInvoiceController {
                     setGraphic(null);
                     return;
                 }
+
+                deleteButton.setStyle("-fx-font-size: 11px; -fx-text-fill: #FFF; -fx-background-color: #dc4067");
 
                 deleteButton.setOnAction(event -> {
                     Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
