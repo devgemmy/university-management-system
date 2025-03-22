@@ -289,6 +289,7 @@ public class ViewInvoiceController {
 
     // This loads course details into the course table and shows course name and
     // associated fees
+    @SuppressWarnings("unchecked")
     private void loadCourseDetails(Map<String, Object> displayData) {
         ObservableList<CourseEntry> courseEntries = FXCollections.observableArrayList();
 
@@ -368,6 +369,7 @@ public class ViewInvoiceController {
 
     // This method loads food items into the food table and shows each food item and
     // its cost
+    @SuppressWarnings("unchecked")
     private void loadFoodItems(Map<String, Object> displayData) {
         ObservableList<FoodEntry> foodEntries = FXCollections.observableArrayList();
         int index = 1;
@@ -380,6 +382,7 @@ public class ViewInvoiceController {
 
     // This functon loads sports activities into the sports table shows each
     // activity and its cost
+    @SuppressWarnings("unchecked")
     private void loadSportsActivities(Map<String, Object> displayData) {
         ObservableList<SportEntry> sportEntries = FXCollections.observableArrayList();
         int index = 1;

@@ -81,9 +81,9 @@
             <TableView fx:id="invoiceTable" onSort="#loadTableData" prefHeight="425.0" prefWidth="1132.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #007A7A;">
                <columns>
                   <TableColumn fx:id="invoiceID" prefWidth="30" text="#" />
-                  <TableColumn fx:id="studentName" prefWidth="190" text="Name" />
-                  <TableColumn fx:id="institutionDetails" prefWidth="240" text="Institution" />
-                  <TableColumn fx:id="courseList" prefWidth="220" text="Course Details" />
+                  <TableColumn fx:id="studentName" prefWidth="140" text="Name" />
+                  <TableColumn fx:id="institutionDetails" prefWidth="260" text="Institution" />
+                  <TableColumn fx:id="courseList" prefWidth="230" text="Course Details" />
                   <TableColumn fx:id="courseInvFees" prefWidth="90" text="Course Fees" />
                   <TableColumn fx:id="totalSportsCost" prefWidth="120" text="Sports" />
                   <TableColumn fx:id="totalFoodCost" prefWidth="120" text="Food" />

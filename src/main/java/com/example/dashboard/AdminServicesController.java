@@ -28,18 +28,11 @@ public class AdminServicesController {
             FXMLLoader loader = new FXMLLoader(
                     AdminServicesController.class.getResource("/com/example/dashboard/dashboard-view.fxml"));
             Scene scene = new Scene(loader.load(), 1200, 1000);
-
-            // Get the controller and ensure it's initialized
-            // DashboardController dashboardController = loader.getController();
-
             // Set the scene and show
             Stage dashboardStage = (Stage) logoutButton.getScene().getWindow();
             dashboardStage.setTitle("UMS Finance - Dashboard");
             dashboardStage.setScene(scene);
             dashboardStage.show();
-
-            // Initialize the dashboard data after showing the scene
-            // dashboardController.initialize(null, null);
         } catch (IOException e) {
             showError("Error loading Finance Management dashboard: " + e.getMessage());
             e.printStackTrace();

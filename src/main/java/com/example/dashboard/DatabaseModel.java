@@ -6,23 +6,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-// import java.lang.reflect.Method;
 import java.nio.file.Paths;
-// import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
-// import java.util.Random;
 import java.time.Month;
-// import java.nio.file.Paths;
-// import java.time.Month;
-// import java.util.regex.Pattern;
-// import java.util.regex.Matcher;
 import java.util.stream.Collectors;
-
-// Add Invoice class import
-// import com.example.dashboard.Invoice;
 
 /**
  * Controller for database operations
@@ -33,6 +23,7 @@ public class DatabaseModel {
     // Singleton instance and database connection
     private static DatabaseModel instance;
     private Connection connection;
+    @SuppressWarnings("unused")
     private final String dbPath;
     private static final String DB_URL = "jdbc:sqlite:UMS-DB.db";
 
@@ -60,6 +51,7 @@ public class DatabaseModel {
      * Creates a new database connection
      * Used for static access to database
      */
+    @SuppressWarnings("exports")
     public static Connection connect() throws SQLException {
         return DriverManager.getConnection(DB_URL);
     }
@@ -68,6 +60,7 @@ public class DatabaseModel {
      * Gets an active database connection
      * Creates new connection if none exists or if current is closed
      */
+    @SuppressWarnings("exports")
     public Connection getConnection() throws SQLException {
         // if (connection == null || connection.isClosed()) {
         try {
@@ -752,40 +745,6 @@ public class DatabaseModel {
     // The ID of the invoice to delete, "true" if deletion was successful, false
     // otherwise
     public boolean deleteInvoice(String invoiceId) {
-        // Delete the invoice data
-        // String deleteQuery = "DELETE FROM INVOICE WHERE INVOICE_ID = ?";
-        // queryTheDB(deleteQuery, "1");
-        // System.out.println("Delete Invoice Clicked");
-
-        // String deleteFinancesQuery = "DELETE FROM FINANCES WHERE invoiceID = ?";
-        // String deleteInvoicesQuery = "DELETE FROM INVOICES WHERE \"INVOICE_ID\" = ?";
-
-        // try (Connection conn = getConnection()) {
-        // conn.setAutoCommit(false);
-        // try {
-        // // Delete from FINANCES
-        // try (PreparedStatement pstmt = conn.prepareStatement(deleteFinancesQuery)) {
-        // pstmt.setString(1, invoiceId);
-        // pstmt.executeUpdate();
-        // }
-
-        // // Delete from INVOICES
-        // try (PreparedStatement pstmt = conn.prepareStatement(deleteInvoicesQuery)) {
-        // pstmt.setString(1, invoiceId);
-        // pstmt.executeUpdate();
-        // }
-
-        // conn.commit();
-        // return true;
-        // } catch (SQLException e) {
-        // conn.rollback();
-        // System.err.println("Error deleting invoice: " + e.getMessage());
-        // return false;
-        // }
-        // } catch (SQLException e) {
-        // System.err.println("Error deleting invoice: " + e.getMessage());
-        // return false;
-        // }
 
         String deleteFinancesQuery = "DELETE FROM FINANCES WHERE invoiceID = ?";
         try (Connection conn = getConnection();

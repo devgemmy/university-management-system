@@ -5,8 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.sql.Statement;
-import java.sql.DriverManager;
-import java.nio.file.Paths;
+// import java.sql.DriverManager;
+// import java.nio.file.Paths;
 import java.util.Random;
 import java.util.HashSet;
 import java.util.Set;
@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.HashMap;
 
 public class DatabaseModelTest {
-    private static final String[] STUDENT_NAMES = {
+    protected static final String[] STUDENT_NAMES = {
             "Oliver Bennett", "Emma Sanders", "Liam Peterson", "Sophia Ramirez", "Elijah Foster",
             "Isabella Collins", "Jackson Reed", "Mia Scott", "Aiden Barnes", "Lily Richardson",
             "Caleb Hayes", "Ava Coleman", "Nathan Stewart", "Zoe James", "Sebastian Wright",
@@ -26,8 +26,8 @@ public class DatabaseModelTest {
             "Lucy Bryant", "Dylan Ross", "Victoria Patterson", "Leo Edwards", "Scarlett Mitchell"
     };
 
-    private static final String DB_URL = "jdbc:sqlite:"
-            + Paths.get(System.getProperty("user.dir"), "UMS-DB.db").toString();
+    // private static final String DB_URL = "jdbc:sqlite:"
+    // + Paths.get(System.getProperty("user.dir"), "UMS-DB.db").toString();
 
     // private Connection getConnection() throws SQLException {
     // return DriverManager.getConnection(DB_URL);
@@ -67,24 +67,21 @@ public class DatabaseModelTest {
 
         while (retryCount < MAX_RETRIES) {
             try {
-                // Close any existing connections first
                 if (conn != null) {
                     try {
                         conn.close();
                     } catch (SQLException e) {
-                        // Ignore
+
                     }
                 }
 
                 conn = dbController.getConnection();
                 conn.setAutoCommit(false);
 
-                // Load institution and course data
                 Map<String, InstitutionInfo> institutions = loadInstitutionsAndCourses(conn);
                 List<String> availableSports = getAvailableSports(conn);
                 List<String> availableFoods = getAvailableFoods(conn);
 
-                // Create FINANCES table if it doesn't exist
                 String createFinancesSQL = """
                             CREATE TABLE IF NOT EXISTS FINANCES (
                                 invoiceID TEXT PRIMARY KEY,
@@ -261,7 +258,8 @@ public class DatabaseModelTest {
 
         // Load institutions
         String institutionQuery = "SELECT UKPRN, LEGAL_NAME FROM INSTITUTION";
-        try (Statement stmt = conn.createStatement();
+        try (
+                Statement stmt = conn.createStatement();
                 ResultSet rs = stmt.executeQuery(institutionQuery)) {
             while (rs.next()) {
                 String ukprn = rs.getString("UKPRN");
@@ -269,7 +267,6 @@ public class DatabaseModelTest {
                 institutions.put(ukprn, new InstitutionInfo(ukprn, name));
             }
         }
-
         // Load courses for each institution
         String courseQuery = "SELECT KISCOURSEID, TITLE, PUBUKPRN FROM KISCOURSE WHERE PUBUKPRN = ?";
         for (InstitutionInfo institution : institutions.values()) {
@@ -282,10 +279,12 @@ public class DatabaseModelTest {
                                 rs.getString("TITLE"));
                         institution.courses.add(course);
                     }
+                    System.out.println("Course Query ran successfully ✅");
+                } catch (SQLException e) {
+                    System.err.println("❌ Error retrieving courses: " + e.getMessage());
                 }
             }
         }
-
         return institutions;
     }
 
@@ -317,5 +316,6 @@ public class DatabaseModelTest {
         System.out.println("Starting test data population...");
         populateTestData();
         System.out.println("Test data population completed.");
+        System.out.println("Database Model Testing Successful!");
     }
 }
