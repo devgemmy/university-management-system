@@ -14,11 +14,6 @@ import java.util.HashMap;
 import java.time.Month;
 import java.util.stream.Collectors;
 
-/**
- * Controller for database operations
- * Handles all interactions with the SQLite database including
- * CRUD operations for invoices and data retrieval
- */
 public class DatabaseModel {
     // Singleton instance and database connection
     private static DatabaseModel instance;
@@ -27,19 +22,11 @@ public class DatabaseModel {
     private final String dbPath;
     private static final String DB_URL = "jdbc:sqlite:UMS-DB.db";
 
-    /**
-     * Constructor initializes database path
-     * Uses current working directory to locate database file
-     */
     public DatabaseModel() {
         String currentDir = System.getProperty("user.dir");
         this.dbPath = Paths.get(currentDir, "UMS-DB.db").toString();
     }
 
-    /**
-     * Gets singleton instance of DatabaseModel
-     * Creates new instance if none exists
-     */
     public static DatabaseModel getInstance() {
         if (instance == null) {
             instance = new DatabaseModel();
@@ -47,19 +34,11 @@ public class DatabaseModel {
         return instance;
     }
 
-    /**
-     * Creates a new database connection
-     * Used for static access to database
-     */
     @SuppressWarnings("exports")
     public static Connection connect() throws SQLException {
         return DriverManager.getConnection(DB_URL);
     }
 
-    /**
-     * Gets an active database connection
-     * Creates new connection if none exists or if current is closed
-     */
     @SuppressWarnings("exports")
     public Connection getConnection() throws SQLException {
         // if (connection == null || connection.isClosed()) {
@@ -182,7 +161,6 @@ public class DatabaseModel {
         }
     }
 
-    // Method to test database connection
     public boolean testConnection() {
         try {
             getConnection();
@@ -299,7 +277,6 @@ public class DatabaseModel {
                 foodItems);
     }
 
-    // Get total costs across all universities
     public Map<String, Double> getTotalCosts() {
         Map<String, Double> totalCosts = new HashMap<>();
         String query = """
@@ -374,13 +351,11 @@ public class DatabaseModel {
         return yearlyAverageCosts;
     }
 
-    // Get filtered invoices based on various criteria
     public List<Map<String, Object>> getFilteredInvoices(String timeFilter, String monthPeriod, String yearPeriod) {
         List<Map<String, Object>> result = new ArrayList<>();
         StringBuilder queryBuilder = new StringBuilder("SELECT * FROM FINANCES WHERE 1=1");
         List<Object> params = new ArrayList<>();
 
-        // Add time-based filtering if parameters are provided
         if (timeFilter != null && !timeFilter.isEmpty() &&
                 monthPeriod != null && !monthPeriod.isEmpty() &&
                 yearPeriod != null && !yearPeriod.isEmpty()) {
@@ -403,7 +378,6 @@ public class DatabaseModel {
         try (Connection conn = DatabaseModel.connect();
                 PreparedStatement pstmt = conn.prepareStatement(queryBuilder.toString())) {
 
-            // Set parameters
             for (int i = 0; i < params.size(); i++) {
                 pstmt.setObject(i + 1, params.get(i));
             }
@@ -436,7 +410,6 @@ public class DatabaseModel {
         return result;
     }
 
-    // Get filtered invoices based on institution and date range
     public List<Map<String, Object>> getFilteredInvoicesByDateRange(String institution, String startDate,
             String endDate) {
         List<Map<String, Object>> invoices = new ArrayList<>();
@@ -448,13 +421,11 @@ public class DatabaseModel {
 
         List<Object> params = new ArrayList<>();
 
-        // Apply institution filter
         if (institution != null && !institution.trim().isEmpty()) {
             queryBuilder.append(" AND institutionName = ?");
             params.add(institution);
         }
 
-        // Apply date range filter
         if (startDate != null && !startDate.trim().isEmpty()) {
             queryBuilder.append(" AND invoiceDate >= ?");
             params.add(startDate);
@@ -491,7 +462,6 @@ public class DatabaseModel {
         return invoices;
     }
 
-    // Get all institutions
     public Map<String, String> getInstitutions() {
         Map<String, String> institutions = new HashMap<>();
         String query = "SELECT UKPRN, LEGAL_NAME FROM INSTITUTION";
@@ -537,7 +507,7 @@ public class DatabaseModel {
     // Get all sports activities
     public List<String> getSportsActivities() {
         List<String> sports = new ArrayList<>();
-        String query = "SELECT \"Sports Activities\" FROM SPORTS";
+        String query = "SELECT DISTINCT \"Sports Activities\" FROM SPORTS";
 
         try (Connection conn = getConnection();
                 Statement stmt = conn.createStatement();
@@ -570,13 +540,6 @@ public class DatabaseModel {
         return foods;
     }
 
-    /**
-     * Generates a new invoice in the database
-     * Creates records in both INVOICES and FINANCES tables
-     * 
-     * @param invoiceData Map containing all invoice information
-     * @return Generated invoice ID
-     */
     public String generateInvoice(Map<String, Object> invoiceData) throws SQLException {
         Connection conn = null;
         PreparedStatement invoicesStmt = null;
@@ -602,6 +565,27 @@ public class DatabaseModel {
                 String courseId = String.valueOf(invoiceData.get("courseId"));
                 double courseFees = Double.parseDouble(String.valueOf(invoiceData.get("courseFees")));
                 String formattedCourseCost = String.format("%s (%.2f)", courseId, courseFees);
+
+                // Format course list as "Course1 (cost1);Course2 (cost2)"
+                // -- Future Improvement No. 5
+                @SuppressWarnings("unchecked")
+                Map<String, String> courseList = (Map<String, String>) invoiceData.get("courseList");
+                StringBuilder formattedCourseFees = new StringBuilder();
+                @SuppressWarnings("unused")
+                double courseInvFees = 0.0;
+
+                if (courseList != null && !courseList.isEmpty()) {
+                    boolean first = true;
+                    for (Map.Entry<String, String> entry : courseList.entrySet()) {
+                        if (!first)
+                            formattedCourseFees.append(";");
+                        String course = entry.getKey();
+                        double fees = Double.parseDouble(entry.getValue());
+                        formattedCourseFees.append(String.format("%s (%.2f)", course, fees));
+                        courseInvFees += fees;
+                        first = false;
+                    }
+                }
 
                 // Format sports activities as "Sport1 (cost1);Sport2 (cost2)"
                 @SuppressWarnings("unchecked")
@@ -714,12 +698,6 @@ public class DatabaseModel {
         }
     }
 
-    /**
-     * Retrieves an invoice by its ID
-     * 
-     * @param invoiceId The ID of the invoice to retrieve
-     * @return Invoice object or null if not found
-     */
     public Invoice getInvoiceById(String invoiceId) {
         String query = """
                     SELECT * FROM FINANCES WHERE invoiceID = ?
@@ -740,10 +718,6 @@ public class DatabaseModel {
         return null;
     }
 
-    // This method eletes an invoice from the database and removes records from both
-    // INVOICES and FINANCES tables
-    // The ID of the invoice to delete, "true" if deletion was successful, false
-    // otherwise
     public boolean deleteInvoice(String invoiceId) {
 
         String deleteFinancesQuery = "DELETE FROM FINANCES WHERE invoiceID = ?";
@@ -758,8 +732,6 @@ public class DatabaseModel {
         }
     }
 
-    // This method updates an existing invoice in the database. The invoice to
-    // update returns true if the invoice was updated successfully, false otherwise.
     public boolean updateInvoice(Invoice invoice) {
         String sql = "UPDATE FINANCES SET " +
                 "courseID = ?, " +
@@ -773,7 +745,6 @@ public class DatabaseModel {
         try (Connection conn = DatabaseModel.connect();
                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            // Convert maps to strings for storage
             Map<String, String> courseList = invoice.getCourseList();
             String courseId = courseList.get("courseID");
             String courseName = courseList.get("courseName");
@@ -785,7 +756,7 @@ public class DatabaseModel {
             String sportsActivities = invoice.getSportsActivities().entrySet().stream()
                     .map(entry -> entry.getKey() + "(" + entry.getValue() + ")")
                     .collect(Collectors.joining("; "));
-            // Set parameters
+
             pstmt.setString(1, courseId);
             pstmt.setString(2, courseName);
             pstmt.setDouble(3, invoice.getCourseInvFees());
@@ -804,11 +775,6 @@ public class DatabaseModel {
         }
     }
 
-    /**
-     * Calculates the total course fees across all invoices
-     * 
-     * @return Total sum of all course fees
-     */
     public double calculateTotalFees() throws SQLException {
         String query = "SELECT SUM(courseInvFees) as total FROM FINANCES";
         try (Connection conn = getConnection();
@@ -885,7 +851,6 @@ public class DatabaseModel {
         return allData;
     }
 
-    // Get total costs for a specific university
     public Map<String, Double> getTotalCostsByUniversity(String universityName) throws SQLException {
         Map<String, Double> costs = new HashMap<>();
         String query = "SELECT SUM(courseInvFees) as totalCourses, " +

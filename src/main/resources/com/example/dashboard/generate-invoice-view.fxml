@@ -116,7 +116,7 @@
             <ComboBox fx:id="sportComboBox1" layoutX="19.0" layoutY="50.0" onAction="#handleCourseSelection" prefHeight="45.0" prefWidth="300" promptText="Sport Name" style="-fx-background-color: #FFFFFF; -fx-border-color: #757575; -fx-border-radius: 8px;" />
             <TextField fx:id="sportCostField1" layoutX="366.0" layoutY="49.0" prefHeight="45.0" prefWidth="300" promptText="Sport Price" style="-fx-background-color: #FFFFFF; -fx-border-color: #757575; -fx-border-radius: 8px;" />
             <ComboBox fx:id="sportComboBox2" layoutX="20.0" layoutY="131.0" onAction="#handleCourseSelection" prefHeight="45.0" prefWidth="300" promptText="Sport Name" style="-fx-background-color: #FFFFFF; -fx-border-color: #757575; -fx-border-radius: 8px;" />
-            <TextField fx:id="sportCostField1" layoutX="367.0" layoutY="130.0" prefHeight="45.0" prefWidth="300" promptText="Sport Price" style="-fx-background-color: #FFFFFF; -fx-border-color: #757575; -fx-border-radius: 8px;" />
+            <TextField fx:id="sportCostField2" layoutX="367.0" layoutY="130.0" prefHeight="45.0" prefWidth="300" promptText="Sport Price" style="-fx-background-color: #FFFFFF; -fx-border-color: #757575; -fx-border-radius: 8px;" />
             <!-- <Button layoutX="709.0" layoutY="139.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="166.0" style="-fx-background-color: #007A7A; -fx-border-radius: 12px;" text="Add Sports Activity" textFill="WHITE">
                <font>
                   <Font name="Avenir Roman" size="13.0" />

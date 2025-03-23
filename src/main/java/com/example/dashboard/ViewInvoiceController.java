@@ -22,9 +22,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.stream.Collectors;
 
-// The Controller for the invoice details view shows detailed information about a specific invoice including ourse details, sports activities, and food items
 public class ViewInvoiceController {
-    // UI Components for displaying invoice information
     @FXML
     private Text invoiceIdLabel;
     @FXML
@@ -48,7 +46,6 @@ public class ViewInvoiceController {
     @FXML
     private Text foodCostsTotalLabel;
 
-    // Tables for displaying different cost categories
     @FXML
     private TableView<CourseEntry> courseDtsTable;
     @FXML
@@ -83,25 +80,11 @@ public class ViewInvoiceController {
     private TableColumn<SportEntry, Void> sportDeleteColumn;
 
     @FXML
-    private ComboBox<String> courseSelectionComboBox;
+    private ComboBox<String> courseSelectionComboBox, foodSelectionComboBox, sportsSelectionComboBox;
     @FXML
-    private TextField courseFeeField;
+    private TextField courseFeeField, foodPriceField, sportsPriceField;
     @FXML
-    private Button addCourseButton;
-
-    @FXML
-    private ComboBox<String> foodSelectionComboBox;
-    @FXML
-    private TextField foodPriceField;
-    @FXML
-    private Button addFoodButton;
-
-    @FXML
-    private ComboBox<String> sportsSelectionComboBox;
-    @FXML
-    private TextField sportsPriceField;
-    @FXML
-    private Button addSportsButton;
+    private Button addCourseButton, addFoodButton, addSportsButton;
 
     // Controllers and utilities
     private Invoice currentInvoice;
@@ -172,7 +155,6 @@ public class ViewInvoiceController {
         dbModel = DatabaseModel.getInstance();
         availableCourses = new HashMap<>();
 
-        // Add price validation for all fields
         // observable
         courseFeeField.textProperty().addListener((_, oldValue, newValue) -> {
             if (!newValue.matches("\\d*(\\.\\d{0,2})?")) {
@@ -194,12 +176,9 @@ public class ViewInvoiceController {
         });
     }
 
-    // This method transforms invoice data into a format suitable for display and
-    // creates a map with all necessary information for the UI
     private Map<String, Object> transformInvoiceForDisplay(Invoice invoice) {
         Map<String, Object> displayData = new HashMap<>();
 
-        // Transform course details
         Map<String, Object> courseInfo = new HashMap<>();
         String courseName = invoice.getCourseList().get("courseName");
         // Debug log
@@ -210,10 +189,7 @@ public class ViewInvoiceController {
         courseInfo.put("fee", invoice.getCourseInvFees());
         displayData.put("course", courseInfo);
 
-        // Transform sports activities (already in correct format)
         displayData.put("sportsActivities", invoice.getSportsActivities());
-
-        // Transform food items (already in correct format)
         displayData.put("foodItems", invoice.getFoodItems());
 
         // Basic invoice info
@@ -230,8 +206,6 @@ public class ViewInvoiceController {
         return displayData;
     }
 
-    // This method loads all invoice details into the UI components and pdates
-    // labels, tables, and charts with invoice data
     public void loadInvoiceDetails() {
         if (currentInvoice == null)
             return;
@@ -285,9 +259,6 @@ public class ViewInvoiceController {
     // }
     // return total;
     // }
-
-    // This loads course details into the course table and shows course name and
-    // associated fees
     @SuppressWarnings("unchecked")
     private void loadCourseDetails(Map<String, Object> displayData) {
         ObservableList<CourseEntry> courseEntries = FXCollections.observableArrayList();
@@ -298,7 +269,6 @@ public class ViewInvoiceController {
         // courseEntries.add(new CourseEntry(1, (String) courseInfo.get("name"),
         // (Double) courseInfo.get("fee")));
         // }
-
         try {
             Map<String, Object> courseInfo = (Map<String, Object>) displayData.get("course");
             if (courseInfo != null) {
@@ -334,7 +304,6 @@ public class ViewInvoiceController {
                         }
                     }
 
-                    // Update total fees if needed
                     if (Math.abs(totalFees - currentInvoice.getCourseInvFees()) > 0.01) {
                         currentInvoice.setCourseInvFees(totalFees);
                         updateCourseFeeInDatabase(totalFees);
@@ -366,8 +335,6 @@ public class ViewInvoiceController {
         }
     }
 
-    // This method loads food items into the food table and shows each food item and
-    // its cost
     @SuppressWarnings("unchecked")
     private void loadFoodItems(Map<String, Object> displayData) {
         ObservableList<FoodEntry> foodEntries = FXCollections.observableArrayList();
@@ -379,8 +346,6 @@ public class ViewInvoiceController {
         foodDtsTable.setItems(foodEntries);
     }
 
-    // This functon loads sports activities into the sports table shows each
-    // activity and its cost
     @SuppressWarnings("unchecked")
     private void loadSportsActivities(Map<String, Object> displayData) {
         ObservableList<SportEntry> sportEntries = FXCollections.observableArrayList();
@@ -392,8 +357,6 @@ public class ViewInvoiceController {
         sportDtsTable.setItems(sportEntries);
     }
 
-    // This function updates the pie chart showing cost distribution and shows
-    // relative proportions of course fees, sports costs, and food costs
     private void updatePieChart() {
         ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
                 new PieChart.Data("Course Fees", currentInvoice.getCourseInvFees()),
@@ -401,7 +364,6 @@ public class ViewInvoiceController {
                 new PieChart.Data("Food Items", currentInvoice.getTotalFoodCost()));
         costDistributionChart.setData(pieChartData);
 
-        // Apply consistent colors to each slice
         pieChartData.forEach(data -> {
             String color = switch (data.getName()) {
                 case "Course Fees" -> "#007A7A"; // Green for Courses
@@ -413,15 +375,12 @@ public class ViewInvoiceController {
         });
     }
 
-    // This calculates the total cost of the invoice and sums course fees, sports
-    // costs, and food costs
     private double calculateTotalCosts() {
         return currentInvoice.getCourseInvFees() +
                 currentInvoice.getTotalSportsCost() +
                 currentInvoice.getTotalFoodCost();
     }
 
-    // Returns to the dashboard view
     @FXML
     private void backToDashboard() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("dashboard-view.fxml"));
@@ -436,8 +395,6 @@ public class ViewInvoiceController {
         // closingStage.close();
     }
 
-    // This handles invoice deletion with confirmation dialog and returns to
-    // dashboard if deletion is successful
     @FXML
     private void deleteInvoice() {
         if (currentInvoice == null)
@@ -455,7 +412,6 @@ public class ViewInvoiceController {
         }
     }
 
-    // Sets the invoice to be displayed and loads its details
     public void setInvoice(Invoice invoice) {
         this.currentInvoice = invoice;
         // Debug log
@@ -499,17 +455,14 @@ public class ViewInvoiceController {
         try {
             double courseFee = Double.parseDouble(feeText);
 
-            // Get the course name without the ID
             String courseName = selectedCourse;
             if (selectedCourse.contains(" (")) {
                 courseName = selectedCourse.substring(0, selectedCourse.lastIndexOf(" ("));
             }
 
-            // Get current course string and fees
             String currentCourses = currentInvoice.getCourseList().get("courseName");
             double currentFees = currentInvoice.getCourseInvFees();
 
-            // Format new course entry
             String newCourseEntry = courseName + ", " + courseFee;
             String updatedCourses = (currentCourses == null || currentCourses.isEmpty())
                     ? newCourseEntry
@@ -526,17 +479,14 @@ public class ViewInvoiceController {
                 stmt.setString(3, currentInvoice.getInvoiceID());
                 stmt.executeUpdate();
 
-                // Update invoice object
                 Map<String, String> courseList = currentInvoice.getCourseList();
                 courseList.put("courseName", updatedCourses);
                 currentInvoice.setCourseList(courseList);
                 currentInvoice.setCourseInvFees(newTotalFees);
 
-                // Refresh the display
                 loadInvoiceDetails();
                 updatePieChart();
 
-                // Clear input fields
                 courseSelectionComboBox.setValue(null);
                 courseFeeField.clear();
 
@@ -582,15 +532,12 @@ public class ViewInvoiceController {
                 stmt.setString(3, currentInvoice.getInvoiceID());
                 stmt.executeUpdate();
 
-                // Update the current invoice object
                 currentInvoice.setFoodItems(foodItems);
                 // currentInvoice.setTotalFoodCost(totalFoodCost);
 
-                // Refresh the display
                 loadInvoiceDetails();
                 updatePieChart();
 
-                // Clear input fields
                 foodSelectionComboBox.setValue(null);
                 foodPriceField.clear();
 
@@ -620,7 +567,6 @@ public class ViewInvoiceController {
             try (Connection conn = dbModel.getConnection();
                     PreparedStatement stmt = conn.prepareStatement(updateQuery)) {
 
-                // Get current sports activities and update
                 Map<String, Double> sportsActivities = new HashMap<>(currentInvoice.getSportsActivities());
                 sportsActivities.put(selectedSport, price);
                 String sportsActivitiesStr = convertSportsActivitiesToString(sportsActivities);
@@ -635,7 +581,6 @@ public class ViewInvoiceController {
                 stmt.setString(3, currentInvoice.getInvoiceID());
                 stmt.executeUpdate();
 
-                // Update the current invoice object
                 currentInvoice.setSportsActivities(sportsActivities);
                 // currentInvoice.setTotalSportsCost(totalSportsCost);
 
@@ -643,7 +588,6 @@ public class ViewInvoiceController {
                 loadInvoiceDetails();
                 updatePieChart();
 
-                // Clear input fields
                 sportsSelectionComboBox.setValue(null);
                 sportsPriceField.clear();
 
@@ -704,7 +648,7 @@ public class ViewInvoiceController {
                     courseSelectionComboBox.setVisibleRowCount(Math.min(10, courseNames.size()));
                 } else {
                     System.err.println("No valid courses found for institution ID: " + institutionId);
-                    // Try to find the institution in the INSTITUTION table to verify it exists
+                    // Try to find the institution in the INSTITUTION table to verifu it exists
                     String instQuery = "SELECT LEGAL_NAME FROM INSTITUTION WHERE UKPRN = ? OR PUBUKPRN = ?";
                     try (PreparedStatement instStmt = conn.prepareStatement(instQuery)) {
                         instStmt.setString(1, institutionId);
@@ -823,7 +767,6 @@ public class ViewInvoiceController {
                 }
 
                 CourseEntry entry = getTableView().getItems().get(getIndex());
-                // Disable delete button for the first course
                 deleteButton.setDisable(entry.indexProperty().get() == 1);
                 deleteButton.setStyle("-fx-font-size: 11px; -fx-text-fill: #FFF; -fx-background-color: #dc4067");
 
@@ -861,7 +804,6 @@ public class ViewInvoiceController {
                             first = false;
                         }
 
-                        // Update the invoice object
                         Map<String, String> courseList = currentInvoice.getCourseList();
                         courseList.put("courseName", courseNameBuilder.toString());
                         currentInvoice.setCourseList(courseList);
@@ -917,7 +859,6 @@ public class ViewInvoiceController {
                         FoodEntry foodEntry = getTableView().getItems().get(getIndex());
                         getTableView().getItems().remove(foodEntry);
 
-                        // Update indices for remaining items
                         int newIndex = 1;
                         for (FoodEntry remainingEntry : getTableView().getItems()) {
                             remainingEntry.indexProperty().set(newIndex++);
@@ -965,13 +906,11 @@ public class ViewInvoiceController {
                         SportEntry sportEntry = getTableView().getItems().get(getIndex());
                         getTableView().getItems().remove(sportEntry);
 
-                        // Update indices for remaining items
                         int newIndex = 1;
                         for (SportEntry remainingEntry : getTableView().getItems()) {
                             remainingEntry.indexProperty().set(newIndex++);
                         }
 
-                        // Update the database and totals
                         Map<String, Double> sportsActivities = new HashMap<>();
                         for (SportEntry entry : getTableView().getItems()) {
                             sportsActivities.put(entry.activityNameProperty().get(), entry.priceProperty().get());

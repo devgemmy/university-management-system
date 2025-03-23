@@ -8,20 +8,12 @@ import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import java.io.IOException;
 
-/**
- * Controller for the Administrative Services view
- * Handles navigation to different services and logout functionality
- */
 public class AdminServicesController {
     @FXML
     private Button logoutButton;
     @FXML
     private Button fontSizeButton;
 
-    /**
-     * Handles the Finance Management button click
-     * Navigates to the main dashboard
-     */
     @FXML
     private void viewFinanceDashboard() {
         try {
@@ -39,9 +31,6 @@ public class AdminServicesController {
         }
     }
 
-    /**
-     * Shows "Coming Soon" alert for services not yet integrated
-     */
     private void showComingSoon(String service) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Coming Soon");
@@ -50,9 +39,6 @@ public class AdminServicesController {
         alert.showAndWait();
     }
 
-    /**
-     * Shows error alert when operations fail
-     */
     private void showError(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");

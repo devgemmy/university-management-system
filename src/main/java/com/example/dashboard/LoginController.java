@@ -1,6 +1,5 @@
 package com.example.dashboard;
 
-// Import necessary JavaFX and Java utilities
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -10,12 +9,8 @@ import javafx.application.Platform;
 import java.io.IOException;
 // import java.sql.*;
 
-/**
- * Controller for the login view
- * Handles user authentication and transition to the dashboard
- */
 public class LoginController {
-    // UI Components linked to the FXML file
+
     @FXML
     private TextField emailField;
     @FXML
@@ -25,10 +20,6 @@ public class LoginController {
     @FXML
     private Label errorLabel;
 
-    /**
-     * Handles the close application button
-     * Exits the application immediately
-     */
     @FXML
     private void closeApplication() {
         // Alert the user before closing the application
@@ -48,13 +39,6 @@ public class LoginController {
         }
 
     }
-
-    /**
-     * Establishes connection to the SQLite database
-     * Uses the database file in the current working directory
-     * 
-     * @return Connection object or null if connection fails
-     */
     // private Connection connectToDatabase() {
     // try {
     // String dbPath = System.getProperty("user.dir") + "/UMS-DB.db";
@@ -66,11 +50,6 @@ public class LoginController {
     // }
     // }
 
-    /**
-     * Handles the login button click
-     * Validates user credentials and loads dashboard if successful
-     * Currently using simplified authentication for demo purposes
-     */
     @FXML
     private void handleLogin() {
         String email = emailField.getText();

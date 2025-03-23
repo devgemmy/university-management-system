@@ -102,10 +102,8 @@ public class DashboardController implements Initializable {
         }
     }
 
-    // Add after existing instance variables
     private DataCache dataCache;
 
-    // Cache structure for efficient data access
     private static class DataCache {
         // By Month (1-12) -> All invoices for that month across all years
         Map<Integer, List<Invoice>> monthlyData = new HashMap<>();
@@ -127,10 +125,6 @@ public class DashboardController implements Initializable {
 
     private boolean isProcessingTimeFilter = false;
 
-    /**
-     * Loads the pie chart showing total costs across all universities
-     * Shows breakdown of course fees, sports costs, and food costs
-     */
     @FXML
     protected void loadTotalCostsChart() {
         // Clear existing data
@@ -184,7 +178,7 @@ public class DashboardController implements Initializable {
             if (totalFoodPerSelect != null && !totalFoodPerSelect.getText().isEmpty()) {
                 foodCosts = Double.parseDouble(totalFoodPerSelect.getText().replace("£", "").replace(",", ""));
             }
-            // Initialize the data first
+
             ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
                     new PieChart.Data("Course Fees", courseFees),
                     new PieChart.Data("Sports Costs", sportsCosts),
@@ -222,12 +216,10 @@ public class DashboardController implements Initializable {
             // }
             // }
 
-            // Remove the costLabel from the center if it exists
             if (costLabel != null && costLabel.getParent() != null) {
                 ((AnchorPane) costLabel.getParent()).getChildren().remove(costLabel);
             }
 
-            // Add labels after ensuring the chart is properly initialized
             Platform.runLater(() -> {
                 // Clear any existing labels
                 if (totalCostsChart.getParent() instanceof AnchorPane) {
@@ -290,8 +282,6 @@ public class DashboardController implements Initializable {
                     }
                 }
 
-                // Add hover effects for pie slices
-                // Apply consistent colors to each slice
                 pieChartData.forEach(data -> {
                     Node node = data.getNode();
                     if (node != null) {
@@ -303,7 +293,6 @@ public class DashboardController implements Initializable {
                         };
 
                         node.setStyle("-fx-pie-color: " + defaultColor + ";");
-
                         // node.setOnMouseEntered(event -> {
                         // node.setStyle("-fx-pie-color: derive(" + defaultColor + ", 20%);");
                         // });
@@ -347,9 +336,6 @@ public class DashboardController implements Initializable {
         return angle;
     }
 
-    // This loads the bar chart showing average costs for each category in a
-    // selected university and updates when a different university is selected from
-    // the dropdown
     @FXML
     protected void loadAverageCostsChart() {
         averageUniCostsBarChart.getData().clear();
@@ -440,8 +426,6 @@ public class DashboardController implements Initializable {
             series.getData().add(new XYChart.Data<>("Food Costs", foodCosts));
 
             averageUniCostsBarChart.getData().add(series);
-
-            // Style the chart
             averageUniCostsBarChart.setStyle("-fx-background-color: white;");
 
             // Add value labels and style bars
@@ -478,13 +462,11 @@ public class DashboardController implements Initializable {
             xAxis.setLabel("Cost Categories");
             yAxis.setLabel("Amount (£)");
 
-            // Set y-axis range with some padding
             double maxValue = Math.max(Math.max(courseFees, sportsCosts), foodCosts);
             yAxis.setAutoRanging(false);
             yAxis.setLowerBound(0);
-            // Add 10% padding
+
             yAxis.setUpperBound(maxValue * 1.1);
-            // Create 10 tick marks
             yAxis.setTickUnit(maxValue / 10);
 
         } catch (Exception e) {
@@ -495,13 +477,12 @@ public class DashboardController implements Initializable {
 
     private void displayLabelForData(Label label, XYChart.Data<String, Number> data) {
         Node node = data.getNode();
-        label.setTranslateY(-10); // Position above the bar
+        label.setTranslateY(-10);
 
         Pane chartPane = (Pane) averageUniCostsBarChart.lookup(".chart-plot-background");
         if (chartPane != null && !chartPane.getChildren().contains(label)) {
             chartPane.getChildren().add(label);
 
-            // Position the label
             // obs, oldNode, newNode
             node.boundsInParentProperty().addListener((_, _, newBounds) -> {
                 if (newBounds != null) {
@@ -512,8 +493,6 @@ public class DashboardController implements Initializable {
         }
     }
 
-    // This loads invoice data into the table and updates summary statistics and
-    // calculates totals for courses, sports, and food costs
     @FXML
     protected void loadTableData() {
         // ERROR FIX: Reassigning invoiceTable to a new TableView is wrong.
@@ -673,8 +652,6 @@ public class DashboardController implements Initializable {
         };
     }
 
-    // This opens the new invoice generation window and creates a new stage for the
-    // invoice form
     @FXML
     private void generateNewInvoice() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("generate-invoice-view.fxml"));
@@ -713,8 +690,8 @@ public class DashboardController implements Initializable {
         return sqlStatement.executeQuery();
     }
 
-    // This methods sorts the invoice table data based on selected category and
-    // order and categories include: Courses, Sports, Food, Date
+    // This methods must sorts the invoice table data based on selected category and
+    // order and categories
     public void sortDataByCategory(ActionEvent event) {
         String selectedCategory = categoryComboBox.getValue();
         String selectedOrder = orderByComboBox.getValue();
@@ -754,8 +731,6 @@ public class DashboardController implements Initializable {
         }
     }
 
-    // This sets up time-based filtering for invoices and handles monthly and yearly
-    // filtering options
     @FXML
     public void setTimeFilter(ActionEvent event) {
         if (isProcessingTimeFilter) {
@@ -802,17 +777,13 @@ public class DashboardController implements Initializable {
                     System.out.println("Entering By Month case");
                     monthPeriodDropdown.setVisible(true);
                     yearPeriodDropdown.setVisible(false);
-                    // if (!isInitializing) {
-                    // loadTableData();
-                    // }
+
                     loadTableData();
                 }
                 case "All Records" -> {
                     monthPeriodDropdown.setVisible(false);
                     yearPeriodDropdown.setVisible(false);
-                    // if (!isInitializing) {
-                    // loadTableData();
-                    // }
+
                     loadTableData();
                 }
             }
@@ -823,8 +794,6 @@ public class DashboardController implements Initializable {
 
     }
 
-    // This opens detailed view for a selected invoice and creates new window
-    // showing all invoice information
     public void viewInvoice(Invoice invoice) throws IOException {
         try {
             FXMLLoader viewInvFXMLLoader = new FXMLLoader(DashboardApp.class.getResource("invoice-details-view.fxml"));
@@ -847,8 +816,6 @@ public class DashboardController implements Initializable {
 
     }
 
-    // This final methid initializes the dashboard with default values and sets up
-    // dropdowns, charts, and table columns
     protected void initializeDashboardValues() {
         ObservableList<String> categories = FXCollections.observableArrayList("Courses", "Sports", "Food", "Date");
         categoryComboBox.setItems(categories);
@@ -916,8 +883,6 @@ public class DashboardController implements Initializable {
         }
     }
 
-    // This method filters invoices based on selected year and updates table and
-    // statistics to show only matching records
     protected void filterInvoicesByYear(String selectedYear) {
         try {
             // if ("All Records".equals(timeFilter.getValue())) {
@@ -945,8 +910,7 @@ public class DashboardController implements Initializable {
         }
     }
 
-    // This method handles search functionality across all invoice fields and
-    // searches in student names, institutions, courses, and activities
+    // This method
     protected void handleSearch() {
         String searchText = searchField.getText().toLowerCase().trim();
         try {
@@ -1047,9 +1011,6 @@ public class DashboardController implements Initializable {
         }
     }
 
-    // This method is dedicated method for loading and updating the yearly bar
-    // chart. It shows costs by category (Courses, Sports, Food) across years. It
-    // also updates based on search results and selected institution
     @SuppressWarnings("unchecked")
     @FXML
     protected void loadYearlyBarChart() {
@@ -1095,7 +1056,6 @@ public class DashboardController implements Initializable {
                         (selectedUni != null && !selectedUni.equals("All Universities") ? " for " + selectedUni : ""));
                 return;
             }
-            // Set appropriate title
             averageUniCostsBarChart.setTitle("Average Yearly Costs by Category" +
                     (selectedUni != null && !selectedUni.equals("All Universities") ? " - " + selectedUni
                             : " - All Universities"));
@@ -1112,7 +1072,7 @@ public class DashboardController implements Initializable {
             Map<String, Double> yearlyFoodCosts = new HashMap<>();
             Map<String, Integer> yearlyInvoiceCounts = new HashMap<>();
 
-            // Initialize years (2020-2024)
+            // Initialize years (2020-2025)
             List<String> years = List.of("2020", "2021", "2022", "2023", "2024", "2025");
             years.forEach(year -> {
                 yearlyCourseCosts.put(year, 0.0);
@@ -1148,22 +1108,16 @@ public class DashboardController implements Initializable {
                 }
             });
 
-            // Add all series to the chart
             averageUniCostsBarChart.getData().addAll(coursesSeries, sportsSeries, foodSeries);
-
-            // Style the chart
             averageUniCostsBarChart.setStyle("-fx-background-color: white;");
 
-            // Style each series with consistent colors
             styleBarChartSeries(coursesSeries, "#007A7A"); // Green for Courses
             styleBarChartSeries(sportsSeries, "#FFA84A"); // Yellow for Sports
             styleBarChartSeries(foodSeries, "#DE6600"); // Orange for Food
 
-            // Configure axes
             xAxis.setLabel("Year");
             yAxis.setLabel("Average Amount (£)");
 
-            // Calculate max value for y-axis scaling
             double maxValue = averageUniCostsBarChart.getData().stream()
                     .flatMap(series -> series.getData().stream())
                     .mapToDouble(data -> data.getYValue().doubleValue())
@@ -1182,16 +1136,12 @@ public class DashboardController implements Initializable {
         }
     }
 
-    // This method tyles a bar chart series with the specified color and adds value
-    // labels
     private void styleBarChartSeries(XYChart.Series<String, Number> series, String color) {
         series.getData().forEach(data -> {
             Node node = data.getNode();
             if (node != null) {
-                // Set bar color with consistent scheme
                 node.setStyle("-fx-bar-fill: " + color + ";");
 
-                // Add value label
                 Label label = new Label(String.format("£%,.2f", data.getYValue().doubleValue()));
                 label.setStyle("-fx-font-size: 10px; -fx-text-fill: black;");
 
@@ -1205,17 +1155,14 @@ public class DashboardController implements Initializable {
         });
     }
 
-    // This method resets the chart to its default state
     @FXML
     private void resetChartToDefault() {
         uniAverageComboBox.setValue("All Universities");
         loadYearlyBarChart();
     }
 
-    // This updates initialize method to include the new listener setup
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Initialize database controller
         if (dbController == null) {
             dbController = new DatabaseModel();
         }
@@ -1226,18 +1173,13 @@ public class DashboardController implements Initializable {
                 showError("Failed to connect to database. Please check your connection and try again.");
                 return;
             }
-
-            // Initialize data cache first
             initializeDataCache();
         } catch (Exception e) {
             showError("Database initialization error: " + e.getMessage());
             return;
         }
-
-        // Initialize table columns
         initializeTableColumns();
 
-        // Initialize filter dropdowns first
         ObservableList<String> timeFilters = FXCollections.observableArrayList(
                 "All Records", "By Year", "By Month");
         timeFilter.setItems(timeFilters);
@@ -1250,36 +1192,27 @@ public class DashboardController implements Initializable {
         monthPeriodDropdown.setItems(months);
         monthPeriodDropdown.setValue("January"); // Set default to January
 
-        // Initially hide and disable period dropdowns
         yearPeriodDropdown.setVisible(false);
         yearPeriodDropdown.setDisable(true);
         monthPeriodDropdown.setVisible(false);
         monthPeriodDropdown.setDisable(true);
 
-        // Add search field listener
         // observable, oldValue, newValue
         searchField.textProperty().addListener((_, _, _) -> {
             handleSearch();
         });
 
-        // Initialize bar chart
         xAxis.setLabel("Cost Categories");
         yAxis.setLabel("Amount (£)");
         // averageUniCostsBarChart.setTitle("Total Costs");
         // averageUniCostsBarChart.setStyle(".chart-bar { -fx-bar-fill: #ff6b4a; }");
 
-        // Initialize dashboard values first
         initializeDashboardValues();
-
-        // Then load data and charts
         loadTableData();
         loadTotalCostsChart();
         loadAverageCostsChart();
-
-        // Setup listeners
         setupEventListeners();
 
-        // Set up university dropdown
         Map<String, String> institutions = dbController.getInstitutions();
         ArrayList<String> universities = new ArrayList<>();
         universities.add("All Universities"); // Add option to view all universities
@@ -1288,7 +1221,6 @@ public class DashboardController implements Initializable {
         uniAverageComboBox.setItems(FXCollections.observableArrayList(universities));
         uniAverageComboBox.setValue("All Universities"); // Set default selection
 
-        // Setup listener for university selection changes
         // observable, oldValue, newValue
         uniAverageComboBox.valueProperty().addListener((_, _, newValue) -> {
             if (newValue != null) {
@@ -1376,7 +1308,6 @@ public class DashboardController implements Initializable {
         });
     }
 
-    // This method handles navigation back to Administrative Services page
     @FXML
     protected void handleAdminServices() {
         try {
@@ -1385,7 +1316,6 @@ public class DashboardController implements Initializable {
                 dbController.closeConnection();
             }
 
-            // Clear existing data safely
             if (invoiceTable != null) {
                 invoiceTable.setItems(null);
             }
@@ -1435,7 +1365,6 @@ public class DashboardController implements Initializable {
     private void initializeDataCache() {
         dataCache = new DataCache();
         try {
-            // Load all invoices once
             dataCache.allInvoices = dbController.getAllInvoices();
             System.out.println("Loaded " + dataCache.allInvoices.size() + " total invoices");
 
@@ -1445,23 +1374,19 @@ public class DashboardController implements Initializable {
                 dataCache.monthlyTotals.put(i, new MonthlyTotals());
             }
 
-            // Organize data
             for (Invoice invoice : dataCache.allInvoices) {
                 String[] dateParts = invoice.getInvoiceDate().split("-");
                 int year = Integer.parseInt(dateParts[0]);
                 int month = Integer.parseInt(dateParts[1]);
 
-                // Add to monthly data (all years)
                 dataCache.monthlyData.get(month).add(invoice);
 
-                // Update monthly totals
                 MonthlyTotals totals = dataCache.monthlyTotals.get(month);
                 totals.totalCourseFees += invoice.getCourseInvFees();
                 totals.totalSportsCosts += invoice.getTotalSportsCost();
                 totals.totalFoodCosts += invoice.getTotalFoodCost();
                 totals.count++;
 
-                // Add to yearly data
                 dataCache.yearlyData
                         .computeIfAbsent(year, _ -> new ArrayList<>())
                         .add(invoice);
@@ -1479,7 +1404,6 @@ public class DashboardController implements Initializable {
     }
 
     private void setupEventListeners() {
-        // Setup listener for university selection changes
         // observable, oldValue, newValue
         uniAverageComboBox.valueProperty().addListener((_, _, newValue) -> {
             if (newValue != null && !isLoading) {
@@ -1487,7 +1411,6 @@ public class DashboardController implements Initializable {
             }
         });
 
-        // Add year period dropdown listener
         // observable, oldValue, newValue
         yearPeriodDropdown.valueProperty().addListener((_, _, newValue) -> {
             if (newValue != null && !isLoading) {
@@ -1495,7 +1418,6 @@ public class DashboardController implements Initializable {
             }
         });
 
-        // Add month period dropdown listener
         // observable, oldValue, newValue
         monthPeriodDropdown.valueProperty().addListener((_, _, newValue) -> {
             if (newValue != null && !isLoading && "By Month".equals(timeFilter.getValue())) {
@@ -1503,7 +1425,6 @@ public class DashboardController implements Initializable {
             }
         });
 
-        // Add search field listener with debounce
         // observable, oldValue, newValue
         searchField.textProperty().addListener((_, _, _) -> {
             if (!isLoading) {
@@ -1522,7 +1443,6 @@ public class DashboardController implements Initializable {
             }
         });
 
-        // Add time filter listener
         // observable, oldValue, newValue
         timeFilter.valueProperty().addListener((_, _, newValue) -> {
             if (newValue != null && !isLoading) {
@@ -1531,7 +1451,6 @@ public class DashboardController implements Initializable {
         });
     }
 
-    // Add timer field for search debouncing
     private Timer searchTimer;
 }
 

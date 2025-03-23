@@ -154,6 +154,4 @@ public class Invoice {
  * +getInvoiceDate(): String
  * +setInvoiceDate(): void
  * 
- * 
- * 
  */

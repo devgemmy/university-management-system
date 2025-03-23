@@ -16,13 +16,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Controller for the invoice generation view
- * Handles creation of new invoices with student, course, sports, and food
- * details
- */
 public class GenerateNewInvoiceController {
-    // UI Components for basic invoice information
     @FXML
     private TextField studentNameField;
     @FXML
@@ -33,10 +27,9 @@ public class GenerateNewInvoiceController {
     @FXML
     private DatePicker invoiceDatePicker;
 
-    @FXML
-    private Button foodThirdRow, sportThirdRow;
+    // @FXML
+    // private Button foodThirdRow, sportThirdRow;
 
-    // Panes for sports and food activities
     @FXML
     private Pane sportsActivitiesInfo;
     private List<Pair<ComboBox<String>, TextField>> sportsFields = new ArrayList<>();
@@ -74,21 +67,15 @@ public class GenerateNewInvoiceController {
     public void initialize() {
         dbModel = new DatabaseModel();
 
-        // Hide error labels initially
         hideAllErrorLabels();
-
-        // Set current date as default
         invoiceDatePicker.setValue(LocalDate.now());
 
-        // Load institutions
         institutionsMap = dbModel.getInstitutions();
         institutionComboBox.setItems(FXCollections.observableArrayList(institutionsMap.values()));
 
-        // Initialize sports and food fields
         initializeSportsFields();
         initializeFoodFields();
 
-        // Add listeners for validation
         addValidationListeners();
     }
 
@@ -159,7 +146,6 @@ public class GenerateNewInvoiceController {
         });
 
         // Course fee validation
-        // obs, old
         courseFeeField.textProperty().addListener((_, _, newValue) -> {
             if (newValue != null && !newValue.matches("\\d*\\.?\\d*")) {
                 feeFieldErr.setVisible(true);
@@ -194,80 +180,6 @@ public class GenerateNewInvoiceController {
         courseFieldErr.setVisible(false);
     }
 
-    // private void addNewSportField() {
-    // ComboBox<String> sportCombo = new ComboBox<>();
-    // TextField priceField = new TextField();
-
-    // sportCombo.setPromptText("Sport Name");
-    // priceField.setPromptText("Sport Price");
-
-    // // Set Layout
-    // sportCombo.setLayoutX(20.0);
-    // sportCombo.setLayoutY(190.0);
-    // priceField.setLayoutX(367.0);
-    // priceField.setLayoutY(190.0);
-
-    // // Set styles
-    // sportCombo.setPrefHeight(45);
-    // sportCombo.setPrefWidth(300);
-    // sportCombo.setStyle("-fx-background-color: #FFFFFF; -fx-border-color:
-    // #757575; -fx-border-radius: 8px;");
-
-    // priceField.setPrefHeight(45);
-    // priceField.setPrefWidth(300);
-    // priceField.setStyle("-fx-background-color: #FFFFFF; -fx-border-color:
-    // #757575; -fx-border-radius: 8px;");
-
-    // // Add to pane
-    // VBox container = new VBox(10);
-    // container.getChildren().addAll(sportCombo, priceField);
-    // container.setPadding(new Insets(10));
-    // sportsActivitiesInfo.getChildren().add(container);
-
-    // // Add to list
-    // sportsFields.add(new Pair<>(sportCombo, priceField));
-
-    // // Populate sports activities
-    // sportCombo.setItems(FXCollections.observableArrayList(dbModel.getSportsActivities()));
-    // }
-
-    // private void addNewFoodField() {
-    // ComboBox<String> foodCombo = new ComboBox<>();
-    // TextField priceField = new TextField();
-
-    // foodCombo.setPromptText("Food Name");
-    // priceField.setPromptText("Food Price");
-
-    // // Set Layout
-    // foodCombo.setLayoutX(19.0);
-    // foodCombo.setLayoutY(190.0);
-    // priceField.setLayoutX(366.0);
-    // priceField.setLayoutY(190.0);
-
-    // // Set styles
-    // foodCombo.setPrefHeight(45);
-    // foodCombo.setPrefWidth(300);
-    // foodCombo.setStyle("-fx-background-color: #FFFFFF; -fx-border-color: #757575;
-    // -fx-border-radius: 8px;");
-
-    // priceField.setPrefHeight(45);
-    // priceField.setPrefWidth(300);
-    // priceField.setStyle("-fx-background-color: #FFFFFF; -fx-border-color:
-    // #757575; -fx-border-radius: 8px;");
-
-    // // Add to pane
-    // VBox container = new VBox(10);
-    // container.getChildren().addAll(foodCombo, priceField);
-    // container.setPadding(new Insets(10));
-    // foodSelectionInfo.getChildren().add(container);
-
-    // // Add to list
-    // foodFields.add(new Pair<>(foodCombo, priceField));
-
-    // // Populate food items
-    // foodCombo.setItems(FXCollections.observableArrayList(dbModel.getFoodItems()));
-    // }
-
     @FXML
     private void handleReset() {
         // Clear all fields
@@ -277,26 +189,19 @@ public class GenerateNewInvoiceController {
         courseFeeField.clear();
         invoiceDatePicker.setValue(LocalDate.now());
 
-        // Clear sports fields
         sportsFields.forEach(pair -> {
             pair.getKey().setValue(null);
             pair.getValue().clear();
         });
 
-        // Clear food fields
         foodFields.forEach(pair -> {
             pair.getKey().setValue(null);
             pair.getValue().clear();
         });
 
-        // Hide all error labels
         hideAllErrorLabels();
     }
 
-    /**
-     * Handles the generation of a new invoice
-     * Validates all fields and creates invoice in database
-     */
     @FXML
     private void handleGenerateInvoice() {
         if (!validateFields()) {
@@ -357,16 +262,15 @@ public class GenerateNewInvoiceController {
             invoiceData.put("foodItems", foodItems);
 
             // Generate invoice
-            // String invoiceId = dbModel.generateInvoice(invoiceData);
+            String invoiceId = dbModel.generateInvoice(invoiceData);
 
             // Show success message
-            // Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            // alert.setTitle("Success");
-            // alert.setHeaderText(null);
-            // alert.setContentText("Invoice generated successfully with ID: " + invoiceId);
-            // alert.showAndWait();
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Success");
+            alert.setHeaderText(null);
+            alert.setContentText("Invoice generated successfully with ID: " + invoiceId);
+            alert.showAndWait();
 
-            // Reset form
             handleReset();
 
         } catch (Exception e) {
@@ -379,13 +283,6 @@ public class GenerateNewInvoiceController {
         }
     }
 
-    /**
-     * Gets the KISCOURSEID for a course at a specific institution
-     * 
-     * @param courseName      The name of the course
-     * @param institutionName The name of the institution
-     * @return The KISCOURSEID or course name if not found
-     */
     private String getKISCOURSEIDForCourse(String courseName, String institutionName) {
         try {
             String query = """
@@ -411,12 +308,6 @@ public class GenerateNewInvoiceController {
         return courseName; // Fallback to course name if KISCOURSEID not found
     }
 
-    /**
-     * Validates all form fields before invoice generation
-     * Checks for required fields and proper formatting
-     * 
-     * @return true if all fields are valid, false otherwise
-     */
     private boolean validateFields() {
         boolean isValid = true;
 
@@ -453,10 +344,6 @@ public class GenerateNewInvoiceController {
         return isValid;
     }
 
-    /**
-     * Returns to the dashboard view showing all invoices
-     */
-
     @FXML
     private void seeAllInvoices() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("dashboard-view.fxml"));
@@ -468,9 +355,7 @@ public class GenerateNewInvoiceController {
         // foodThirdRow.setVisible(false);
     }
 
-    // Helper class to store pairs of related UI components
-    // Used for sports activities and food items where we need both
-    // a selection field and a price field
+    // Helper class to store pairs of related sports activities and food items
     private static class Pair<K, V> {
         private final K key;
         private final V value;
@@ -489,3 +374,98 @@ public class GenerateNewInvoiceController {
         }
     }
 }
+
+// FOR THE editFormRow() METHOD
+// ========================================
+// private void addNewSportField() {
+// ComboBox<String> sportCombo = new ComboBox<>();
+// TextField priceField = new TextField();
+
+// sportCombo.setPromptText("Sport Name");
+// priceField.setPromptText("Sport Price");
+
+// // Set Layout
+// sportCombo.setLayoutX(20.0);
+// sportCombo.setLayoutY(190.0);
+// priceField.setLayoutX(367.0);
+// priceField.setLayoutY(190.0);
+
+// // Set styles
+// sportCombo.setPrefHeight(45);
+// sportCombo.setPrefWidth(300);
+// sportCombo.setStyle("-fx-background-color: #FFFFFF; -fx-border-color:
+// #757575; -fx-border-radius: 8px;");
+
+// priceField.setPrefHeight(45);
+// priceField.setPrefWidth(300);
+// priceField.setStyle("-fx-background-color: #FFFFFF; -fx-border-color:
+// #757575; -fx-border-radius: 8px;");
+
+// // Add to pane
+// VBox container = new VBox(10);
+// container.getChildren().addAll(sportCombo, priceField);
+// container.setPadding(new Insets(10));
+// sportsActivitiesInfo.getChildren().add(container);
+
+// // Add to list
+// sportsFields.add(new Pair<>(sportCombo, priceField));
+
+// // Populate sports activities
+// sportCombo.setItems(FXCollections.observableArrayList(dbModel.getSportsActivities()));
+// }
+
+// private void addNewFoodField() {
+// ComboBox<String> foodCombo = new ComboBox<>();
+// TextField priceField = new TextField();
+
+// foodCombo.setPromptText("Food Name");
+// priceField.setPromptText("Food Price");
+
+// // Set Layout
+// foodCombo.setLayoutX(19.0);
+// foodCombo.setLayoutY(190.0);
+// priceField.setLayoutX(366.0);
+// priceField.setLayoutY(190.0);
+
+// // Set styles
+// foodCombo.setPrefHeight(45);
+// foodCombo.setPrefWidth(300);
+// foodCombo.setStyle("-fx-background-color: #FFFFFF; -fx-border-color: #757575;
+// -fx-border-radius: 8px;");
+
+// priceField.setPrefHeight(45);
+// priceField.setPrefWidth(300);
+// priceField.setStyle("-fx-background-color: #FFFFFF; -fx-border-color:
+// #757575; -fx-border-radius: 8px;");
+
+// // Add to pane
+// VBox container = new VBox(10);
+// container.getChildren().addAll(foodCombo, priceField);
+// container.setPadding(new Insets(10));
+// foodSelectionInfo.getChildren().add(container);
+
+// // Add to list
+// foodFields.add(new Pair<>(foodCombo, priceField));
+
+// // Populate food items
+// foodCombo.setItems(FXCollections.observableArrayList(dbModel.getFoodItems()));
+// }
+
+/*
+ * List of Methods:
+ * -hideAllErrorLabels(): void
+ * -initialize(): void
+ * -initializeSportsFields(): void
+ * -initializeFoodFields(): void
+ * -addValidationListeners(): void
+ * -handleInstitutionSelection(event: ActionEvent): void
+ * -getUKPRNForInstitution(institutionName: String): String
+ * -handleCourseSelection(event: ActionEvent): void
+ * -handleReset(): void
+ * -handleGenerateInvoice(): void
+ * -getKISCOURSEIDForCourse(courseName: String, institutionName: String): String
+ * -validateFields(): boolean
+ * -seeAllInvoices(): void
+ * -addNewSportField(): void
+ * -addNewFoodField(): void
+ */

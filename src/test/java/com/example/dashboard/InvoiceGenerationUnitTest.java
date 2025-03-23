@@ -36,9 +36,7 @@ public class InvoiceGenerationUnitTest {
                     assertEquals(1, invoicesResult, "INVOICES insert should be successful");
                 }
 
-                // Generate invoice ID
                 String invoiceId = "INV" + String.format("%09d", System.currentTimeMillis() % 1000000000) + "TS";
-
                 // Insert into FINANCES table
                 String insertFinancesSQL = """
                             INSERT INTO FINANCES (
