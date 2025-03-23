@@ -322,6 +322,7 @@ public class DashboardController implements Initializable {
     }
 
     private double calcAngle(PieChart.Data data) {
+        totalCostsChart.setTitle("Total Costs by Category");
         if (totalCostsChart == null || totalCostsChart.getData() == null || totalCostsChart.getData().isEmpty()) {
             return 90; // Default angle if data is not available
         }
@@ -392,7 +393,7 @@ public class DashboardController implements Initializable {
 
         // XYChart.Data(xAxis, yAxis);
         XYChart.Series<String, Number> series = new XYChart.Series<>();
-        series.setName("Total Costs");
+        series.setName("Average Costs");
 
         try {
             List<Invoice> filteredInvoicesByInstitution = dbController.getAllInvoices();
@@ -412,27 +413,24 @@ public class DashboardController implements Initializable {
                 }
                 averageUniCostsBarChart.setTitle("Average Cost - " + selectedUni);
             } else {
-                averageUniCostsBarChart.setTitle("Average Cost Universities");
+                averageUniCostsBarChart.setTitle("Average Cost per University");
             }
 
             // Calculate averages of Invoices in the table with selected Institutions.
             for (Invoice invoice : filteredInvoicesByInstitution) {
-                courseFees += invoice.getCourseInvFees();
-                /// filteredInvoicesByInstitution.size();
+                courseFees += invoice.getCourseInvFees() / filteredInvoicesByInstitution.size();
 
                 Map<String, Double> sportsActivities = invoice.getSportsActivities();
                 if (sportsActivities != null) {
                     for (Double cost : sportsActivities.values()) {
-                        sportsCosts += cost;
-                        /// filteredInvoicesByInstitution.size();
+                        sportsCosts += cost / filteredInvoicesByInstitution.size();
                     }
                 }
 
                 Map<String, Double> foodItems = invoice.getFoodItems();
                 if (foodItems != null) {
                     for (Double cost : foodItems.values()) {
-                        foodCosts += cost;
-                        /// filteredInvoicesByInstitution.size();
+                        foodCosts += cost / filteredInvoicesByInstitution.size();
                     }
                 }
             }
@@ -689,11 +687,9 @@ public class DashboardController implements Initializable {
 
     // Setup Connection to the SQLite Database, returns null if connection fails
     protected Connection connectToDatabase() {
-
         // JDBC stands for Java Database Connector
         // String db = "/Users/macbookair/Documents/BRUNEL/YEAR 1/Group Project
         // B/UMS-DB.db";
-
         try {
             String driver = "jdbc:sqlite:";
             String dbPath = System.getProperty("user.dir") + "/UMS-DB.db";
@@ -724,13 +720,11 @@ public class DashboardController implements Initializable {
         String selectedOrder = orderByComboBox.getValue();
         // System.out.println("Selected Order: " + selectedOrder + ", Selected
         // Category:" + selectedCategory);
-
         try {
             ObservableList<Invoice> items = invoiceTable.getItems();
             if (items == null || items.isEmpty() || selectedCategory == null) {
                 return;
             }
-
             FXCollections.sort(items, (invoice1, invoice2) -> {
                 int comparison = 0;
 
@@ -749,13 +743,11 @@ public class DashboardController implements Initializable {
                         comparison = invoice1.getInvoiceDate().compareTo(invoice2.getInvoiceDate());
                         break;
                 }
-
                 // Reverse the comparison if DESC is selected
                 return "DESC".equals(selectedOrder) ? -comparison : comparison;
             });
 
             invoiceTable.setItems(items);
-
         } catch (Exception e) {
             e.printStackTrace();
             showError("Failed to sort data: " + e.getMessage());
@@ -957,7 +949,6 @@ public class DashboardController implements Initializable {
     // searches in student names, institutions, courses, and activities
     protected void handleSearch() {
         String searchText = searchField.getText().toLowerCase().trim();
-
         try {
             List<Invoice> allInvoices = dbController.getAllInvoices();
             List<Invoice> filteredInvoices;
@@ -970,21 +961,15 @@ public class DashboardController implements Initializable {
             } else {
                 filteredInvoices = allInvoices.stream()
                         .filter(invoice -> {
-                            // if (searchText.isEmpty()) {
-                            // return true; // Show all if search is empty
-                            // }
-
                             // Check student name
                             if (invoice.getStudentName().toLowerCase().contains(searchText)) {
                                 return true;
                             }
-
                             // Check institution name
                             String institutionName = invoice.getInstitutionDetails().get("institutionName");
                             if (institutionName != null && institutionName.toLowerCase().contains(searchText)) {
                                 return true;
                             }
-
                             // Check course details
                             Map<String, String> courseDetails = invoice.getCourseList();
                             if (courseDetails != null) {
@@ -999,7 +984,6 @@ public class DashboardController implements Initializable {
                                     return true;
                                 }
                             }
-
                             // Check sports activities
                             // Map<String, Double> sportsActivities = invoice.getSportsActivities();
                             // if (sportsActivities.keySet().stream()
@@ -1012,6 +996,10 @@ public class DashboardController implements Initializable {
                             // if (foodItems.keySet().stream()
                             // .anyMatch(item -> item.toLowerCase().contains(searchText))) {
                             // return true;
+                            // }
+
+                            // if (searchText.isEmpty()) {
+                            // return true; // Show all if search is empty
                             // }
 
                             // Check year
@@ -1036,23 +1024,20 @@ public class DashboardController implements Initializable {
             }
 
             double grandTotal = totalCourseFees + totalSportsCosts + totalFoodCosts;
-
             // Update summary labels
             totalFeesPerSelect.setText(String.format("£%,.2f", totalCourseFees));
             totalSportsPerSelect.setText(String.format("£%,.2f", totalSportsCosts));
             totalFoodPerSelect.setText(String.format("£%,.2f", totalFoodCosts));
             totalCosterSelect.setText(String.format("£%,.2f", grandTotal));
-
             // Update status message
             String statusMessage = String.format("Found %d matching records", filteredInvoices.size());
             System.out.println(statusMessage);
+            titlePerSelect.setText(statusMessage);
             if (filteredInvoices.size() == 0) {
                 showError(statusMessage);
             }
-
             // Update pie chart with new totals
             loadTotalCostsChart();
-
             // Update bar chart with filtered data
             loadYearlyBarChart();
 
@@ -1075,14 +1060,12 @@ public class DashboardController implements Initializable {
         XYChart.Series<String, Number> sportsSeries = new XYChart.Series<>();
         XYChart.Series<String, Number> foodSeries = new XYChart.Series<>();
 
-        coursesSeries.setName("Course Fees");
-        sportsSeries.setName("Sports Costs");
-        foodSeries.setName("Food Costs");
-
+        // coursesSeries.setName("Course Fees");
+        // sportsSeries.setName("Sports Costs");
+        // foodSeries.setName("Food Costs");
         try {
             List<Invoice> invoices = dbController.getAllInvoices();
             String searchText = searchField.getText().toLowerCase().trim();
-
             // Filter invoices based on search text if present
             if (!searchText.isEmpty()) {
                 invoices = invoices.stream()
@@ -1100,7 +1083,6 @@ public class DashboardController implements Initializable {
                         })
                         .toList();
             }
-
             // Filter by selected university if not "All Universities"
             String selectedUni = uniAverageComboBox.getValue();
             if (selectedUni != null && !selectedUni.equals("All Universities")) {
@@ -1108,17 +1090,21 @@ public class DashboardController implements Initializable {
                         .filter(invoice -> selectedUni.equals(invoice.getInstitutionDetails().get("institutionName")))
                         .toList();
             }
-
             if (invoices.isEmpty()) {
                 averageUniCostsBarChart.setTitle("No Data Available" +
                         (selectedUni != null && !selectedUni.equals("All Universities") ? " for " + selectedUni : ""));
                 return;
             }
-
             // Set appropriate title
-            averageUniCostsBarChart.setTitle("Yearly Costs by Category" +
+            averageUniCostsBarChart.setTitle("Average Yearly Costs by Category" +
                     (selectedUni != null && !selectedUni.equals("All Universities") ? " - " + selectedUni
                             : " - All Universities"));
+
+            String searchTextValue = searchText.isEmpty() ? "All Records" : searchText;
+            if (searchText != null && !searchText.isEmpty()) {
+                averageUniCostsBarChart.setTitle("Average Yearly Costs by Category for " +
+                        searchTextValue);
+            }
 
             // Initialize yearly totals maps
             Map<String, Double> yearlyCourseCosts = new HashMap<>();
@@ -1127,7 +1113,7 @@ public class DashboardController implements Initializable {
             Map<String, Integer> yearlyInvoiceCounts = new HashMap<>();
 
             // Initialize years (2020-2024)
-            List<String> years = List.of("2020", "2021", "2022", "2023", "2024");
+            List<String> years = List.of("2020", "2021", "2022", "2023", "2024", "2025");
             years.forEach(year -> {
                 yearlyCourseCosts.put(year, 0.0);
                 yearlySportsCosts.put(year, 0.0);
@@ -1422,7 +1408,6 @@ public class DashboardController implements Initializable {
         }
     }
 
-    // This shows error alert when operations fail
     private void showError(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");

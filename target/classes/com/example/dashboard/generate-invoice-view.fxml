@@ -69,6 +69,7 @@
                 <ComboBox fx:id="institutionComboBox" layoutX="366.0" layoutY="43.0" onAction="#handleInstitutionSelection" prefHeight="45.0" prefWidth="300" promptText="Select Institution" style="-fx-background-color: #FFFFFF; -fx-border-color: #757575; -fx-border-radius: 8px;" />
 
                 <DatePicker fx:id="invoiceDatePicker" layoutX="751.0" layoutY="43.0" prefHeight="45.0" prefWidth="300.0" promptText="Select Date" style="-fx-background-color: #FFFFFF; -fx-border-radius: 12px; -fx-border-color: #757575;" />
+                
                 <Label fx:id="studentFieldErr" layoutX="20.0" layoutY="91.0" text="This field is empty or invalid" textFill="#dc4067" />
                 <Label fx:id="feeFieldErr" layoutX="20.0" layoutY="177.0" text="This field is empty or invalid" textFill="#dc4067" />
                 <Label fx:id="institutionFieldErr" layoutX="367.0" layoutY="93.0" text="This field is empty or invalid" textFill="#dc4067" />
