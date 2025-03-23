@@ -551,7 +551,6 @@ public class DatabaseModel {
             conn.setAutoCommit(false);
 
             try {
-                // Step 1: Insert into INVOICES table first
                 String insertInvoicesSQL = """
                             INSERT INTO INVOICES (
                                 "Student Name", "Course Costs", "Sports Costs",
