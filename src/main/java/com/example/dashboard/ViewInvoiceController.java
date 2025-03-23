@@ -134,7 +134,6 @@ public class ViewInvoiceController {
             }
         });
         setupCourseDeleteColumn();
-
         // Food table
         foodIndexColumn.setCellValueFactory(cellData -> cellData.getValue().indexProperty().asObject());
         foodItemColumn.setCellValueFactory(cellData -> cellData.getValue().foodNameProperty());

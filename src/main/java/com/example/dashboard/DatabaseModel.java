@@ -770,7 +770,6 @@ public class DatabaseModel {
                 "sportsActivity = ?, " +
                 "totalSportsCost = ? " +
                 "WHERE invoiceID = ?";
-
         try (Connection conn = DatabaseModel.connect();
                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
@@ -786,7 +785,6 @@ public class DatabaseModel {
             String sportsActivities = invoice.getSportsActivities().entrySet().stream()
                     .map(entry -> entry.getKey() + "(" + entry.getValue() + ")")
                     .collect(Collectors.joining("; "));
-
             // Set parameters
             pstmt.setString(1, courseId);
             pstmt.setString(2, courseName);

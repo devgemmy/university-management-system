@@ -323,10 +323,17 @@ public class GenerateNewInvoiceController {
             // Process sports activities
             Map<String, String> sportsActivities = new HashMap<>();
             for (Pair<ComboBox<String>, TextField> sportField : sportsFields) {
-                String sport = sportField.getKey().getValue();
-                String price = sportField.getValue().getText();
-                if (sport != null && !sport.isEmpty() && price != null && !price.isEmpty()) {
-                    sportsActivities.put(sport, price);
+                // String sport = sportField.getKey().getValue();
+                // String price = sportField.getValue().getText();
+                // if (sport != null && !sport.isEmpty() && price != null && !price.isEmpty()) {
+                // sportsActivities.put(sport, price);
+                // }
+                ComboBox<String> sportCombo = sportField.getKey();
+                TextField priceField = sportField.getValue();
+
+                if (sportCombo != null && sportCombo.getValue() != null &&
+                        priceField != null && priceField.getText() != null && !priceField.getText().isEmpty()) {
+                    sportsActivities.put(sportCombo.getValue(), priceField.getText());
                 }
             }
             invoiceData.put("sportsActivities", sportsActivities);
@@ -334,23 +341,30 @@ public class GenerateNewInvoiceController {
             // Process food items
             Map<String, String> foodItems = new HashMap<>();
             for (Pair<ComboBox<String>, TextField> foodField : foodFields) {
-                String food = foodField.getKey().getValue();
-                String price = foodField.getValue().getText();
-                if (food != null && !food.isEmpty() && price != null && !price.isEmpty()) {
-                    foodItems.put(food, price);
+                // String food = foodField.getKey().getValue();
+                // String price = foodField.getValue().getText();
+                // if (food != null && !food.isEmpty() && price != null && !price.isEmpty()) {
+                // foodItems.put(food, price);
+                // }
+                ComboBox<String> foodCombo = foodField.getKey();
+                TextField priceField = foodField.getValue();
+
+                if (foodCombo != null && foodCombo.getValue() != null &&
+                        priceField != null && priceField.getText() != null && !priceField.getText().isEmpty()) {
+                    foodItems.put(foodCombo.getValue(), priceField.getText());
                 }
             }
             invoiceData.put("foodItems", foodItems);
 
             // Generate invoice
-            String invoiceId = dbModel.generateInvoice(invoiceData);
+            // String invoiceId = dbModel.generateInvoice(invoiceData);
 
             // Show success message
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Success");
-            alert.setHeaderText(null);
-            alert.setContentText("Invoice generated successfully with ID: " + invoiceId);
-            alert.showAndWait();
+            // Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            // alert.setTitle("Success");
+            // alert.setHeaderText(null);
+            // alert.setContentText("Invoice generated successfully with ID: " + invoiceId);
+            // alert.showAndWait();
 
             // Reset form
             handleReset();
@@ -360,6 +374,7 @@ public class GenerateNewInvoiceController {
             alert.setTitle("Error");
             alert.setHeaderText(null);
             alert.setContentText("Failed to generate invoice: " + e.getMessage());
+            System.out.println("Failed to generate invoice: " + e.getMessage());
             alert.showAndWait();
         }
     }
@@ -449,9 +464,8 @@ public class GenerateNewInvoiceController {
         dashboardStage.setTitle("UMS Finance - Dashboard");
         dashboardStage.setScene(new Scene(loader.load(), 1200, 1000));
         dashboardStage.show();
-
-        sportThirdRow.setVisible(false);
-        foodThirdRow.setVisible(false);
+        // sportThirdRow.setVisible(false);
+        // foodThirdRow.setVisible(false);
     }
 
     // Helper class to store pairs of related UI components

@@ -74,14 +74,11 @@ public class DatabaseModelTest {
 
                     }
                 }
-
                 conn = dbController.getConnection();
                 conn.setAutoCommit(false);
-
                 Map<String, InstitutionInfo> institutions = loadInstitutionsAndCourses(conn);
                 List<String> availableSports = getAvailableSports(conn);
                 List<String> availableFoods = getAvailableFoods(conn);
-
                 String createFinancesSQL = """
                             CREATE TABLE IF NOT EXISTS FINANCES (
                                 invoiceID TEXT PRIMARY KEY,
