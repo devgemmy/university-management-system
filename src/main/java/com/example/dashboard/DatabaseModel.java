@@ -907,6 +907,7 @@ public class DatabaseModel {
                     ResultSet rs = selectStmt.executeQuery(selectSQL);
                     PreparedStatement insertStmt = conn.prepareStatement(insertSQL)) {
 
+                System.out.println("Executing query: " + rs);
                 while (rs.next()) {
                     insertStmt.setString(1, rs.getString("INVOICE_ID"));
                     insertStmt.setString(2, rs.getString("studentName"));
