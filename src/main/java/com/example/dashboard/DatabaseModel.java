@@ -94,72 +94,73 @@ public class DatabaseModel {
         }
     }
 
-    public void populateFinancesFromExistingData() {
-        try (Connection conn = getConnection()) {
-            // First, check if FINANCES table is empty
-            String countQuery = "SELECT COUNT(*) FROM FINANCES";
-            try (Statement stmt = conn.createStatement();
-                    ResultSet rs = stmt.executeQuery(countQuery)) {
-                if (rs.next() && rs.getInt(1) > 0) {
-                    System.out.println("FINANCES table already contains data. Skipping population.");
-                    return;
-                }
-            }
+    // public void populateFinancesFromExistingData() {
+    // try (Connection conn = getConnection()) {
+    // // First, check if FINANCES table is empty
+    // String countQuery = "SELECT COUNT(*) FROM FINANCES";
+    // try (Statement stmt = conn.createStatement();
+    // ResultSet rs = stmt.executeQuery(countQuery)) {
+    // if (rs.next() && rs.getInt(1) > 0) {
+    // System.out.println("FINANCES table already contains data. Skipping
+    // population.");
+    // return;
+    // }
+    // }
 
-            // Query to join INVOICES, INSTITUTION, and KISCOURSE tables
-            String selectDataSQL = """
-                        SELECT
-                            i.INVOICE_ID,
-                            i.STUDENT_NAME,
-                            k.KISCOURSEID,
-                            k.TITLE as COURSE_NAME,
-                            i.COURSE_FEES,
-                            i.SPORTS_ACTIVITIES,
-                            i.SPORTS_TOTAL_COST,
-                            i.FOOD_ITEMS,
-                            i.FOOD_TOTAL_COST,
-                            inst.UKPRN,
-                            inst.INSTITUTION_NAME,
-                            i.INVOICE_DATE
-                        FROM INVOICES i
-                        LEFT JOIN KISCOURSE k ON i.COURSE_ID = k.KISCOURSEID
-                        LEFT JOIN INSTITUTION inst ON i.INSTITUTION_ID = inst.UKPRN
-                    """;
+    // // Query to join INVOICES, INSTITUTION, and KISCOURSE tables
+    // String selectDataSQL = """
+    // SELECT
+    // i.INVOICE_ID,
+    // i.STUDENT_NAME,
+    // k.KISCOURSEID,
+    // k.TITLE as COURSE_NAME,
+    // i.COURSE_FEES,
+    // i.SPORTS_ACTIVITIES,
+    // i.SPORTS_TOTAL_COST,
+    // i.FOOD_ITEMS,
+    // i.FOOD_TOTAL_COST,
+    // inst.UKPRN,
+    // inst.INSTITUTION_NAME,
+    // i.INVOICE_DATE
+    // FROM INVOICES i
+    // LEFT JOIN KISCOURSE k ON i.COURSE_ID = k.KISCOURSEID
+    // LEFT JOIN INSTITUTION inst ON i.INSTITUTION_ID = inst.UKPRN
+    // """;
 
-            String insertSQL = """
-                        INSERT INTO FINANCES (
-                            invoiceID, studentName, courseID, courseName, courseInvFees,
-                            sportsActivity, totalSportsCost, foodItems, totalFoodCost,
-                            institutionID, institutionName, invoiceDate
-                        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                    """;
+    // String insertSQL = """
+    // INSERT INTO FINANCES (
+    // invoiceID, studentName, courseID, courseName, courseInvFees,
+    // sportsActivity, totalSportsCost, foodItems, totalFoodCost,
+    // institutionID, institutionName, invoiceDate
+    // ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    // """;
 
-            try (Statement selectStmt = conn.createStatement();
-                    ResultSet rs = selectStmt.executeQuery(selectDataSQL);
-                    PreparedStatement insertStmt = conn.prepareStatement(insertSQL)) {
+    // try (Statement selectStmt = conn.createStatement();
+    // ResultSet rs = selectStmt.executeQuery(selectDataSQL);
+    // PreparedStatement insertStmt = conn.prepareStatement(insertSQL)) {
 
-                while (rs.next()) {
-                    insertStmt.setString(1, rs.getString("INVOICE_ID"));
-                    insertStmt.setString(2, rs.getString("STUDENT_NAME"));
-                    insertStmt.setString(3, rs.getString("KISCOURSEID"));
-                    insertStmt.setString(4, rs.getString("COURSE_NAME"));
-                    insertStmt.setInt(5, rs.getInt("COURSE_FEES"));
-                    insertStmt.setString(6, rs.getString("SPORTS_ACTIVITIES"));
-                    insertStmt.setDouble(7, rs.getDouble("SPORTS_TOTAL_COST"));
-                    insertStmt.setString(8, rs.getString("FOOD_ITEMS"));
-                    insertStmt.setDouble(9, rs.getDouble("FOOD_TOTAL_COST"));
-                    insertStmt.setString(10, rs.getString("UKPRN"));
-                    insertStmt.setString(11, rs.getString("INSTITUTION_NAME"));
-                    insertStmt.setString(12, rs.getString("INVOICE_DATE"));
+    // while (rs.next()) {
+    // insertStmt.setString(1, rs.getString("INVOICE_ID"));
+    // insertStmt.setString(2, rs.getString("STUDENT_NAME"));
+    // insertStmt.setString(3, rs.getString("KISCOURSEID"));
+    // insertStmt.setString(4, rs.getString("COURSE_NAME"));
+    // insertStmt.setInt(5, rs.getInt("COURSE_FEES"));
+    // insertStmt.setString(6, rs.getString("SPORTS_ACTIVITIES"));
+    // insertStmt.setDouble(7, rs.getDouble("SPORTS_TOTAL_COST"));
+    // insertStmt.setString(8, rs.getString("FOOD_ITEMS"));
+    // insertStmt.setDouble(9, rs.getDouble("FOOD_TOTAL_COST"));
+    // insertStmt.setString(10, rs.getString("UKPRN"));
+    // insertStmt.setString(11, rs.getString("INSTITUTION_NAME"));
+    // insertStmt.setString(12, rs.getString("INVOICE_DATE"));
 
-                    insertStmt.executeUpdate();
-                }
-                System.out.println("Data successfully populated into FINANCES table.");
-            }
-        } catch (SQLException e) {
-            System.err.println("Error populating FINANCES table: " + e.getMessage());
-        }
-    }
+    // insertStmt.executeUpdate();
+    // }
+    // System.out.println("Data successfully populated into FINANCES table.");
+    // }
+    // } catch (SQLException e) {
+    // System.err.println("Error populating FINANCES table: " + e.getMessage());
+    // }
+    // }
 
     public boolean testConnection() {
         try {
