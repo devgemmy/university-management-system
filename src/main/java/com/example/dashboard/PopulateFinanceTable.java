@@ -32,7 +32,6 @@ public class PopulateFinanceTable {
                 conn.setAutoCommit(false);
 
                 String createFinancesSQL = """
-                            DROP TABLE IF EXISTS FINANCES;
                             CREATE TABLE IF NOT EXISTS FINANCES (
                                 invoice_id TEXT PRIMARY KEY,
                                 student_name TEXT,
@@ -48,20 +47,26 @@ public class PopulateFinanceTable {
                                 invoice_date TEXT
                             );
                         """;
+                // DROP TABLE IF EXISTS FINANCES;
 
                 try (Statement createstmt = conn.createStatement()) {
                     createstmt.execute(createFinancesSQL);
                 }
 
+                int initFinanceCount = 0;
                 String countQuery = "SELECT COUNT(*) FROM FINANCES";
                 try (
                         Statement stmt = conn.createStatement();
                         ResultSet rs = stmt.executeQuery(countQuery)) {
                     if (rs.next() && rs.getInt(1) > 0) {
+                        initFinanceCount = rs.getInt(1);
                         System.out.println("FINANCES table already contains data. Skipping population.");
                         return;
+                    } else {
+                        initFinanceCount = 0;
                     }
                 }
+
                 int originalInvCount = 96;
                 String countINVQuery = "SELECT COUNT(*) FROM INVOICES";
                 String cleanINVQuery = "DELETE FROM INVOICES WHERE \"Date of Invoice\" LIKE '%-%-% OR \"Date of Invoice\" IS NULL";
@@ -72,10 +77,25 @@ public class PopulateFinanceTable {
                         System.out.println(
                                 "INVOICES table already has clean data. \n Go ahead and populate the Finance table.");
                         // Populate the FINANCES table
-                        generateFinancesFromExistingInvoices(originalInvCount, conn);
-                        conn.commit();
-                        System.out.println("Test data populated successfully!");
-                        return; // Success, exit the retry loop
+                        if (initFinanceCount == 0 && originalInvCount == 96) {
+                            generateFinancesFromExistingInvoices(conn);
+                            conn.commit();
+                            String countFinanceQuery = "SELECT COUNT(*) FROM FINANCES";
+                            try (
+                                    Statement stmt = conn.createStatement();
+                                    ResultSet finrs = stmt.executeQuery(countFinanceQuery)) {
+                                if (finrs.next() && finrs.getInt(1) > 0) {
+                                    System.out.println("Finance Table population completed.");
+                                    return;
+                                }
+                            }
+                            System.out.println("Finance data populated successfully!");
+                            return; // Success, exit the retry loop
+                        } else {
+                            System.out.println("FINANCES table already contains data. Skipping population.");
+                            return;
+                        }
+
                     } else {
                         // Clean up the INVOICES table
                         try (Statement cleanstmt = conn.createStatement()) {
@@ -119,7 +139,7 @@ public class PopulateFinanceTable {
         }
     }
 
-    private static void generateFinancesFromExistingInvoices(int invCount, Connection conn) throws SQLException {
+    private static void generateFinancesFromExistingInvoices(Connection conn) throws SQLException {
         Random random = new Random();
 
         String selectInvData = """
@@ -183,6 +203,9 @@ public class PopulateFinanceTable {
                     pstmt.executeUpdate();
                 }
             }
+
+        } catch (SQLException e) {
+            System.err.println("Error populating FINANCES table: " + e.getMessage());
         }
     }
 
@@ -279,7 +302,5 @@ public class PopulateFinanceTable {
     public static void main(String[] args) {
         System.out.println("Starting test data population...");
         populateFinancesFromExistingData();
-        System.out.println("Test data population completed.");
-        System.out.println("Database Model Testing Successful!");
     }
 }
