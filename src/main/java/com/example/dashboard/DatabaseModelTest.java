@@ -276,9 +276,9 @@ public class DatabaseModelTest {
                                 rs.getString("TITLE"));
                         institution.courses.add(course);
                     }
-                    System.out.println("Course Query ran successfully ✅");
+                    // System.out.println("Course Query ran successfully ✅");
                 } catch (SQLException e) {
-                    System.err.println("❌ Error retrieving courses: " + e.getMessage());
+                    // System.err.println("❌ Error retrieving courses: " + e.getMessage());
                 }
             }
         }

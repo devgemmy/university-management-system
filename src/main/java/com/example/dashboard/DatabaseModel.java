@@ -94,73 +94,96 @@ public class DatabaseModel {
         }
     }
 
-    // public void populateFinancesFromExistingData() {
-    // try (Connection conn = getConnection()) {
-    // // First, check if FINANCES table is empty
-    // String countQuery = "SELECT COUNT(*) FROM FINANCES";
-    // try (Statement stmt = conn.createStatement();
-    // ResultSet rs = stmt.executeQuery(countQuery)) {
-    // if (rs.next() && rs.getInt(1) > 0) {
-    // System.out.println("FINANCES table already contains data. Skipping
-    // population.");
-    // return;
-    // }
-    // }
+    public void populateFinancesFromExistingData() {
+        try (Connection conn = getConnection()) {
+            // First, check if FINANCES table is empty
+            String countQuery = "SELECT COUNT(*) FROM FINANCES";
+            try (
+                    Statement stmt = conn.createStatement();
+                    ResultSet rs = stmt.executeQuery(countQuery)) {
+                if (rs.next() && rs.getInt(1) > 0) {
+                    System.out.println("FINANCES table already contains data. Skipping population.");
+                    return;
+                }
+            }
 
-    // // Query to join INVOICES, INSTITUTION, and KISCOURSE tables
-    // String selectDataSQL = """
-    // SELECT
-    // i.INVOICE_ID,
-    // i.STUDENT_NAME,
-    // k.KISCOURSEID,
-    // k.TITLE as COURSE_NAME,
-    // i.COURSE_FEES,
-    // i.SPORTS_ACTIVITIES,
-    // i.SPORTS_TOTAL_COST,
-    // i.FOOD_ITEMS,
-    // i.FOOD_TOTAL_COST,
-    // inst.UKPRN,
-    // inst.INSTITUTION_NAME,
-    // i.INVOICE_DATE
-    // FROM INVOICES i
-    // LEFT JOIN KISCOURSE k ON i.COURSE_ID = k.KISCOURSEID
-    // LEFT JOIN INSTITUTION inst ON i.INSTITUTION_ID = inst.UKPRN
-    // """;
+            String selectDataSQL = """
+                        SELECT
+                        i.'Student Name' as student_name,
+                        k.KISCOURSEID as course_id,
+                        k.TITLE as course_name,
+                        i.'Course Costs' as course_fees,
+                        i.'Sports Costs' as sports_activities,
+                        i.'Food Costs' as food_items,
+                        inst.UKPRN as institution_id,
+                        inst.LEGAL_NAME as institution_name,
+                        i.'Date of Invoice' as invoice_date,
+                        FROM INVOICES i
+                        LEFT JOIN KISCOURSE k ON k.KISCOURSEID = ?
+                        LEFT JOIN INSTITUTION inst ON inst.UKPRN = ?
+                        WHERE i.'Date of Invoice' IS NOT NULL
+                    """;
+            // i.formatted_course_id, i.retrieved_inst_id
 
-    // String insertSQL = """
-    // INSERT INTO FINANCES (
-    // invoiceID, studentName, courseID, courseName, courseInvFees,
-    // sportsActivity, totalSportsCost, foodItems, totalFoodCost,
-    // institutionID, institutionName, invoiceDate
-    // ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    // """;
+            // String formatted_course_id = String.format("%s (%.2f)", courseId,
+            // courseFees);
 
-    // try (Statement selectStmt = conn.createStatement();
-    // ResultSet rs = selectStmt.executeQuery(selectDataSQL);
-    // PreparedStatement insertStmt = conn.prepareStatement(insertSQL)) {
+            String insertSQL = """
+                        INSERT INTO FINANCES (
+                        invoiceID, studentName, courseID, courseName, courseInvFees,
+                        sportsActivity, totalSportsCost, foodItems, totalFoodCost,
+                        institutionID, institutionName, invoiceDate
+                        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    """;
 
-    // while (rs.next()) {
-    // insertStmt.setString(1, rs.getString("INVOICE_ID"));
-    // insertStmt.setString(2, rs.getString("STUDENT_NAME"));
-    // insertStmt.setString(3, rs.getString("KISCOURSEID"));
-    // insertStmt.setString(4, rs.getString("COURSE_NAME"));
-    // insertStmt.setInt(5, rs.getInt("COURSE_FEES"));
-    // insertStmt.setString(6, rs.getString("SPORTS_ACTIVITIES"));
-    // insertStmt.setDouble(7, rs.getDouble("SPORTS_TOTAL_COST"));
-    // insertStmt.setString(8, rs.getString("FOOD_ITEMS"));
-    // insertStmt.setDouble(9, rs.getDouble("FOOD_TOTAL_COST"));
-    // insertStmt.setString(10, rs.getString("UKPRN"));
-    // insertStmt.setString(11, rs.getString("INSTITUTION_NAME"));
-    // insertStmt.setString(12, rs.getString("INVOICE_DATE"));
+            try (
+                    Statement selectStmt = conn.createStatement();
+                    PreparedStatement invoiceDataSelected = conn.prepareStatement(selectDataSQL);
 
-    // insertStmt.executeUpdate();
-    // }
-    // System.out.println("Data successfully populated into FINANCES table.");
-    // }
-    // } catch (SQLException e) {
-    // System.err.println("Error populating FINANCES table: " + e.getMessage());
-    // }
-    // }
+            ) {
+                String getCourseQuery = "SELECT 'Course Costs' as course_details FROM INVOICES";
+                PreparedStatement courQstmnt = conn.prepareStatement(getCourseQuery);
+                ResultSet courRslts = courQstmnt.executeQuery();
+                String formatted_course_id = "";
+
+                while (courRslts.next()) {
+                    courRslts.getString("course_details");
+                }
+
+                invoiceDataSelected.setString(1, formatted_course_id);
+
+                // ResultSet crs = pstmt.executeQuery(getCourseQuery);
+
+                // while (crs.next()) {
+                // pstmt.setString(1, crs.getString("course_id"));
+                // pstmt.setString(2, crs.getString("institution_id"));
+                // }
+
+                ResultSet rs = selectStmt.executeQuery(selectDataSQL);
+                PreparedStatement insertStmt = conn.prepareStatement(insertSQL);
+
+                while (rs.next()) {
+                    insertStmt.setString(1, "INV");
+                    insertStmt.setString(2, rs.getString("student_name"));
+                    insertStmt.setString(3, rs.getString("course_id"));
+                    insertStmt.setString(4, rs.getString("course_name"));
+                    insertStmt.setInt(5, rs.getInt("course_fees"));
+                    insertStmt.setString(6, rs.getString("sports_activities"));
+                    insertStmt.setDouble(7, rs.getDouble("SPORTS_TOTAL_COST"));
+                    insertStmt.setString(8, rs.getString("food_items"));
+                    insertStmt.setDouble(9, rs.getDouble("FOOD_TOTAL_COST"));
+                    insertStmt.setString(10, rs.getString("UKPRN"));
+                    insertStmt.setString(11, rs.getString("INSTITUTION_NAME"));
+                    insertStmt.setString(12, rs.getString("INVOICE_DATE"));
+
+                    insertStmt.executeUpdate();
+                }
+                System.out.println("Data successfully populated into FINANCES table.");
+            }
+        } catch (SQLException e) {
+            System.err.println("Error populating FINANCES table: " + e.getMessage());
+        }
+    }
 
     public boolean testConnection() {
         try {
@@ -216,22 +239,17 @@ public class DatabaseModel {
             String[] activities = sportsActivitiesStr.split(";");
             for (String activity : activities) {
                 try {
-                    // int startIndex = activity.lastIndexOf('(', endIndex);
                     int startIndex = activity.indexOf('(');
                     if (startIndex == -1)
                         continue;
 
-                    // int endIndex = activity.lastIndexOf(')');
                     int endIndex = activity.indexOf(')');
                     if (endIndex == -1)
                         continue;
 
                     String activityName = activity.substring(0, startIndex).trim();
                     String costString = activity.substring(startIndex + 1, endIndex).trim();
-                    // if (startIndex >= 0 && endIndex > startIndex) {
-                    // String costString = item.substring(startIndex + 1, endIndex).trim();
-                    // total += Double.parseDouble(costString);
-                    // }
+
                     double cost = Double.parseDouble(costString);
                     sportsActivities.put(activityName, cost);
                 } catch (NumberFormatException | IndexOutOfBoundsException e) {
