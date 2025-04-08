@@ -44,7 +44,7 @@
             <VBox prefHeight="209.0" prefWidth="520.0" style="-fx-background-color: #E3FAE3; -fx-padding: 20; -fx-background-radius: 10;" styleClass="service-card" GridPane.columnIndex="0" GridPane.rowIndex="0">
             <Pane prefHeight="200.0" prefWidth="200.0">
                <children>
-                      <Button layoutX="16.0" layoutY="143.0" onAction="#viewApplicantDetails" prefHeight="35.0" prefWidth="140.0" style="-fx-background-color: #00796b; -fx-text-fill: white;" text="View Restaurants">
+                      <Button layoutX="16.0" layoutY="143.0" onAction="#viewApplicantDetails" prefHeight="35.0" prefWidth="140.0" style="-fx-background-color: #00796b; -fx-text-fill: white;" text="View Applicants">
                      <font>
                         <Font name="Avenir Roman" size="14.0" />
                      </font>

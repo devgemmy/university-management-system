@@ -5,12 +5,13 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.sql.Statement;
-// import java.sql.DriverManager;
-// import java.nio.file.Paths;
 import java.util.Random;
 import java.sql.ResultSet;
 import java.util.Map;
 import java.util.HashMap;
+
+// CRUD operations for populating the FINANCES table
+// CREATE, SELECT, INSERT, DELETE
 
 public class PopulateFinanceTable {
     public static void populateFinancesFromExistingData() {
@@ -48,6 +49,10 @@ public class PopulateFinanceTable {
                             );
                         """;
                 // DROP TABLE IF EXISTS FINANCES;
+
+                // UPDATE FINANCES
+                // SET student_id = ''
+                // WHERE "Student Name" LIKE 'Mia Loveheart';
 
                 try (Statement createstmt = conn.createStatement()) {
                     createstmt.execute(createFinancesSQL);
@@ -169,10 +174,11 @@ public class PopulateFinanceTable {
                 int courseInvFees = extractCourseFees(allinvrs.getString("course_costs"));
                 String sportsActivity = allinvrs.getString("sports_costs");
                 // totalSportsCost
-                double totalSportsCost = 0.0;
+                double totalSportsCost = getTotalSportsCosts(sportsActivity);
+
                 String foodItems = allinvrs.getString("food_costs");
                 // totalFoodCost
-                double totalFoodCost = 0.0;
+                double totalFoodCost = getTotalFoodCosts(foodItems);
                 String institutionID = courseDetails.get("institutionID");
                 String institutionName = courseDetails.get("institutionName");
 
@@ -225,17 +231,16 @@ public class PopulateFinanceTable {
 
         // String selectSQL = """
         // SELECT
-        // i.INVOICE_ID,
         // i."Student Name" as studentName,
-        // i.COURSE_ID as courseID,
+        // k.KISCOURSEID as courseID,
         // k.TITLE as courseName,
         // CAST(i."Course Costs" AS INTEGER) as courseInvFees,
-        // i.SPORTS_ACTIVITIES as sportsActivity,
+        // i."Sports Costs" as sportsActivity,
         // CAST(i."Sports Costs" AS REAL) as totalSportsCost,
-        // i.FOOD_ITEMS as foodItems,
+        // i."Food Costs" as foodItems,
         // CAST(i."Food Costs" AS REAL) as totalFoodCost,
-        // i.INSTITUTION_ID as institutionID,
-        // inst.INSTITUTION_NAME as institutionName,
+        // inst.UKPRN as institutionID,
+        // inst.LEGAL_NAME as institutionName,
         // i."Date of Invoice" as invoiceDate
         // FROM INVOICES i
         // LEFT JOIN KISCOURSE k ON i.COURSE_ID = k.KISCOURSEID
@@ -280,6 +285,42 @@ public class PopulateFinanceTable {
                 Integer.parseInt(invoiceMonth),
                 Integer.parseInt(invoiceDay)); // 2020-05-06
         return invoiceDate.toString();
+    }
+
+    private static double getTotalSportsCosts(String sportsActivity) {
+        double totalSportsCost = 0.0;
+        String[] activities = sportsActivity.split(";");
+        for (String activity : activities) {
+            String[] parts = activity.split("\\(");
+            if (parts.length == 2) {
+                String costString = parts[1].replace(")", "").trim();
+                try {
+                    double cost = Double.parseDouble(costString);
+                    totalSportsCost += cost;
+                } catch (NumberFormatException e) {
+                    System.err.println("Error parsing sports cost: " + costString);
+                }
+            }
+        }
+        return totalSportsCost;
+    }
+
+    private static double getTotalFoodCosts(String foodItems) {
+        double totalFoodCosts = 0.0;
+        String[] food_items = foodItems.split(";");
+        for (String food : food_items) {
+            String[] parts = food.split("\\(");
+            if (parts.length == 2) {
+                String costString = parts[1].replace(")", "").trim();
+                try {
+                    double cost = Double.parseDouble(costString);
+                    totalFoodCosts += cost;
+                } catch (NumberFormatException e) {
+                    System.err.println("Error parsing sports cost: " + costString);
+                }
+            }
+        }
+        return totalFoodCosts;
     }
 
     private static int extractCourseFees(String courseCosts) {
