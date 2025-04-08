@@ -162,9 +162,9 @@ public class DatabaseModelTest {
                     // Insert into FINANCES
                     String insertFinanceSQL = """
                                 INSERT OR IGNORE INTO FINANCES (
-                                    invoiceID, studentName, courseID, courseName, courseInvFees,
-                                    sportsActivity, totalSportsCost, foodItems, totalFoodCost,
-                                    institutionID, institutionName, invoiceDate
+                                    invoice_id, student_name, course_id, course_name, course_inv_fees,
+                                    sports_activity, total_sports_cost, food_items, total_food_cost,
+                                    institution_id, institution_name, invoice_date
                                 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                             """;
 
@@ -184,22 +184,22 @@ public class DatabaseModelTest {
                         pstmt.executeUpdate();
                     }
 
-                    // Insert into INVOICES
-                    String insertInvoiceSQL = """
-                                INSERT INTO INVOICES (
-                                    "Student Name", "Course Costs", "Sports Costs",
-                                    "Food Costs", "Date of Invoice"
-                                ) VALUES (?, ?, ?, ?, ?)
-                            """;
+                    // // Insert into INVOICES
+                    // String insertInvoiceSQL = """
+                    // INSERT INTO INVOICES (
+                    // "Student Name", "Course Costs", "Sports Costs",
+                    // "Food Costs", "Date of Invoice"
+                    // ) VALUES (?, ?, ?, ?, ?)
+                    // """;
 
-                    try (PreparedStatement pstmt = conn.prepareStatement(insertInvoiceSQL)) {
-                        pstmt.setString(1, STUDENT_NAMES[i]);
-                        pstmt.setString(2, String.format("%s (%.2f)", course.id, course.fee));
-                        pstmt.setString(3, sportsStr.toString());
-                        pstmt.setString(4, foodStr.toString());
-                        pstmt.setString(5, invoiceDate.toString());
-                        pstmt.executeUpdate();
-                    }
+                    // try (PreparedStatement pstmt = conn.prepareStatement(insertInvoiceSQL)) {
+                    // pstmt.setString(1, STUDENT_NAMES[i]);
+                    // pstmt.setString(2, String.format("%s (%.2f)", course.id, course.fee));
+                    // pstmt.setString(3, sportsStr.toString());
+                    // pstmt.setString(4, foodStr.toString());
+                    // pstmt.setString(5, invoiceDate.toString());
+                    // pstmt.executeUpdate();
+                    // }
                 }
 
                 conn.commit();

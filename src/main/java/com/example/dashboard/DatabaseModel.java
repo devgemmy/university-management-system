@@ -660,9 +660,9 @@ public class DatabaseModel {
                     // Step 2: Insert into FINANCES table
                     String insertFinancesSQL = """
                                 INSERT INTO FINANCES (
-                                    invoiceID, studentName, courseID, courseName, courseInvFees,
-                                    sportsActivity, totalSportsCost, foodItems, totalFoodCost,
-                                    institutionID, institutionName, invoiceDate
+                                    invoice_id, student_name, course_id, course_name, course_inv_fees,
+                                    sports_activity, total_sports_cost, food_items, total_food_cost,
+                                    institution_id, institution_name, invoice_date
                                 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                             """;
 
@@ -914,9 +914,9 @@ public class DatabaseModel {
 
         String insertSQL = """
                     INSERT INTO FINANCES (
-                        invoiceID, studentName, courseID, courseName, courseInvFees,
-                        sportsActivity, totalSportsCost, foodItems, totalFoodCost,
-                        institutionID, institutionName, invoiceDate
+                        invoice_id, student_name, course_id, course_name, course_inv_fees,
+                        sports_activity, total_sports_cost, food_items, total_food_cost,
+                        institution_id, institution_name, invoice_date
                     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """;
 

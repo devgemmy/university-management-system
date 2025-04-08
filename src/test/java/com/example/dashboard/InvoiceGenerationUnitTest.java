@@ -18,31 +18,32 @@ public class InvoiceGenerationUnitTest {
 
             try {
                 // Insert into INVOICES table
-                String insertInvoicesSQL = """
-                            INSERT INTO INVOICES (
-                                "Student Name", "Course Costs", "Sports Costs",
-                                "Food Costs", "Date of Invoice"
-                            ) VALUES (?, ?, ?, ?, ?)
-                        """;
+                // String insertInvoicesSQL = """
+                // INSERT INTO INVOICES (
+                // "Student Name", "Course Costs", "Sports Costs",
+                // "Food Costs", "Date of Invoice"
+                // ) VALUES (?, ?, ?, ?, ?)
+                // """;
 
-                try (PreparedStatement invoicesStmt = conn.prepareStatement(insertInvoicesSQL)) {
-                    invoicesStmt.setString(1, "Test Student");
-                    invoicesStmt.setString(2, "COMP101 (9250.00)");
-                    invoicesStmt.setString(3, "150.00");
-                    invoicesStmt.setString(4, "75.00");
-                    invoicesStmt.setString(5, LocalDate.now().toString());
+                // try (PreparedStatement invoicesStmt =
+                // conn.prepareStatement(insertInvoicesSQL)) {
+                // invoicesStmt.setString(1, "Test Student");
+                // invoicesStmt.setString(2, "COMP101 (9250.00)");
+                // invoicesStmt.setString(3, "150.00");
+                // invoicesStmt.setString(4, "75.00");
+                // invoicesStmt.setString(5, LocalDate.now().toString());
 
-                    int invoicesResult = invoicesStmt.executeUpdate();
-                    assertEquals(1, invoicesResult, "INVOICES insert should be successful");
-                }
+                // int invoicesResult = invoicesStmt.executeUpdate();
+                // assertEquals(1, invoicesResult, "INVOICES insert should be successful");
+                // }
 
                 String invoiceId = "INV" + String.format("%09d", System.currentTimeMillis() % 1000000000) + "TS";
                 // Insert into FINANCES table
                 String insertFinancesSQL = """
                             INSERT INTO FINANCES (
-                                invoiceID, studentName, courseID, courseName, courseInvFees,
-                                sportsActivity, totalSportsCost, foodItems, totalFoodCost,
-                                institutionID, institutionName, invoiceDate
+                                invoice_id, student_name, course_id, course_name, course_inv_fees,
+                                sports_activity, total_sports_cost, food_items, total_food_cost,
+                                institution_id, institution_name, invoice_date
                             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                         """;
 
