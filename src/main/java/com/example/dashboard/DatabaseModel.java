@@ -69,19 +69,19 @@ public class DatabaseModel {
     public void createFinancesTable() {
         String createTableSQL = """
                     CREATE TABLE IF NOT EXISTS "FINANCES" (
-                        "invoiceID" TEXT,
-                        "studentName" TEXT,
-                        "courseID" TEXT,
-                        "courseName" TEXT,
-                        "courseInvFees" INT,
-                        "sportsActivity" TEXT,
-                        "totalSportsCost" REAL,
-                        "foodItems" Text,
-                        "totalFoodCost" REAL,
-                        "institutionID" TEXT,
-                        "institutionName" TEXT,
-                        "invoiceDate" TEXT,
-                        PRIMARY KEY("invoiceID")
+                        "invoice_id" TEXT,
+                        "student_name" TEXT,
+                        "course_id"	TEXT,
+                        "course_name" TEXT,
+                        "course_inv_fees" INT,
+                        "sports_activity" TEXT,
+                        "total_sports_cost" REAL,
+                        "food_items" TEXT,
+                        "total_food_cost" REAL,
+                        "institution_id" TEXT,
+                        "institution_name" TEXT,
+                        "invoice_date" TEXT,
+                        PRIMARY KEY("invoice_id")
                     )
                 """;
 
@@ -130,9 +130,9 @@ public class DatabaseModel {
 
             String insertSQL = """
                         INSERT INTO FINANCES (
-                        invoiceID, studentName, courseID, courseName, courseInvFees,
-                        sportsActivity, totalSportsCost, foodItems, totalFoodCost,
-                        institutionID, institutionName, invoiceDate
+                        invoice_id, student_name, course_id, course_name, course_inv_fees,
+                        sports_activity, total_sports_cost, food_items, total_food_cost,
+                        institution_id, institution_name, invoice_date
                         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                     """;
 
@@ -214,27 +214,27 @@ public class DatabaseModel {
     }
 
     private Invoice createInvoiceFromResultSet(ResultSet rs) throws SQLException {
-        String invoiceId = rs.getString("invoiceID");
-        String studentName = rs.getString("studentName");
-        String invoiceDate = rs.getString("invoiceDate");
-        double courseFees = rs.getDouble("courseInvFees");
-        double sportsCost = rs.getDouble("totalSportsCost");
-        double foodCost = rs.getDouble("totalFoodCost");
+        String invoiceId = rs.getString("invoice_id");
+        String studentName = rs.getString("student_name");
+        String invoiceDate = rs.getString("invoice_date");
+        double courseFees = rs.getDouble("course_inv_fees");
+        double sportsCost = rs.getDouble("total_sports_cost");
+        double foodCost = rs.getDouble("total_food_cost");
 
         // Create course details HashMap
         HashMap<String, String> courseDetails = new HashMap<>();
-        courseDetails.put("courseID", rs.getString("courseID"));
-        courseDetails.put("courseName", rs.getString("courseName"));
+        courseDetails.put("courseID", rs.getString("course_id"));
+        courseDetails.put("courseName", rs.getString("course_name"));
         // System.out.println("courseDetails: " + courseDetails);
 
         // Create institution details HashMap
         HashMap<String, String> institutionDetails = new HashMap<>();
-        institutionDetails.put("institutionID", rs.getString("institutionID"));
-        institutionDetails.put("institutionName", rs.getString("institutionName"));
+        institutionDetails.put("institutionID", rs.getString("institution_id"));
+        institutionDetails.put("institutionName", rs.getString("institution_name"));
 
         // Parse sports activities string and create HashMap
         HashMap<String, Double> sportsActivities = new HashMap<>();
-        String sportsActivitiesStr = rs.getString("sportsActivity");
+        String sportsActivitiesStr = rs.getString("sports_activity");
         if (sportsActivitiesStr != null && !sportsActivitiesStr.isEmpty()) {
             String[] activities = sportsActivitiesStr.split(";");
             for (String activity : activities) {
@@ -260,7 +260,7 @@ public class DatabaseModel {
 
         // Parse food items string and create HashMap
         HashMap<String, Double> foodItems = new HashMap<>();
-        String foodItemsStr = rs.getString("foodItems");
+        String foodItemsStr = rs.getString("food_items");
         if (foodItemsStr != null && !foodItemsStr.isEmpty()) {
             String[] items = foodItemsStr.split(";");
             for (String item : items) {
@@ -299,9 +299,9 @@ public class DatabaseModel {
     public Map<String, Double> getTotalCosts() {
         Map<String, Double> totalCosts = new HashMap<>();
         String query = """
-                    SELECT SUM(courseInvFees) as total_course_fees,
-                           SUM(totalSportsCost) as total_sports_cost,
-                           SUM(totalFoodCost) as total_food_cost
+                    SELECT SUM(course_inv_fees) as total_course_fees,
+                           SUM(total_sports_cost) as total_sports_cost,
+                           SUM(total_food_cost) as total_food_cost
                     FROM FINANCES
                 """;
 
@@ -407,18 +407,18 @@ public class DatabaseModel {
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
                     Map<String, Object> row = new HashMap<>();
-                    row.put("invoiceID", rs.getString("invoiceID"));
-                    row.put("studentName", rs.getString("studentName"));
-                    row.put("courseID", rs.getString("courseID"));
-                    row.put("courseName", rs.getString("courseName"));
-                    row.put("courseInvFees", rs.getInt("courseInvFees"));
-                    row.put("sportsActivity", rs.getString("sportsActivity"));
-                    row.put("totalSportsCost", rs.getDouble("totalSportsCost"));
-                    row.put("foodItems", rs.getString("foodItems"));
-                    row.put("totalFoodCost", rs.getDouble("totalFoodCost"));
-                    row.put("institutionID", rs.getString("institutionID"));
-                    row.put("institutionName", rs.getString("institutionName"));
-                    row.put("invoiceDate", rs.getString("invoiceDate"));
+                    row.put("invoiceID", rs.getString("invoice_id"));
+                    row.put("studentName", rs.getString("student_name"));
+                    row.put("courseID", rs.getString("course_id"));
+                    row.put("courseName", rs.getString("course_name"));
+                    row.put("courseInvFees", rs.getInt("course_inv_fees"));
+                    row.put("sportsActivity", rs.getString("sports_activity"));
+                    row.put("totalSportsCost", rs.getDouble("total_sports_cost"));
+                    row.put("foodItems", rs.getString("food_items"));
+                    row.put("totalFoodCost", rs.getDouble("total_food_cost"));
+                    row.put("institutionID", rs.getString("institution_id"));
+                    row.put("institutionName", rs.getString("institution_name"));
+                    row.put("invoiceDate", rs.getString("invoice_date"));
                     result.add(row);
                 }
             }
@@ -441,20 +441,20 @@ public class DatabaseModel {
         List<Object> params = new ArrayList<>();
 
         if (institution != null && !institution.trim().isEmpty()) {
-            queryBuilder.append(" AND institutionName = ?");
+            queryBuilder.append(" AND institution_name = ?");
             params.add(institution);
         }
 
         if (startDate != null && !startDate.trim().isEmpty()) {
-            queryBuilder.append(" AND invoiceDate >= ?");
+            queryBuilder.append(" AND invoice_date >= ?");
             params.add(startDate);
         }
         if (endDate != null && !endDate.trim().isEmpty()) {
-            queryBuilder.append(" AND invoiceDate <= ?");
+            queryBuilder.append(" AND invoice_date <= ?");
             params.add(endDate);
         }
 
-        queryBuilder.append(" ORDER BY invoiceDate");
+        queryBuilder.append(" ORDER BY invoice_date");
 
         try (Connection conn = getConnection();
                 PreparedStatement pstmt = conn.prepareStatement(queryBuilder.toString())) {
@@ -469,10 +469,10 @@ public class DatabaseModel {
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
                 Map<String, Object> invoice = new HashMap<>();
-                invoice.put("invoiceDate", rs.getString("invoiceDate"));
-                invoice.put("courseInvFees", rs.getDouble("courseInvFees"));
-                invoice.put("totalSportsCost", rs.getDouble("totalSportsCost"));
-                invoice.put("totalFoodCost", rs.getDouble("totalFoodCost"));
+                invoice.put("invoiceDate", rs.getString("invoice_date"));
+                invoice.put("courseInvFees", rs.getDouble("course_inv_fees"));
+                invoice.put("totalSportsCost", rs.getDouble("total_sports_cost"));
+                invoice.put("totalFoodCost", rs.getDouble("total_food_cost"));
                 invoices.add(invoice);
             }
         } catch (SQLException e) {
@@ -718,7 +718,7 @@ public class DatabaseModel {
 
     public Invoice getInvoiceById(String invoiceId) {
         String query = """
-                    SELECT * FROM FINANCES WHERE invoiceID = ?
+                    SELECT * FROM FINANCES WHERE invoice_id = ?
                 """;
 
         try (Connection conn = getConnection();
@@ -738,7 +738,7 @@ public class DatabaseModel {
 
     public boolean deleteInvoice(String invoiceId) {
 
-        String deleteFinancesQuery = "DELETE FROM FINANCES WHERE invoiceID = ?";
+        String deleteFinancesQuery = "DELETE FROM FINANCES WHERE invoice_id = ?";
         try (Connection conn = getConnection();
                 PreparedStatement pstmt = conn.prepareStatement(deleteFinancesQuery)) {
             pstmt.setString(1, invoiceId);
@@ -752,14 +752,14 @@ public class DatabaseModel {
 
     public boolean updateInvoice(Invoice invoice) {
         String sql = "UPDATE FINANCES SET " +
-                "courseID = ?, " +
-                "courseName = ?, " +
-                "courseInvFees = ?, " +
-                "foodItems = ?, " +
-                "totalFoodCost = ?, " +
-                "sportsActivity = ?, " +
-                "totalSportsCost = ? " +
-                "WHERE invoiceID = ?";
+                "course_id = ?, " +
+                "course_name = ?, " +
+                "course_inv_fees = ?, " +
+                "food_items = ?, " +
+                "total_food_cost = ?, " +
+                "sports_activity = ?, " +
+                "total_sports_cost = ? " +
+                "WHERE invoice_id = ?";
         try (Connection conn = DatabaseModel.connect();
                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
@@ -794,7 +794,7 @@ public class DatabaseModel {
     }
 
     public double calculateTotalFees() throws SQLException {
-        String query = "SELECT SUM(courseInvFees) as total FROM FINANCES";
+        String query = "SELECT SUM(course_inv_fees) as total FROM FINANCES";
         try (Connection conn = getConnection();
                 PreparedStatement pstmt = conn.prepareStatement(query)) {
             ResultSet rs = pstmt.executeQuery();
@@ -806,7 +806,7 @@ public class DatabaseModel {
     }
 
     public double calculateTotalSportsFees() throws SQLException {
-        String query = "SELECT SUM(totalSportsCost) as total FROM FINANCES";
+        String query = "SELECT SUM(total_sports_cost) as total FROM FINANCES";
         try (Connection conn = getConnection();
                 PreparedStatement pstmt = conn.prepareStatement(query)) {
             ResultSet rs = pstmt.executeQuery();
@@ -818,7 +818,7 @@ public class DatabaseModel {
     }
 
     public double calculateTotalFoodCosts() throws SQLException {
-        String query = "SELECT SUM(totalFoodCost) as total FROM FINANCES";
+        String query = "SELECT SUM(total_food_cost) as total FROM FINANCES";
         try (Connection conn = getConnection();
                 PreparedStatement pstmt = conn.prepareStatement(query)) {
             ResultSet rs = pstmt.executeQuery();
@@ -833,13 +833,13 @@ public class DatabaseModel {
     public Map<String, Map<String, Map<String, Double>>> getAllUniversitiesAverageCosts() {
         Map<String, Map<String, Map<String, Double>>> allData = new HashMap<>();
         String query = """
-                    SELECT strftime('%Y', invoiceDate) as year,
-                           institutionName,
-                           AVG(courseInvFees) as avg_course_fees,
-                           AVG(totalSportsCost) as avg_sports_cost,
-                           AVG(totalFoodCost) as avg_food_cost
+                    SELECT strftime('%Y', invoice_date) as year,
+                           institution_name,
+                           AVG(course_inv_fees) as avg_course_fees,
+                           AVG(total_sports_cost) as avg_sports_cost,
+                           AVG(total_food_cost) as avg_food_cost
                     FROM FINANCES
-                    GROUP BY strftime('%Y', invoiceDate), institutionName
+                    GROUP BY strftime('%Y', invoice_date), institution_name
                     ORDER BY year
                 """;
 
@@ -849,7 +849,7 @@ public class DatabaseModel {
 
             while (rs.next()) {
                 String year = rs.getString("year");
-                String institution = rs.getString("institutionName");
+                String institution = rs.getString("institution_name");
 
                 // Initialize year map if not exists
                 allData.putIfAbsent(year, new HashMap<>());
@@ -871,9 +871,9 @@ public class DatabaseModel {
 
     public Map<String, Double> getTotalCostsByUniversity(String universityName) throws SQLException {
         Map<String, Double> costs = new HashMap<>();
-        String query = "SELECT SUM(courseInvFees) as totalCourses, " +
-                "SUM(totalSportsCost) as totalSports, " +
-                "SUM(totalFoodCost) as totalFood " +
+        String query = "SELECT SUM(course_inv_fees) as totalCourses, " +
+                "SUM(total_sports_cost) as totalSports, " +
+                "SUM(total_food_cost) as totalFood " +
                 "FROM FINANCES WHERE institutionName = ?";
 
         try (Connection conn = getConnection();
@@ -928,18 +928,18 @@ public class DatabaseModel {
 
                 System.out.println("Executing query: " + rs);
                 while (rs.next()) {
-                    insertStmt.setString(1, rs.getString("INVOICE_ID"));
-                    insertStmt.setString(2, rs.getString("studentName"));
-                    insertStmt.setString(3, rs.getString("courseID"));
-                    insertStmt.setString(4, rs.getString("courseName"));
-                    insertStmt.setInt(5, rs.getInt("courseInvFees"));
-                    insertStmt.setString(6, rs.getString("sportsActivity"));
-                    insertStmt.setDouble(7, rs.getDouble("totalSportsCost"));
-                    insertStmt.setString(8, rs.getString("foodItems"));
-                    insertStmt.setDouble(9, rs.getDouble("totalFoodCost"));
-                    insertStmt.setString(10, rs.getString("institutionID"));
-                    insertStmt.setString(11, rs.getString("institutionName"));
-                    insertStmt.setString(12, rs.getString("invoiceDate"));
+                    insertStmt.setString(1, rs.getString("invoice_id"));
+                    insertStmt.setString(2, rs.getString("student_name"));
+                    insertStmt.setString(3, rs.getString("course_id"));
+                    insertStmt.setString(4, rs.getString("course_name"));
+                    insertStmt.setInt(5, rs.getInt("course_inv_fees"));
+                    insertStmt.setString(6, rs.getString("sports_activity"));
+                    insertStmt.setDouble(7, rs.getDouble("total_sports_cost"));
+                    insertStmt.setString(8, rs.getString("food_items"));
+                    insertStmt.setDouble(9, rs.getDouble("total_food_cost"));
+                    insertStmt.setString(10, rs.getString("institution_id"));
+                    insertStmt.setString(11, rs.getString("institution_name"));
+                    insertStmt.setString(12, rs.getString("invoice_date"));
 
                     insertStmt.executeUpdate();
                 }

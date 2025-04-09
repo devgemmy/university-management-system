@@ -324,7 +324,7 @@ public class ViewInvoiceController {
     private void updateCourseFeeInDatabase(double totalFees) {
         try (Connection conn = dbModel.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(
-                        "UPDATE FINANCES SET courseInvFees = ? WHERE invoiceID = ?")) {
+                        "UPDATE FINANCES SET course_inv_fees = ? WHERE invoice_id = ?")) {
             stmt.setDouble(1, totalFees);
             stmt.setString(2, currentInvoice.getInvoiceID());
             stmt.executeUpdate();
@@ -473,7 +473,7 @@ public class ViewInvoiceController {
             // Update database
             try (Connection conn = dbModel.getConnection();
                     PreparedStatement stmt = conn.prepareStatement(
-                            "UPDATE FINANCES SET courseName = ?, courseInvFees = ? WHERE invoiceID = ?")) {
+                            "UPDATE FINANCES SET course_name = ?, course_inv_fees = ? WHERE invoice_id = ?")) {
                 stmt.setString(1, updatedCourses);
                 stmt.setDouble(2, newTotalFees);
                 stmt.setString(3, currentInvoice.getInvoiceID());
@@ -513,7 +513,7 @@ public class ViewInvoiceController {
             double price = Double.parseDouble(priceText);
 
             // Update the database
-            String updateQuery = "UPDATE FINANCES SET foodItems = ?, totalFoodCost = ? WHERE invoiceID = ?";
+            String updateQuery = "UPDATE FINANCES SET food_items = ?, total_food_cost = ? WHERE invoice_id = ?";
             try (Connection conn = dbModel.getConnection();
                     PreparedStatement stmt = conn.prepareStatement(updateQuery)) {
 
@@ -563,7 +563,7 @@ public class ViewInvoiceController {
             double price = Double.parseDouble(priceText);
 
             // Update the database
-            String updateQuery = "UPDATE FINANCES SET sportsActivity = ?, totalSportsCost = ? WHERE invoiceID = ?";
+            String updateQuery = "UPDATE FINANCES SET sports_activity = ?, total_sports_cost = ? WHERE invoice_id = ?";
             try (Connection conn = dbModel.getConnection();
                     PreparedStatement stmt = conn.prepareStatement(updateQuery)) {
 
@@ -812,7 +812,7 @@ public class ViewInvoiceController {
                         // Update database
                         try (Connection conn = dbModel.getConnection();
                                 PreparedStatement stmt = conn.prepareStatement(
-                                        "UPDATE FINANCES SET courseName = ?, courseInvFees = ? WHERE invoiceID = ?")) {
+                                        "UPDATE FINANCES SET course_name = ?, course_inv_fees = ? WHERE invoice_id = ?")) {
                             stmt.setString(1, courseNameBuilder.toString());
                             stmt.setDouble(2, totalFees);
                             stmt.setString(3, currentInvoice.getInvoiceID());

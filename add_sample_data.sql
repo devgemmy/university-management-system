@@ -1,7 +1,7 @@
 INSERT INTO FINANCES (
-    invoiceID, studentName, courseID, courseName, courseInvFees,
-    sportsActivity, totalSportsCost, foodItems, totalFoodCost,
-    institutionID, institutionName, invoiceDate
+    invoice_id, student_name, course_id, course_name, course_inv_fees, 
+    sports_activity, total_sports_cost, food_items, total_food_cost, 
+    institution_id, institution_name, invoice_date
 ) VALUES 
 ('INV000000477AR', 'John Smith', 'CS101', 'Computer Science', 9500,
 'Basketball(1200);Swimming(800)', 2000, 'Pizza(15);Burger(12)', 27,
@@ -22,3 +22,4 @@ INSERT INTO FINANCES (
 ('INV000000481ER', 'David Lee', 'ART505', 'Fine Arts', 7800,
 'Dance(1300);Gymnastics(1200)', 2500, 'Sandwich(8);Coffee(4)', 12,
 '10007789', 'University of Technology', '2024-05-15'); 
+

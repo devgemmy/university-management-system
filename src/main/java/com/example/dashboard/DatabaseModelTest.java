@@ -81,18 +81,18 @@ public class DatabaseModelTest {
                 List<String> availableFoods = getAvailableFoods(conn);
                 String createFinancesSQL = """
                             CREATE TABLE IF NOT EXISTS FINANCES (
-                                invoiceID TEXT PRIMARY KEY,
-                                studentName TEXT,
-                                courseID TEXT,
-                                courseName TEXT,
-                                courseInvFees REAL,
-                                sportsActivity TEXT,
-                                totalSportsCost REAL,
-                                foodItems TEXT,
-                                totalFoodCost REAL,
-                                institutionID TEXT,
-                                institutionName TEXT,
-                                invoiceDate TEXT
+                                "invoice_id" TEXT PRIMARY KEY,
+                                "student_name" TEXT,
+                                "course_id" TEXT,
+                                "course_name" TEXT,
+                                "course_inv_fees" INT,
+                                "sports_activity" TEXT,
+                                "total_sports_cost" REAL,
+                                "food_items" TEXT,
+                                "total_food_cost" REAL,
+                                "institution_id" TEXT,
+                                "institution_name" TEXT,
+                                "invoice_date" TEXT,
                             )
                         """;
 

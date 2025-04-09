@@ -37,6 +37,7 @@ public class Invoice {
         this.institutionDetails = new HashMap<>(institutionDetails);
         this.sportsActivities = new HashMap<>(sportsActivities);
         this.foodItems = new HashMap<>(foodItems);
+        // this.studentID = studentID;
     }
 
     // Getters and setters

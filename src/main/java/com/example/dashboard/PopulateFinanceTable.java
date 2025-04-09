@@ -245,7 +245,7 @@ public class PopulateFinanceTable {
         // FROM INVOICES i
         // LEFT JOIN KISCOURSE k ON i.COURSE_ID = k.KISCOURSEID
         // LEFT JOIN INSTITUTION inst ON i.INSTITUTION_ID = inst.UKPRN
-        // WHERE i.INVOICE_ID NOT IN (SELECT invoiceID FROM FINANCES)
+        // WHERE i.INVOICE_ID NOT IN (SELECT invoice_id FROM FINANCES)
         // """;
 
         try (
