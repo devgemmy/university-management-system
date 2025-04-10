@@ -467,7 +467,8 @@ public class DatabaseModel {
                 // Format course costs as "KISCOURSEID (cost)"
                 String courseId = String.valueOf(invoiceData.get("courseId"));
                 double courseFees = Double.parseDouble(String.valueOf(invoiceData.get("courseFees")));
-                String formattedCourseCost = String.format("%s (%.2f)", courseId, courseFees);
+                // String formattedCourseCost = String.format("%s (%.2f)", courseId,
+                // courseFees);
 
                 // Format course list as "Course1 (cost1);Course2 (cost2)"
                 // -- Future Improvement No. 5
