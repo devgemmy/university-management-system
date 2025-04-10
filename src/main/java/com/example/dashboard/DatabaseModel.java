@@ -66,125 +66,6 @@ public class DatabaseModel {
         }
     }
 
-    public void createFinancesTable() {
-        String createTableSQL = """
-                    CREATE TABLE IF NOT EXISTS "FINANCES" (
-                        "invoice_id" TEXT,
-                        "student_name" TEXT,
-                        "course_id"	TEXT,
-                        "course_name" TEXT,
-                        "course_inv_fees" INT,
-                        "sports_activity" TEXT,
-                        "total_sports_cost" REAL,
-                        "food_items" TEXT,
-                        "total_food_cost" REAL,
-                        "institution_id" TEXT,
-                        "institution_name" TEXT,
-                        "invoice_date" TEXT,
-                        PRIMARY KEY("invoice_id")
-                    )
-                """;
-
-        try (Connection conn = getConnection();
-                Statement stmt = conn.createStatement()) {
-            stmt.execute(createTableSQL);
-            System.out.println("FINANCES table created successfully or already exists.");
-        } catch (SQLException e) {
-            System.err.println("Error creating FINANCES table: " + e.getMessage());
-        }
-    }
-
-    public void populateFinancesFromExistingData() {
-        try (Connection conn = getConnection()) {
-            // First, check if FINANCES table is empty
-            String countQuery = "SELECT COUNT(*) FROM FINANCES";
-            try (
-                    Statement stmt = conn.createStatement();
-                    ResultSet rs = stmt.executeQuery(countQuery)) {
-                if (rs.next() && rs.getInt(1) > 0) {
-                    System.out.println("FINANCES table already contains data. Skipping population.");
-                    return;
-                }
-            }
-
-            String selectDataSQL = """
-                        SELECT
-                        i.'Student Name' as student_name,
-                        k.KISCOURSEID as course_id,
-                        k.TITLE as course_name,
-                        i.'Course Costs' as course_fees,
-                        i.'Sports Costs' as sports_activities,
-                        i.'Food Costs' as food_items,
-                        inst.UKPRN as institution_id,
-                        inst.LEGAL_NAME as institution_name,
-                        i.'Date of Invoice' as invoice_date,
-                        FROM INVOICES i
-                        LEFT JOIN KISCOURSE k ON k.KISCOURSEID = ?
-                        LEFT JOIN INSTITUTION inst ON inst.UKPRN = ?
-                        WHERE i.'Date of Invoice' IS NOT NULL
-                    """;
-            // i.formatted_course_id, i.retrieved_inst_id
-
-            // String formatted_course_id = String.format("%s (%.2f)", courseId,
-            // courseFees);
-
-            String insertSQL = """
-                        INSERT INTO FINANCES (
-                        invoice_id, student_name, course_id, course_name, course_inv_fees,
-                        sports_activity, total_sports_cost, food_items, total_food_cost,
-                        institution_id, institution_name, invoice_date
-                        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                    """;
-
-            try (
-                    Statement selectStmt = conn.createStatement();
-                    PreparedStatement invoiceDataSelected = conn.prepareStatement(selectDataSQL);
-
-            ) {
-                String getCourseQuery = "SELECT 'Course Costs' as course_details FROM INVOICES";
-                PreparedStatement courQstmnt = conn.prepareStatement(getCourseQuery);
-                ResultSet courRslts = courQstmnt.executeQuery();
-                String formatted_course_id = "";
-
-                while (courRslts.next()) {
-                    courRslts.getString("course_details");
-                }
-
-                invoiceDataSelected.setString(1, formatted_course_id);
-
-                // ResultSet crs = pstmt.executeQuery(getCourseQuery);
-
-                // while (crs.next()) {
-                // pstmt.setString(1, crs.getString("course_id"));
-                // pstmt.setString(2, crs.getString("institution_id"));
-                // }
-
-                ResultSet rs = selectStmt.executeQuery(selectDataSQL);
-                PreparedStatement insertStmt = conn.prepareStatement(insertSQL);
-
-                while (rs.next()) {
-                    insertStmt.setString(1, "INV");
-                    insertStmt.setString(2, rs.getString("student_name"));
-                    insertStmt.setString(3, rs.getString("course_id"));
-                    insertStmt.setString(4, rs.getString("course_name"));
-                    insertStmt.setInt(5, rs.getInt("course_fees"));
-                    insertStmt.setString(6, rs.getString("sports_activities"));
-                    insertStmt.setDouble(7, rs.getDouble("SPORTS_TOTAL_COST"));
-                    insertStmt.setString(8, rs.getString("food_items"));
-                    insertStmt.setDouble(9, rs.getDouble("FOOD_TOTAL_COST"));
-                    insertStmt.setString(10, rs.getString("UKPRN"));
-                    insertStmt.setString(11, rs.getString("INSTITUTION_NAME"));
-                    insertStmt.setString(12, rs.getString("INVOICE_DATE"));
-
-                    insertStmt.executeUpdate();
-                }
-                System.out.println("Data successfully populated into FINANCES table.");
-            }
-        } catch (SQLException e) {
-            System.err.println("Error populating FINANCES table: " + e.getMessage());
-        }
-    }
-
     public boolean testConnection() {
         try {
             getConnection();
@@ -215,6 +96,7 @@ public class DatabaseModel {
 
     private Invoice createInvoiceFromResultSet(ResultSet rs) throws SQLException {
         String invoiceId = rs.getString("invoice_id");
+        String studentId = rs.getString("student_id");
         String studentName = rs.getString("student_name");
         String invoiceDate = rs.getString("invoice_date");
         double courseFees = rs.getDouble("course_inv_fees");
@@ -224,7 +106,8 @@ public class DatabaseModel {
         // Create course details HashMap
         HashMap<String, String> courseDetails = new HashMap<>();
         courseDetails.put("courseID", rs.getString("course_id"));
-        courseDetails.put("courseName", rs.getString("course_name"));
+        courseDetails.put("courseName", rs.getString("course_details"));
+        // ourseDetails.put("courseName", rs.getString("course_name"));
         // System.out.println("courseDetails: " + courseDetails);
 
         // Create institution details HashMap
@@ -285,6 +168,7 @@ public class DatabaseModel {
 
         return new Invoice(
                 invoiceId,
+                studentId,
                 studentName,
                 invoiceDate,
                 courseFees,
@@ -327,23 +211,23 @@ public class DatabaseModel {
 
         if ("All Universities".equals(universityName)) {
             query = """
-                        SELECT strftime('%Y', invoiceDate) as year,
-                               AVG(courseInvFees) as avg_course_fees,
-                               AVG(totalSportsCost) as avg_sports_cost,
-                               AVG(totalFoodCost) as avg_food_cost
+                        SELECT strftime('%Y', invoice_date) as year,
+                               AVG(course_inv_fees) as avg_course_fees,
+                               AVG(total_sports_cost) as avg_sports_cost,
+                               AVG(total_food_cost) as avg_food_cost
                         FROM FINANCES
-                        GROUP BY strftime('%Y', invoiceDate)
+                        GROUP BY strftime('%Y', invoice_date)
                         ORDER BY year
                     """;
         } else {
             query = """
-                        SELECT strftime('%Y', invoiceDate) as year,
-                               AVG(courseInvFees) as avg_course_fees,
-                               AVG(totalSportsCost) as avg_sports_cost,
-                               AVG(totalFoodCost) as avg_food_cost
+                        SELECT strftime('%Y', invoice_date) as year,
+                               AVG(course_inv_fees) as avg_course_fees,
+                               AVG(total_sports_cost) as avg_sports_cost,
+                               AVG(total_food_cost) as avg_food_cost
                         FROM FINANCES
-                        WHERE institutionName = ?
-                        GROUP BY strftime('%Y', invoiceDate)
+                        WHERE institution_name = ?
+                        GROUP BY strftime('%Y', invoice_date)
                         ORDER BY year
                     """;
         }
@@ -379,20 +263,20 @@ public class DatabaseModel {
                 monthPeriod != null && !monthPeriod.isEmpty() &&
                 yearPeriod != null && !yearPeriod.isEmpty()) {
 
-            queryBuilder.append(" AND strftime('%Y', invoiceDate) = ? AND strftime('%m', invoiceDate) = ?");
+            queryBuilder.append(" AND strftime('%Y', invoice_date) = ? AND strftime('%m', invoice_date) = ?");
             params.add(yearPeriod);
             // Convert month name to number (e.g., "January" to "01")
             String monthNumber = String.format("%02d", Month.valueOf(monthPeriod.toUpperCase()).getValue());
             params.add(monthNumber);
 
             if ("First Half".equals(timeFilter)) {
-                queryBuilder.append(" AND strftime('%d', invoiceDate) <= '15'");
+                queryBuilder.append(" AND strftime('%d', invoice_date) <= '15'");
             } else if ("Second Half".equals(timeFilter)) {
-                queryBuilder.append(" AND strftime('%d', invoiceDate) > '15'");
+                queryBuilder.append(" AND strftime('%d', invoice_date) > '15'");
             }
         }
 
-        queryBuilder.append(" ORDER BY invoiceDate");
+        queryBuilder.append(" ORDER BY invoice_date");
 
         try (Connection conn = DatabaseModel.connect();
                 PreparedStatement pstmt = conn.prepareStatement(queryBuilder.toString())) {
@@ -408,9 +292,10 @@ public class DatabaseModel {
                 while (rs.next()) {
                     Map<String, Object> row = new HashMap<>();
                     row.put("invoiceID", rs.getString("invoice_id"));
+                    row.put("studentID", rs.getString("student_id"));
                     row.put("studentName", rs.getString("student_name"));
                     row.put("courseID", rs.getString("course_id"));
-                    row.put("courseName", rs.getString("course_name"));
+                    row.put("courseName", rs.getString("course_details"));
                     row.put("courseInvFees", rs.getInt("course_inv_fees"));
                     row.put("sportsActivity", rs.getString("sports_activity"));
                     row.put("totalSportsCost", rs.getDouble("total_sports_cost"));
@@ -570,14 +455,14 @@ public class DatabaseModel {
             conn.setAutoCommit(false);
 
             try {
-                String insertInvoicesSQL = """
-                            INSERT INTO INVOICES (
-                                "Student Name", "Course Costs", "Sports Costs",
-                                "Food Costs", "Date of Invoice"
-                            ) VALUES (?, ?, ?, ?, ?)
-                        """;
+                // String insertInvoicesSQL = """
+                // INSERT INTO INVOICES (
+                // "Student Name", "Course Costs", "Sports Costs",
+                // "Food Costs", "Date of Invoice"
+                // ) VALUES (?, ?, ?, ?, ?)
+                // """;
 
-                invoicesStmt = conn.prepareStatement(insertInvoicesSQL);
+                // invoicesStmt = conn.prepareStatement(insertInvoicesSQL);
 
                 // Format course costs as "KISCOURSEID (cost)"
                 String courseId = String.valueOf(invoiceData.get("courseId"));
@@ -644,53 +529,54 @@ public class DatabaseModel {
                 }
 
                 // Set values for INVOICES
-                invoicesStmt.setString(1, String.valueOf(invoiceData.get("studentName")));
-                invoicesStmt.setString(2, formattedCourseCost); // Using KISCOURSEID format
-                invoicesStmt.setString(3, formattedSportsCosts.toString());
-                invoicesStmt.setString(4, formattedFoodCosts.toString());
-                invoicesStmt.setString(5, String.valueOf(invoiceData.get("invoiceDate")));
+                // invoicesStmt.setString(1, String.valueOf(invoiceData.get("studentName")));
+                // invoicesStmt.setString(2, formattedCourseCost); // Using KISCOURSEID formats
+                // invoicesStmt.setString(3, formattedSportsCosts.toString());
+                // invoicesStmt.setString(4, formattedFoodCosts.toString());
+                // invoicesStmt.setString(5, String.valueOf(invoiceData.get("invoiceDate")));
 
-                int result = invoicesStmt.executeUpdate();
-                System.out.println("INVOICES insert result: " + result);
+                // int result = invoicesStmt.executeUpdate();
+                // System.out.println("INVOICES insert result: " + result);
 
-                if (result > 0) {
-                    // Generate invoice ID after successful INVOICES insert
-                    invoiceId = "INV" + String.format("%09d", System.currentTimeMillis() % 1000000000) + "TS";
+                // if (result > 0) {
+                // Generate invoice ID after successful INVOICES insert
+                invoiceId = "INV" + String.format("%09d", System.currentTimeMillis() % 1000000000) + "TS";
 
-                    // Step 2: Insert into FINANCES table
-                    String insertFinancesSQL = """
-                                INSERT INTO FINANCES (
-                                    invoice_id, student_name, course_id, course_name, course_inv_fees,
-                                    sports_activity, total_sports_cost, food_items, total_food_cost,
-                                    institution_id, institution_name, invoice_date
-                                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                            """;
+                // Step 2: Insert into FINANCES table
+                String insertFinancesSQL = """
+                            INSERT INTO FINANCES (
+                                invoice_id, student_id, student_name, course_id, course_details, course_inv_fees,
+                                sports_activity, total_sports_cost, food_items, total_food_cost,
+                                institution_id, institution_name, invoice_date
+                            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                        """;
 
-                    financesStmt = conn.prepareStatement(insertFinancesSQL);
+                financesStmt = conn.prepareStatement(insertFinancesSQL);
 
-                    // Set values for FINANCES
-                    financesStmt.setString(1, invoiceId);
-                    financesStmt.setString(2, String.valueOf(invoiceData.get("studentName")));
-                    financesStmt.setString(3, courseId); // KISCOURSEID
-                    financesStmt.setString(4, String.valueOf(invoiceData.get("courseName"))); // Full course name
-                    financesStmt.setDouble(5, courseFees);
-                    financesStmt.setString(6, formattedSportsCosts.toString());
-                    financesStmt.setDouble(7, totalSportsCost);
-                    financesStmt.setString(8, formattedFoodCosts.toString());
-                    financesStmt.setDouble(9, totalFoodCost);
-                    financesStmt.setString(10, String.valueOf(invoiceData.get("institutionId")));
-                    financesStmt.setString(11, String.valueOf(invoiceData.get("institutionName")));
-                    financesStmt.setString(12, String.valueOf(invoiceData.get("invoiceDate")));
+                // Set values for FINANCES
+                financesStmt.setString(1, invoiceId);
+                financesStmt.setString(2, String.valueOf(invoiceData.get("studentId")));
+                financesStmt.setString(3, String.valueOf(invoiceData.get("studentName")));
+                financesStmt.setString(4, courseId); // KISCOURSEID
+                financesStmt.setString(5, String.valueOf(invoiceData.get("courseName"))); // Full course name
+                financesStmt.setDouble(6, courseFees);
+                financesStmt.setString(7, formattedSportsCosts.toString());
+                financesStmt.setDouble(8, totalSportsCost);
+                financesStmt.setString(9, formattedFoodCosts.toString());
+                financesStmt.setDouble(10, totalFoodCost);
+                financesStmt.setString(11, String.valueOf(invoiceData.get("institutionId")));
+                financesStmt.setString(12, String.valueOf(invoiceData.get("institutionName")));
+                financesStmt.setString(13, String.valueOf(invoiceData.get("invoiceDate")));
 
-                    result = financesStmt.executeUpdate();
-                    System.out.println("FINANCES insert result: " + result);
+                int result = financesStmt.executeUpdate();
+                System.out.println("FINANCES insert result: " + result);
 
-                    conn.commit();
-                    return invoiceId;
-                } else {
-                    conn.rollback();
-                    throw new SQLException("Failed to insert invoice record");
-                }
+                conn.commit();
+                return invoiceId;
+                // } else {
+                // conn.rollback();
+                // throw new SQLException("Failed to insert invoice record");
+                // }
             } catch (SQLException e) {
                 conn.rollback();
                 throw new SQLException("Failed to generate invoice: " + e.getMessage());
@@ -753,7 +639,7 @@ public class DatabaseModel {
     public boolean updateInvoice(Invoice invoice) {
         String sql = "UPDATE FINANCES SET " +
                 "course_id = ?, " +
-                "course_name = ?, " +
+                "course_details = ?, " +
                 "course_inv_fees = ?, " +
                 "food_items = ?, " +
                 "total_food_cost = ?, " +
@@ -874,7 +760,7 @@ public class DatabaseModel {
         String query = "SELECT SUM(course_inv_fees) as totalCourses, " +
                 "SUM(total_sports_cost) as totalSports, " +
                 "SUM(total_food_cost) as totalFood " +
-                "FROM FINANCES WHERE institutionName = ?";
+                "FROM FINANCES WHERE institution_name = ?";
 
         try (Connection conn = getConnection();
                 PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -891,68 +777,68 @@ public class DatabaseModel {
         return costs;
     }
 
-    public void syncInvoicesToFinances() {
-        String selectSQL = """
-                    SELECT
-                        i.INVOICE_ID,
-                        i."Student Name" as studentName,
-                        i.COURSE_ID as courseID,
-                        k.TITLE as courseName,
-                        CAST(i."Course Costs" AS INTEGER) as courseInvFees,
-                        i.SPORTS_ACTIVITIES as sportsActivity,
-                        CAST(i."Sports Costs" AS REAL) as totalSportsCost,
-                        i.FOOD_ITEMS as foodItems,
-                        CAST(i."Food Costs" AS REAL) as totalFoodCost,
-                        i.INSTITUTION_ID as institutionID,
-                        inst.INSTITUTION_NAME as institutionName,
-                        i."Date of Invoice" as invoiceDate
-                    FROM INVOICES i
-                    LEFT JOIN KISCOURSE k ON i.COURSE_ID = k.KISCOURSEID
-                    LEFT JOIN INSTITUTION inst ON i.INSTITUTION_ID = inst.UKPRN
-                    WHERE i.INVOICE_ID NOT IN (SELECT invoiceID FROM FINANCES)
-                """;
+    // public void syncInvoicesToFinances() {
+    // String selectSQL = """
+    // SELECT
+    // i.INVOICE_ID,
+    // i."Student Name" as studentName,
+    // i.COURSE_ID as courseID,
+    // k.TITLE as courseName,
+    // CAST(i."Course Costs" AS INTEGER) as courseInvFees,
+    // i.SPORTS_ACTIVITIES as sportsActivity,
+    // CAST(i."Sports Costs" AS REAL) as totalSportsCost,
+    // i.FOOD_ITEMS as foodItems,
+    // CAST(i."Food Costs" AS REAL) as totalFoodCost,
+    // i.INSTITUTION_ID as institutionID,
+    // inst.INSTITUTION_NAME as institutionName,
+    // i."Date of Invoice" as invoiceDate
+    // FROM INVOICES i
+    // LEFT JOIN KISCOURSE k ON i.COURSE_ID = k.KISCOURSEID
+    // LEFT JOIN INSTITUTION inst ON i.INSTITUTION_ID = inst.UKPRN
+    // WHERE i.INVOICE_ID NOT IN (SELECT invoiceID FROM FINANCES)
+    // """;
 
-        String insertSQL = """
-                    INSERT INTO FINANCES (
-                        invoice_id, student_name, course_id, course_name, course_inv_fees,
-                        sports_activity, total_sports_cost, food_items, total_food_cost,
-                        institution_id, institution_name, invoice_date
-                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                """;
+    // String insertSQL = """
+    // INSERT INTO FINANCES (
+    // invoice_id, student_name, course_id, course_name, course_inv_fees,
+    // sports_activity, total_sports_cost, food_items, total_food_cost,
+    // institution_id, institution_name, invoice_date
+    // ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    // """;
 
-        try (Connection conn = getConnection()) {
-            conn.setAutoCommit(false);
-            try (Statement selectStmt = conn.createStatement();
-                    ResultSet rs = selectStmt.executeQuery(selectSQL);
-                    PreparedStatement insertStmt = conn.prepareStatement(insertSQL)) {
+    // try (Connection conn = getConnection()) {
+    // conn.setAutoCommit(false);
+    // try (Statement selectStmt = conn.createStatement();
+    // ResultSet rs = selectStmt.executeQuery(selectSQL);
+    // PreparedStatement insertStmt = conn.prepareStatement(insertSQL)) {
 
-                System.out.println("Executing query: " + rs);
-                while (rs.next()) {
-                    insertStmt.setString(1, rs.getString("invoice_id"));
-                    insertStmt.setString(2, rs.getString("student_name"));
-                    insertStmt.setString(3, rs.getString("course_id"));
-                    insertStmt.setString(4, rs.getString("course_name"));
-                    insertStmt.setInt(5, rs.getInt("course_inv_fees"));
-                    insertStmt.setString(6, rs.getString("sports_activity"));
-                    insertStmt.setDouble(7, rs.getDouble("total_sports_cost"));
-                    insertStmt.setString(8, rs.getString("food_items"));
-                    insertStmt.setDouble(9, rs.getDouble("total_food_cost"));
-                    insertStmt.setString(10, rs.getString("institution_id"));
-                    insertStmt.setString(11, rs.getString("institution_name"));
-                    insertStmt.setString(12, rs.getString("invoice_date"));
+    // System.out.println("Executing query: " + rs);
+    // while (rs.next()) {
+    // insertStmt.setString(1, rs.getString("invoice_id"));
+    // insertStmt.setString(2, rs.getString("student_name"));
+    // insertStmt.setString(3, rs.getString("course_id"));
+    // insertStmt.setString(4, rs.getString("course_name"));
+    // insertStmt.setInt(5, rs.getInt("course_inv_fees"));
+    // insertStmt.setString(6, rs.getString("sports_activity"));
+    // insertStmt.setDouble(7, rs.getDouble("total_sports_cost"));
+    // insertStmt.setString(8, rs.getString("food_items"));
+    // insertStmt.setDouble(9, rs.getDouble("total_food_cost"));
+    // insertStmt.setString(10, rs.getString("institution_id"));
+    // insertStmt.setString(11, rs.getString("institution_name"));
+    // insertStmt.setString(12, rs.getString("invoice_date"));
 
-                    insertStmt.executeUpdate();
-                }
-                conn.commit();
-                System.out.println("Successfully synced INVOICES to FINANCES");
-            } catch (SQLException e) {
-                conn.rollback();
-                throw e;
-            }
-        } catch (SQLException e) {
-            System.err.println("Error syncing INVOICES to FINANCES: " + e.getMessage());
-        }
-    }
+    // insertStmt.executeUpdate();
+    // }
+    // conn.commit();
+    // System.out.println("Successfully synced INVOICES to FINANCES");
+    // } catch (SQLException e) {
+    // conn.rollback();
+    // throw e;
+    // }
+    // } catch (SQLException e) {
+    // System.err.println("Error syncing INVOICES to FINANCES: " + e.getMessage());
+    // }
+    // }
 }
 
 /*
@@ -961,8 +847,6 @@ public class DatabaseModel {
  * -connect(): Connection
  * -getConnection(): Connection
  * -closeConnection(): void
- * -createFinancesTable(): void
- * -populateFinancesFromExistingData(): void
  * -testConnection(): boolean
  * -getAllInvoices(): List<Invoice>
  * -createInvoiceFromResultSet(rs: ResultSet): Invoice

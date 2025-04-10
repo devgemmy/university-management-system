@@ -949,18 +949,18 @@ public class DashboardController implements Initializable {
                                 }
                             }
                             // Check sports activities
-                            // Map<String, Double> sportsActivities = invoice.getSportsActivities();
-                            // if (sportsActivities.keySet().stream()
-                            // .anyMatch(activity -> activity.toLowerCase().contains(searchText))) {
-                            // return true;
-                            // }
+                            Map<String, Double> sportsActivities = invoice.getSportsActivities();
+                            if (sportsActivities.keySet().stream()
+                                    .anyMatch(activity -> activity.toLowerCase().contains(searchText))) {
+                                return true;
+                            }
 
                             // Check food items
-                            // Map<String, Double> foodItems = invoice.getFoodItems();
-                            // if (foodItems.keySet().stream()
-                            // .anyMatch(item -> item.toLowerCase().contains(searchText))) {
-                            // return true;
-                            // }
+                            Map<String, Double> foodItems = invoice.getFoodItems();
+                            if (foodItems.keySet().stream()
+                                    .anyMatch(item -> item.toLowerCase().contains(searchText))) {
+                                return true;
+                            }
 
                             // if (searchText.isEmpty()) {
                             // return true; // Show all if search is empty

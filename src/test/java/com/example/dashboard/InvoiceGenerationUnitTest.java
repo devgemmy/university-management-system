@@ -41,14 +41,15 @@ public class InvoiceGenerationUnitTest {
                 // Insert into FINANCES table
                 String insertFinancesSQL = """
                             INSERT INTO FINANCES (
-                                invoice_id, student_name, course_id, course_name, course_inv_fees,
+                                invoice_id, student_id, student_name, course_id, course_details, course_inv_fees,
                                 sports_activity, total_sports_cost, food_items, total_food_cost,
                                 institution_id, institution_name, invoice_date
-                            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                         """;
 
                 try (PreparedStatement financesStmt = conn.prepareStatement(insertFinancesSQL)) {
                     financesStmt.setString(1, invoiceId);
+                    financesStmt.setString(1, "252007-TS");
                     financesStmt.setString(2, "Test Student");
                     financesStmt.setString(3, "COMP101");
                     financesStmt.setString(4, "Computer Science");

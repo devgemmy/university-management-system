@@ -35,10 +35,11 @@ public class PopulateFinanceTable {
                 String createFinancesSQL = """
                             CREATE TABLE IF NOT EXISTS FINANCES (
                                 invoice_id TEXT PRIMARY KEY,
+                                student_id TEXT,
                                 student_name TEXT,
                                 course_id TEXT,
-                                course_name TEXT,
-                                course_inv_fees INT,
+                                course_details TEXT,
+                                course_inv_fees REAL,
                                 sports_activity TEXT,
                                 total_sports_cost REAL,
                                 food_items TEXT,
@@ -90,11 +91,10 @@ public class PopulateFinanceTable {
                                     Statement stmt = conn.createStatement();
                                     ResultSet finrs = stmt.executeQuery(countFinanceQuery)) {
                                 if (finrs.next() && finrs.getInt(1) > 0) {
-                                    System.out.println("Finance Table population completed.");
+                                    System.out.println("Finance Table Data population completed successfully!");
                                     return;
                                 }
                             }
-                            System.out.println("Finance data populated successfully!");
                             return; // Success, exit the retry loop
                         } else {
                             System.out.println("FINANCES table already contains data. Skipping population.");
@@ -159,10 +159,15 @@ public class PopulateFinanceTable {
 
         try (
                 Statement selectInvStmt = conn.createStatement();
-                ResultSet allinvrs = selectInvStmt.executeQuery(selectInvData);) {
+                ResultSet allinvrs = selectInvStmt.executeQuery(selectInvData);
+        // Get studentID from course selection: ?
+        ) {
             while (allinvrs.next()) {
                 String invoiceID = String.format("INV%09d%s",
                         100000000 + random.nextInt(900000000),
+                        generateRandomLetters());
+                String studentID = String.format("INV%04d%s",
+                        1000 + random.nextInt(9000),
                         generateRandomLetters());
                 String studentName = allinvrs.getString("student_name");
 
@@ -187,25 +192,26 @@ public class PopulateFinanceTable {
                 // Insert formatted Invoice data into FINANCES
                 String insertFinanceSQL = """
                             INSERT OR IGNORE INTO FINANCES (
-                                invoice_id, student_name, course_id, course_name, course_inv_fees,
+                                invoice_id, student_id, student_name, course_id, course_details, course_inv_fees,
                                 sports_activity, total_sports_cost, food_items, total_food_cost,
                                 institution_id, institution_name, invoice_date
-                            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                         """;
 
                 try (PreparedStatement pstmt = conn.prepareStatement(insertFinanceSQL)) {
                     pstmt.setString(1, invoiceID);
-                    pstmt.setString(2, studentName);
-                    pstmt.setString(3, courseID);
-                    pstmt.setString(4, courseName);
-                    pstmt.setDouble(5, courseInvFees);
-                    pstmt.setString(6, sportsActivity);
-                    pstmt.setDouble(7, totalSportsCost);
-                    pstmt.setString(8, foodItems);
-                    pstmt.setDouble(9, totalFoodCost);
-                    pstmt.setString(10, institutionID);
-                    pstmt.setString(11, institutionName);
-                    pstmt.setString(12, invoiceDate);
+                    pstmt.setString(2, studentID);
+                    pstmt.setString(3, studentName);
+                    pstmt.setString(4, courseID);
+                    pstmt.setString(5, courseName);
+                    pstmt.setDouble(6, courseInvFees);
+                    pstmt.setString(7, sportsActivity);
+                    pstmt.setDouble(8, totalSportsCost);
+                    pstmt.setString(9, foodItems);
+                    pstmt.setDouble(10, totalFoodCost);
+                    pstmt.setString(11, institutionID);
+                    pstmt.setString(12, institutionName);
+                    pstmt.setString(13, invoiceDate);
                     pstmt.executeUpdate();
                 }
             }

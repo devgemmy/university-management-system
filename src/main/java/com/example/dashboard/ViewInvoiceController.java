@@ -473,7 +473,7 @@ public class ViewInvoiceController {
             // Update database
             try (Connection conn = dbModel.getConnection();
                     PreparedStatement stmt = conn.prepareStatement(
-                            "UPDATE FINANCES SET course_name = ?, course_inv_fees = ? WHERE invoice_id = ?")) {
+                            "UPDATE FINANCES SET course_details = ?, course_inv_fees = ? WHERE invoice_id = ?")) {
                 stmt.setString(1, updatedCourses);
                 stmt.setDouble(2, newTotalFees);
                 stmt.setString(3, currentInvoice.getInvoiceID());
@@ -522,10 +522,6 @@ public class ViewInvoiceController {
                 foodItems.put(selectedFood, price);
                 String foodItemsStr = convertFoodItemsToString(foodItems);
                 double totalFoodCost = foodItems.values().stream().mapToDouble(Double::doubleValue).sum();
-                // double totalFoodCost = 0;
-                // for (double cost : foodItems.values()) {
-                // totalFoodCost += cost;
-                // }
 
                 stmt.setString(1, foodItemsStr);
                 stmt.setDouble(2, totalFoodCost);
@@ -533,7 +529,6 @@ public class ViewInvoiceController {
                 stmt.executeUpdate();
 
                 currentInvoice.setFoodItems(foodItems);
-                // currentInvoice.setTotalFoodCost(totalFoodCost);
 
                 loadInvoiceDetails();
                 updatePieChart();
@@ -812,7 +807,7 @@ public class ViewInvoiceController {
                         // Update database
                         try (Connection conn = dbModel.getConnection();
                                 PreparedStatement stmt = conn.prepareStatement(
-                                        "UPDATE FINANCES SET course_name = ?, course_inv_fees = ? WHERE invoice_id = ?")) {
+                                        "UPDATE FINANCES SET course_details = ?, course_inv_fees = ? WHERE invoice_id = ?")) {
                             stmt.setString(1, courseNameBuilder.toString());
                             stmt.setDouble(2, totalFees);
                             stmt.setString(3, currentInvoice.getInvoiceID());
