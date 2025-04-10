@@ -5,6 +5,7 @@ import java.util.Map;
 
 public class Invoice {
     private String invoiceID;
+    private String studentID;
     private String studentName;
     private Map<String, String> institutionDetails;
     private Map<String, String> courseList;
@@ -23,11 +24,12 @@ public class Invoice {
         this.foodItems = new HashMap<>();
     }
 
-    public Invoice(String invoiceId, String studentName, String invoiceDate, double courseFees,
+    public Invoice(String invoiceId, String studentID, String studentName, String invoiceDate, double courseFees,
             double sportsCost, double foodCost, Map<String, String> courseList,
             Map<String, String> institutionDetails, Map<String, Double> sportsActivities,
             Map<String, Double> foodItems) {
         this.invoiceID = invoiceId;
+        this.studentID = studentID;
         this.studentName = studentName;
         this.invoiceDate = invoiceDate;
         this.courseInvFees = courseFees;
@@ -46,6 +48,14 @@ public class Invoice {
 
     public void setInvoiceID(String invoiceID) {
         this.invoiceID = invoiceID;
+    }
+
+    public String getStudentID() {
+        return studentID;
+    }
+
+    public void setStudentID(String studentID) {
+        this.studentID = studentID;
     }
 
     public String getStudentName() {

@@ -81,18 +81,19 @@ public class DatabaseModelTest {
                 List<String> availableFoods = getAvailableFoods(conn);
                 String createFinancesSQL = """
                             CREATE TABLE IF NOT EXISTS FINANCES (
-                                invoiceID TEXT PRIMARY KEY,
-                                studentName TEXT,
-                                courseID TEXT,
-                                courseName TEXT,
-                                courseInvFees REAL,
-                                sportsActivity TEXT,
-                                totalSportsCost REAL,
-                                foodItems TEXT,
-                                totalFoodCost REAL,
-                                institutionID TEXT,
-                                institutionName TEXT,
-                                invoiceDate TEXT
+                                "invoice_id" TEXT PRIMARY KEY,
+                                "student_id" TEXT,
+                                "student_name" TEXT,
+                                "course_id" TEXT,
+                                "course_details" TEXT,
+                                "course_inv_fees" INT,
+                                "sports_activity" TEXT,
+                                "total_sports_cost" REAL,
+                                "food_items" TEXT,
+                                "total_food_cost" REAL,
+                                "institution_id" TEXT,
+                                "institution_name" TEXT,
+                                "invoice_date" TEXT,
                             )
                         """;
 
@@ -110,6 +111,10 @@ public class DatabaseModelTest {
 
                     String invoiceId = String.format("INV%09d%s",
                             100000000 + random.nextInt(900000000),
+                            generateRandomLetters());
+
+                    String studentId = String.format("STU%04d%s",
+                            1000 + random.nextInt(9000),
                             generateRandomLetters());
 
                     // Select random institution and course
@@ -162,44 +167,45 @@ public class DatabaseModelTest {
                     // Insert into FINANCES
                     String insertFinanceSQL = """
                                 INSERT OR IGNORE INTO FINANCES (
-                                    invoiceID, studentName, courseID, courseName, courseInvFees,
-                                    sportsActivity, totalSportsCost, foodItems, totalFoodCost,
-                                    institutionID, institutionName, invoiceDate
-                                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                                    invoice_id, student_id, student_name, course_id, course_details, course_inv_fees,
+                                    sports_activity, total_sports_cost, food_items, total_food_cost,
+                                    institution_id, institution_name, invoice_date
+                                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                             """;
 
                     try (PreparedStatement pstmt = conn.prepareStatement(insertFinanceSQL)) {
                         pstmt.setString(1, invoiceId);
-                        pstmt.setString(2, STUDENT_NAMES[i]);
-                        pstmt.setString(3, course.id);
-                        pstmt.setString(4, course.title);
-                        pstmt.setDouble(5, course.fee);
-                        pstmt.setString(6, sportsStr.toString());
-                        pstmt.setDouble(7, totalSportsCost);
-                        pstmt.setString(8, foodStr.toString());
-                        pstmt.setDouble(9, totalFoodCost);
-                        pstmt.setString(10, institution.ukprn);
-                        pstmt.setString(11, institution.name);
-                        pstmt.setString(12, invoiceDate.toString());
+                        pstmt.setString(2, studentId);
+                        pstmt.setString(3, STUDENT_NAMES[i]);
+                        pstmt.setString(4, course.id);
+                        pstmt.setString(5, course.title);
+                        pstmt.setDouble(6, course.fee);
+                        pstmt.setString(7, sportsStr.toString());
+                        pstmt.setDouble(8, totalSportsCost);
+                        pstmt.setString(9, foodStr.toString());
+                        pstmt.setDouble(10, totalFoodCost);
+                        pstmt.setString(11, institution.ukprn);
+                        pstmt.setString(12, institution.name);
+                        pstmt.setString(13, invoiceDate.toString());
                         pstmt.executeUpdate();
                     }
 
-                    // Insert into INVOICES
-                    String insertInvoiceSQL = """
-                                INSERT INTO INVOICES (
-                                    "Student Name", "Course Costs", "Sports Costs",
-                                    "Food Costs", "Date of Invoice"
-                                ) VALUES (?, ?, ?, ?, ?)
-                            """;
+                    // // Insert into INVOICES
+                    // String insertInvoiceSQL = """
+                    // INSERT INTO INVOICES (
+                    // "Student Name", "Course Costs", "Sports Costs",
+                    // "Food Costs", "Date of Invoice"
+                    // ) VALUES (?, ?, ?, ?, ?)
+                    // """;
 
-                    try (PreparedStatement pstmt = conn.prepareStatement(insertInvoiceSQL)) {
-                        pstmt.setString(1, STUDENT_NAMES[i]);
-                        pstmt.setString(2, String.format("%s (%.2f)", course.id, course.fee));
-                        pstmt.setString(3, sportsStr.toString());
-                        pstmt.setString(4, foodStr.toString());
-                        pstmt.setString(5, invoiceDate.toString());
-                        pstmt.executeUpdate();
-                    }
+                    // try (PreparedStatement pstmt = conn.prepareStatement(insertInvoiceSQL)) {
+                    // pstmt.setString(1, STUDENT_NAMES[i]);
+                    // pstmt.setString(2, String.format("%s (%.2f)", course.id, course.fee));
+                    // pstmt.setString(3, sportsStr.toString());
+                    // pstmt.setString(4, foodStr.toString());
+                    // pstmt.setString(5, invoiceDate.toString());
+                    // pstmt.executeUpdate();
+                    // }
                 }
 
                 conn.commit();
@@ -276,9 +282,9 @@ public class DatabaseModelTest {
                                 rs.getString("TITLE"));
                         institution.courses.add(course);
                     }
-                    System.out.println("Course Query ran successfully ✅");
+                    // System.out.println("Course Query ran successfully ✅");
                 } catch (SQLException e) {
-                    System.err.println("❌ Error retrieving courses: " + e.getMessage());
+                    // System.err.println("❌ Error retrieving courses: " + e.getMessage());
                 }
             }
         }
