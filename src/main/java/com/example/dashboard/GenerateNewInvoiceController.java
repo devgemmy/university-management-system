@@ -4,17 +4,20 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import java.io.IOException;
 import java.time.LocalDate;
+import javafx.application.Platform;
 import java.util.*;
 import javafx.scene.layout.Pane;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javafx.collections.ObservableList;
 
 public class GenerateNewInvoiceController {
     @FXML
@@ -27,6 +30,11 @@ public class GenerateNewInvoiceController {
     @FXML
     private DatePicker invoiceDatePicker;
 
+    @FXML
+    protected TableView<Student> studentTable;
+    @FXML
+    private TableColumn<Student, String> studentIdColumn, studentNameColumn;
+
     // @FXML
     // private Button foodThirdRow, sportThirdRow;
 
@@ -38,34 +46,74 @@ public class GenerateNewInvoiceController {
     private Pane foodSelectionInfo;
     private List<Pair<ComboBox<String>, TextField>> foodFields = new ArrayList<>();
 
-    // Error labels for form validation
     @FXML
-    private Label studentFieldErr;
-    @FXML
-    private Label feeFieldErr;
-    @FXML
-    private Label institutionFieldErr;
-    @FXML
-    private Label courseFieldErr;
-    @FXML
-    private Label dateFieldErr;
-    @FXML
-    private Label sportFieldErr;
-    @FXML
-    private Label sportPriceFieldErr;
-    @FXML
-    private Label foodFieldErr;
-    @FXML
-    private Label foodPriceFieldErr;
+    private Label studentFieldErr, feeFieldErr, institutionFieldErr, courseFieldErr, dateFieldErr, sportFieldErr,
+            sportPriceFieldErr, foodFieldErr, foodPriceFieldErr;
 
     private DatabaseModel dbModel;
-    private Map<String, String> institutionsMap; // Maps UKPRN to institution name
-    // private Map<String, Map<String, String>> coursesMap; // Maps institution to
-    // available courses
+    private Map<String, String> institutionsMap;
+
+    private volatile boolean isLoading = false;
+
+    @FXML
+    protected void loadStudentData() {
+        if (isLoading)
+            return;
+        setLoading(true);
+
+        try {
+            List<Student> enrolledStudents = new ArrayList<>(dbModel.getEnrolledStudents());
+            if (enrolledStudents.isEmpty()) {
+                System.out.println("DEBUG: No students found");
+            } else {
+                System.out.println("DEBUG: enrolledStudents size = " + enrolledStudents.size());
+                System.out.println("DEBUG: Students found: " + enrolledStudents);
+            }
+
+            Platform.runLater(() -> {
+                ObservableList<Student> studentTableData = FXCollections.observableArrayList(enrolledStudents);
+                studentTable.setItems(studentTableData);
+                studentTable.setEditable(false);
+                studentTable.setVisible(true);
+                studentTable.setPlaceholder(new Label("No students found"));
+                setLoading(false);
+            });
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText(null);
+            alert.setContentText("Failed to load student data: " + e.getMessage());
+            alert.showAndWait();
+            setLoading(false);
+        }
+    }
+
+    @FXML
+    protected void initStudTableColumns() {
+        studentIdColumn.setCellValueFactory(new PropertyValueFactory<>("student_id"));
+        studentNameColumn.setCellValueFactory(new PropertyValueFactory<>("student_name"));
+
+        studentTable.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 2) {
+                Student selectedStudent = studentTable.getSelectionModel().getSelectedItem();
+                if (selectedStudent != null) {
+                    try {
+                        // viewInvoice(selectedInvoice);
+                    } catch (Exception e) {
+                        dbModel.showError("Failed to select student details: " + e.getMessage());
+                    }
+                }
+            }
+        });
+    }
 
     @FXML
     public void initialize() {
         dbModel = new DatabaseModel();
+
+        loadStudentData();
+        initStudTableColumns();
 
         hideAllErrorLabels();
         invoiceDatePicker.setValue(LocalDate.now());
@@ -353,6 +401,10 @@ public class GenerateNewInvoiceController {
         dashboardStage.show();
         // sportThirdRow.setVisible(false);
         // foodThirdRow.setVisible(false);
+    }
+
+    private void setLoading(boolean loading) {
+        isLoading = loading;
     }
 
     // Helper class to store pairs of related sports activities and food items

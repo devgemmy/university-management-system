@@ -14,6 +14,8 @@ import java.util.HashMap;
 import java.time.Month;
 import java.util.stream.Collectors;
 
+import javafx.scene.control.Alert;
+
 public class DatabaseModel {
     // Singleton instance and database connection
     private static DatabaseModel instance;
@@ -94,6 +96,24 @@ public class DatabaseModel {
         return invoices;
     }
 
+    // CRUD Operations for FINANCES table
+    public List<Student> getEnrolledStudents() throws SQLException {
+        List<Student> enrolledStudents = new ArrayList<>();
+        String query = "SELECT student_id, student_name FROM FINANCES";
+
+        try (Connection conn = getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                enrolledStudents.add(new Student(
+                        rs.getString("student_id"),
+                        rs.getString("student_name")));
+            }
+        }
+        return enrolledStudents;
+    }
+
     private Invoice createInvoiceFromResultSet(ResultSet rs) throws SQLException {
         String invoiceId = rs.getString("invoice_id");
         String studentId = rs.getString("student_id");
@@ -107,7 +127,7 @@ public class DatabaseModel {
         HashMap<String, String> courseDetails = new HashMap<>();
         courseDetails.put("courseID", rs.getString("course_id"));
         courseDetails.put("courseName", rs.getString("course_details"));
-        // ourseDetails.put("courseName", rs.getString("course_name"));
+        // courseDetails.put("courseName", rs.getString("course_name"));
         // System.out.println("courseDetails: " + courseDetails);
 
         // Create institution details HashMap
@@ -776,6 +796,14 @@ public class DatabaseModel {
         }
 
         return costs;
+    }
+
+    public void showError(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
     // public void syncInvoicesToFinances() {

@@ -129,41 +129,6 @@ public class DashboardController implements Initializable {
     protected void loadTotalCostsChart() {
         // Clear existing data
         totalCostsChart.getData().clear();
-
-        // ObservableList<PieChart.Data> pieData = FXCollections.observableArrayList(
-        // new PieChart.Data("Courses", 535000),
-        // new PieChart.Data("Food", 35000),
-        // new PieChart.Data("Sports", 115000));
-
-        // totalCostsChart.setData(pieData);
-        // totalCostsChart.setTitle("Total Costs in 2022 for Business");
-        // totalCostsChart.setClockwise(false);
-        // totalCostsChart.setLegendSide(Side.BOTTOM);
-
-        // costLabel.setTextFill(Color.BLACK);
-        // costLabel.getStyleClass().add("cost-label");
-        // costLabel.setText("£" +
-        // String.valueOf(totalCostsChart.getData().getFirst().getPieValue()));
-
-        // for (final PieChart.Data data : totalCostsChart.getData()) {
-        // data.getNode().addEventHandler(
-        // MouseEvent.MOUSE_CLICKED,
-        // new EventHandler<MouseEvent>() {
-        // @Override
-        // public void handle(MouseEvent ev) {
-        // // System.out.println("PieChart clicked");
-        // costLabel.setTranslateX(ev.getSceneX() - costLabel.getLayoutX());
-        // costLabel.setTranslateY(ev.getSceneY() - costLabel.getLayoutY());
-        // costLabel.setText("£" + String.valueOf(data.getPieValue()));
-        // }
-        // });
-        // }
-
-        // Get all invoices and calculate totals the same way as loadTableData
-        // List<Invoice> invoices = dbController.getAllInvoices();
-        // double coursesCost = 0.0;
-        // double sportsCost = 0.0;
-        // double foodCost = 0.0;
         double courseFees = 0.0;
         double sportsCosts = 0.0;
         double foodCosts = 0.0;
@@ -197,24 +162,6 @@ public class DashboardController implements Initializable {
                 AnchorPane.setLeftAnchor(totalCostsChart, 20.0); // Left margin
                 AnchorPane.setTopAnchor(totalCostsChart, 50.0); // Increased top margin
             }
-
-            // for (Invoice invoice : invoices) {
-            // coursesCost += invoice.getCourseInvFees();
-
-            // Map<String, Double> sportsActivities = invoice.getSportsActivities();
-            // if (sportsActivities != null) {
-            // for (Double cost : sportsActivities.values()) {
-            // sportsCost += cost;
-            // }
-            // }
-
-            // Map<String, Double> foodItems = invoice.getFoodItems();
-            // if (foodItems != null) {
-            // for (Double cost : foodItems.values()) {
-            // foodCost += cost;
-            // }
-            // }
-            // }
 
             if (costLabel != null && costLabel.getParent() != null) {
                 ((AnchorPane) costLabel.getParent()).getChildren().remove(costLabel);
@@ -293,13 +240,6 @@ public class DashboardController implements Initializable {
                         };
 
                         node.setStyle("-fx-pie-color: " + defaultColor + ";");
-                        // node.setOnMouseEntered(event -> {
-                        // node.setStyle("-fx-pie-color: derive(" + defaultColor + ", 20%);");
-                        // });
-
-                        // node.setOnMouseExited(event -> {
-                        // node.setStyle("-fx-pie-color: " + defaultColor + ";");
-                        // });
                     }
                 });
             });
@@ -344,38 +284,6 @@ public class DashboardController implements Initializable {
         // Create Series instance with data types
         XYChart.Series<String, Integer> courseCosts = new XYChart.Series<>();
         courseCosts.setName("Courses"); // This is one of the Legends
-
-        // Create Series instance with data types
-        // XYChart.Series<String, Integer> courseCosts = new XYChart.Series<>();
-        // courseCosts.setName("Courses"); // XYChart.Data(xAxis, yAxis);
-        // courseCosts.getData().add(new XYChart.Data<>("2020", 25601));
-        // courseCosts.getData().add(new XYChart.Data<>("2021", 20148));
-        // courseCosts.getData().add(new XYChart.Data<>("2022", 12500));
-        // courseCosts.getData().add(new XYChart.Data<>("2023", 122450));
-        // courseCosts.getData().add(new XYChart.Data<>("2024", 54550));
-
-        // XYChart.Series<String, Integer> foodCosts = new XYChart.Series<>();
-        // foodCosts.setName("Food");
-        // foodCosts.getData().add(new XYChart.Data<>("2020", 9560));
-        // foodCosts.getData().add(new XYChart.Data<>("2021", 8148));
-        // foodCosts.getData().add(new XYChart.Data<>("2022", 4200));
-        // foodCosts.getData().add(new XYChart.Data<>("2023", 7480));
-        // foodCosts.getData().add(new XYChart.Data<>("2024", 2950));
-
-        // XYChart.Series<String, Integer> sportsCosts = new XYChart.Series<>();
-        // sportsCosts.setName("Sports");
-        // sportsCosts.getData().add(new XYChart.Data<>("2020", 4560));
-        // sportsCosts.getData().add(new XYChart.Data<>("2021", 8148));
-        // sportsCosts.getData().add(new XYChart.Data<>("2022", 1200));
-        // sportsCosts.getData().add(new XYChart.Data<>("2023", 3450));
-        // sportsCosts.getData().add(new XYChart.Data<>("2024", 9250));
-
-        // Add the series in the Bar Chart;
-        // averageUniCostsBarChart.getData().add(courseCosts);
-        // averageUniCostsBarChart.getData().add(foodCosts);
-        // averageUniCostsBarChart.getData().add(sportsCosts);
-        // averageUniCostsBarChart.setTitle("Average Costs Per University in March");
-        // averageUniCostsBarChart.setLegendSide(Side.TOP);
 
         // XYChart.Data(xAxis, yAxis);
         XYChart.Series<String, Number> series = new XYChart.Series<>();
@@ -495,45 +403,13 @@ public class DashboardController implements Initializable {
 
     @FXML
     protected void loadTableData() {
-        // ERROR FIX: Reassigning invoiceTable to a new TableView is wrong.
-        // The TableView is already defined in your FXML.
-        // Therefore, I remove ERR_LINE 1 as it prevents invoiceTable from being null
-        // since it is already injected via @FXML.
-        // --- ERR_LINE 1: invoiceTable = new TableView<>();
-
-        // SOME BIG DUMMY DATA
-        // HashMap<String, Double> sportsDetails1 = new HashMap<String, Double>();
-        // sportsDetails1.put("Basket Ball", 12.9);
-        // sportsDetails1.put("Mountain Climbing", 9.8);
-
-        // HashMap<String, Double> foodDetails1 = new HashMap<String, Double>();
-        // foodDetails1.put("Cheese Pizza", 4.75);
-        // foodDetails1.put("Indian Biryani", 1.40);
-
-        // HashMap<String, String> courseDetails1 = new HashMap<String, String>();
-        // courseDetails1.put("NC1600", "Business Computing");
-
-        // HashMap<String, String> institutionDetails1 = new HashMap<String, String>();
-        // institutionDetails1.put("10009785", "Imperial College");
-
-        // final ObservableList<Invoice> invoiceTableData =
-        // FXCollections.observableArrayList();
-        // invoiceTableData.add(new Invoice("1", "Jatinder Alma", "12/08/2023", 21800.0,
-        // 32.8, 176.43, courseDetails1, institutionDetails1, sportsDetails1,
-        // foodDetails1));
         if (isLoading)
             return;
         setLoading(true);
 
         try {
-            // Gets all invoices from FINANCES table
-            // List<Invoice> invoices = dbController.getAllInvoices();
             List<Invoice> filteredInvoices;
             String selectedFilter = timeFilter.getValue();
-            // if (invoices.isEmpty()) {
-            // System.out.println("No invoices found in the database");
-            // return;
-            // }
             switch (selectedFilter) {
                 case "By Year":
                     String yearStr = yearPeriodDropdown.getValue();
@@ -554,7 +430,7 @@ public class DashboardController implements Initializable {
                         filteredInvoices = new ArrayList<>(dataCache.allInvoices);
                     }
                     break;
-                default: // All Records
+                default:
                     filteredInvoices = new ArrayList<>(dataCache.allInvoices);
             }
             // Sort by date descending (already in memory, so this is fast)
@@ -612,28 +488,6 @@ public class DashboardController implements Initializable {
         System.out.println("Grand Total: £" + String.format("%,.2f", grandTotal));
     }
 
-    // private void updatePieChart(double totalCourseFees, double totalSportsCosts,
-    // double totalFoodCosts) {
-    // ObservableList<PieChart.Data> pieChartData =
-    // FXCollections.observableArrayList(
-    // new PieChart.Data("Course Fees", totalCourseFees),
-    // new PieChart.Data("Sports Costs", totalSportsCosts),
-    // new PieChart.Data("Food Costs", totalFoodCosts));
-
-    // totalCostsChart.setData(pieChartData);
-
-    // // Apply consistent colors
-    // pieChartData.forEach(data -> {
-    // String color = switch (data.getName()) {
-    // case "Course Fees" -> "#007A7A"; // Green for Courses
-    // case "Sports Costs" -> "#FFA84A"; // Yellow for Sports
-    // case "Food Costs" -> "#DE6600"; // Orange for Food
-    // default -> "#000000";
-    // };
-    // data.getNode().setStyle("-fx-pie-color: " + color + ";");
-    // });
-    // }
-
     private int getMonthNumber(String monthName) {
         return switch (monthName) {
             case "January" -> 1;
@@ -680,8 +534,6 @@ public class DashboardController implements Initializable {
         }
     }
 
-    // This method for executing SQL queries safely and prevents SQL injection by
-    // using prepared statements
     @SuppressWarnings("exports")
     public ResultSet queryTheDB(String query, String param) throws SQLException {
         Connection conn = connectToDatabase();
@@ -690,8 +542,6 @@ public class DashboardController implements Initializable {
         return sqlStatement.executeQuery();
     }
 
-    // This methods must sorts the invoice table data based on selected category and
-    // order and categories
     public void sortDataByCategory(ActionEvent event) {
         String selectedCategory = categoryComboBox.getValue();
         String selectedOrder = orderByComboBox.getValue();
@@ -799,7 +649,7 @@ public class DashboardController implements Initializable {
             FXMLLoader viewInvFXMLLoader = new FXMLLoader(DashboardApp.class.getResource("invoice-details-view.fxml"));
             Stage viewInvoiceStage = (Stage) adminButton.getScene().getWindow();
             viewInvoiceStage.setScene(new Scene(viewInvFXMLLoader.load(), 1200, 1000));
-            // Get the controller and set the invoice
+
             ViewInvoiceController controller = viewInvFXMLLoader.getController();
             if (controller == null) {
                 throw new IOException("Failed to get ViewInvoiceController");
@@ -885,10 +735,6 @@ public class DashboardController implements Initializable {
 
     protected void filterInvoicesByYear(String selectedYear) {
         try {
-            // if ("All Records".equals(timeFilter.getValue())) {
-            // loadTableData(); // Show all data
-            // return;
-            // }
             if (FilterType.ALL_RECORDS.toString().equals(timeFilter.getValue())) {
                 loadTableData(); // Show all data
                 return;
@@ -910,7 +756,6 @@ public class DashboardController implements Initializable {
         }
     }
 
-    // This method
     protected void handleSearch() {
         String searchText = searchField.getText().toLowerCase().trim();
         try {
@@ -961,10 +806,6 @@ public class DashboardController implements Initializable {
                                     .anyMatch(item -> item.toLowerCase().contains(searchText))) {
                                 return true;
                             }
-
-                            // if (searchText.isEmpty()) {
-                            // return true; // Show all if search is empty
-                            // }
 
                             // Check year
                             invoiceYear = invoice.getInvoiceDate().split("-")[0];
@@ -1021,9 +862,6 @@ public class DashboardController implements Initializable {
         XYChart.Series<String, Number> sportsSeries = new XYChart.Series<>();
         XYChart.Series<String, Number> foodSeries = new XYChart.Series<>();
 
-        // coursesSeries.setName("Course Fees");
-        // sportsSeries.setName("Sports Costs");
-        // foodSeries.setName("Food Costs");
         try {
             List<Invoice> invoices = dbController.getAllInvoices();
             String searchText = searchField.getText().toLowerCase().trim();
@@ -1204,8 +1042,6 @@ public class DashboardController implements Initializable {
 
         xAxis.setLabel("Cost Categories");
         yAxis.setLabel("Amount (£)");
-        // averageUniCostsBarChart.setTitle("Total Costs");
-        // averageUniCostsBarChart.setStyle(".chart-bar { -fx-bar-fill: #ff6b4a; }");
 
         initializeDashboardValues();
         loadTableData();
@@ -1248,11 +1084,6 @@ public class DashboardController implements Initializable {
         courseList.setCellValueFactory(courseData -> {
             Map<String, String> courseCatalog = courseData.getValue().getCourseList();
             String courseName = courseCatalog != null ? courseCatalog.get("courseName") : "";
-            // String formattedCourse = courseCatalog.entrySet().stream()
-            // .map(entry -> courseName + " (" + entry.getValue() + ")")
-            // .findFirst()
-            // .orElse("");
-            // System.out.println(courseName);
             return new SimpleStringProperty(courseName);
         });
 

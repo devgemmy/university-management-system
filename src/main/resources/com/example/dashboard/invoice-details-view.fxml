@@ -41,26 +41,27 @@
         <Pane layoutX="97.0" layoutY="102.0" prefHeight="230.0" prefWidth="590.0">
             <children>
                 <Text fx:id="invoiceIdLabel" fill="#757575" layoutX="21.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Invoice ID: " wrappingWidth="198.1986083984375" />
-                <Text fx:id="studentNameLabel" layoutX="21.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Student Name" wrappingWidth="524.58056640625">
+                <Text fx:id="studentNameLabel" layoutX="20.0" layoutY="85.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Student Name" wrappingWidth="524.58056640625">
                     <font>
                         <Font name="Avenir Heavy" size="31.0" />
                     </font>
                 </Text>
-                <Text fx:id="institutionLabel" fill="#1e1e1e" layoutX="21.0" layoutY="100.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Institution" wrappingWidth="480.6046447753906">
+                <Text fx:id="institutionLabel" fill="#1e1e1e" layoutX="21.0" layoutY="119.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Institution" wrappingWidth="480.6046447753906">
                     <font>
                         <Font name="Avenir Heavy" size="18.0" />
                     </font>
                 </Text>
-                <Text fx:id="totalCostsLabel" fill="#243465" layoutX="21.0" layoutY="138.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Total Costs: " wrappingWidth="213.5713776309898">
+                <Text fx:id="totalCostsLabel" fill="#243465" layoutX="21.0" layoutY="150.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Total Costs: " wrappingWidth="213.5713776309898">
                     <font>
                         <Font name="Avenir Heavy" size="18.0" />
                     </font>
                 </Text>
-                <Button fx:id="deleteInvoiceButton" defaultButton="true" ellipsisString="" layoutX="24.0" layoutY="158.0" lineSpacing="1.0" prefHeight="44.0" prefWidth="204.0" style="-fx-background-color: #003F5A; -fx-border-color: #007A7A; -fx-text-fill: #FFFFFF; -fx-border-radius: 4px;" text="Delete Invoice Record" textAlignment="CENTER" textFill="#003f5a" textOverrun="WORD_ELLIPSIS" wrapText="true">
+                <Button fx:id="deleteInvoiceButton" defaultButton="true" ellipsisString="" layoutX="24.0" layoutY="170.0" lineSpacing="1.0" prefHeight="44.0" prefWidth="204.0" style="-fx-background-color: #003F5A; -fx-border-color: #007A7A; -fx-text-fill: #FFFFFF; -fx-border-radius: 4px;" text="Delete Invoice Record" textAlignment="CENTER" textFill="#003f5a" textOverrun="WORD_ELLIPSIS" wrapText="true">
                     <font>
                         <Font name="Avenir Roman" size="14.0" />
                     </font>
                 </Button>
+            <Text fx:id="invoiceIdLabel1" fill="#757575" layoutX="21.0" layoutY="50.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Student ID: " wrappingWidth="198.1986083984375" />
             </children>
         </Pane>
         <Pane layoutX="58.0" layoutY="335.0" prefHeight="38.0" prefWidth="1068.0">
@@ -113,7 +114,7 @@
             </children>
         </VBox>
         <!-- <ImageView fx:id="deleteInvBtn" fitHeight="23.0" fitWidth="18.0" layoutX="523.0" layoutY="473.0" pickOnBounds="true" preserveRatio="true" /> -->
-        <VBox fx:id="foodDetailsForm" layoutX="640.0" layoutY="407.0">
+        <VBox fx:id="foodDetailsForm" disable="true" layoutX="640.0" layoutY="407.0">
             <children>
                 <TableView fx:id="foodDtsTable" prefHeight="120.0" prefWidth="450.0">
                     <columns>
@@ -189,5 +190,36 @@
                 </Pane>
             </children>
         </VBox>
+      <VBox fx:id="orderDetailsForm" layoutX="640.0" layoutY="694.0">
+         <children>
+            <TableView fx:id="orderDtsTable" prefHeight="120.0" prefWidth="450.0">
+               <columns>
+                  <TableColumn fx:id="orderIndexColumn" prefWidth="30.0" text="#" />
+                  <TableColumn fx:id="orderHistoryColumn" prefWidth="190.0914306640625" text="Order History" />
+                  <TableColumn fx:id="orderTotalColumn" prefWidth="114.22216796875" text="Order Total" />
+                  <TableColumn fx:id="orderActionColumn" prefWidth="115.27783203125" text="" />
+               </columns>
+            </TableView>
+            <Pane prefHeight="55.0" prefWidth="450.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #989898;">
+               <children>
+                  <Button fx:id="addFoodButton1" defaultButton="true" ellipsisString="" layoutX="38.0" layoutY="12.0" lineSpacing="1.0" onAction="#handleAddFood" prefHeight="19.0" prefWidth="118.0" style="-fx-background-color: #DE6600; -fx-border-color: #DE6600; -fx-text-fill: #FFFFFF; -fx-border-radius: 4px;" text="Add Meal Order" textAlignment="CENTER" textFill="#007878" textOverrun="WORD_ELLIPSIS" wrapText="true">
+                     <font>
+                        <Font name="Avenir Roman" size="12.0" />
+                     </font>
+                  </Button>
+                  <TilePane layoutX="259.0" layoutY="18.0" prefHeight="20.0" prefWidth="147.0">
+                     <children>
+                        <Label text="Total:">
+                           <font>
+                              <Font name="Avenir Heavy" size="14.0" />
+                           </font>
+                        </Label>
+                        <Text fx:id="foodCostsTotalLabel1" strokeType="OUTSIDE" strokeWidth="0.0" text="£100.80" wrappingWidth="72.975341796875" />
+                     </children>
+                  </TilePane>
+               </children>
+            </Pane>
+         </children>
+      </VBox>
     </children>
 </AnchorPane>
