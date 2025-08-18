@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane fx:id="dash" prefHeight="869.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo1.DashboardController">
+   <children>
+      <AnchorPane layoutX="-11.0" layoutY="-1.0" prefHeight="65.0" prefWidth="1211.0" style="-fx-background-color: #02B0B0;" />
+       <AnchorPane layoutX="-2.0" layoutY="825.0" prefHeight="65.0" prefWidth="1202.0" style="-fx-background-color: #02B0B0;" />
+      <TextField fx:id="searchField" layoutX="23.0" layoutY="107.0" prefHeight="26.0" prefWidth="225.0" promptText="Enter Unique ID..." />
+      <Text layoutX="23.0" layoutY="98.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Applicants" wrappingWidth="168.71453857421875">
+         <font>
+            <Font name="Arial Hebrew Bold" size="28.0" />
+         </font>
+      </Text>
+       <TableView fx:id="table" layoutX="7.0" layoutY="168.0" prefHeight="640.0" prefWidth="1180.0" AnchorPane.bottomAnchor="75.0">
+        <columns>
+            <TableColumn fx:id="uniqueIDColumn" prefWidth="120.0" text="Applicant ID" />
+          <TableColumn fx:id="nameofApplicant" prefWidth="149.0" text="Name" />
+            <TableColumn fx:id="dobOfApplicant" prefWidth="100.0" text="Date of Birth" />
+            <TableColumn fx:id="dateOfApplication" prefWidth="100.0" text="Date of Application" />
+            <TableColumn fx:id="certificate" prefWidth="150.0" text="Certificate" />
+            <TableColumn fx:id="grade" prefWidth="100.0" text="Grade" />
+            <TableColumn fx:id="status" prefWidth="150" text="Status" />
+            <TableColumn fx:id="actions" prefWidth="310.00006103515625" resizable="false" text="Actions" />
+        </columns>
+      </TableView>
+      <Button fx:id="addApplicantButton" layoutX="910.0" layoutY="107.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="141.0" style="-fx-background-color: #007A7A;" text="Add Applicant" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>

@@ -1,0 +1,26 @@
+.button {
+    -fx-background-color: #4A90E2;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 10px 20px;
+    -fx-background-radius: 12px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0, 0, 4);
+}
+
+.button:hover {
+    -fx-background-color: #3B7DC4;
+}
+
+/* Red border for invalid fields */
+.text-field.error, .date-picker.error {
+    -fx-border-color: red !important;
+    -fx-border-width: 2px !important;
+}
+
+/* Red text for error messages */
+.label.error-message {
+    -fx-text-fill: red !important;
+    -fx-font-size: 12px !important;
+    -fx-font-weight: bold !important;
+}

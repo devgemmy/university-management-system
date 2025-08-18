@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane fx:id="applicantForm" prefHeight="890.0" prefWidth="901.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo1.ApplicantFormController">
+    <children>
+        <!-- Header -->
+        <AnchorPane layoutX="-11.0" layoutY="-1.0" prefHeight="65.0" prefWidth="1211.0" style="-fx-background-color: #02B0B0;">
+            <children>
+                <Text layoutX="63.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Applicant Form" wrappingWidth="250.0">
+                    <font>
+                        <Font name="Arial Hebrew Bold" size="28.0" />
+                    </font>
+                </Text>
+            </children>
+        </AnchorPane>
+
+        <!-- Personal Details -->
+        <Text layoutX="30.0" layoutY="100.0" style="-fx-font-weight: bold; -fx-font-size: 16px;" text="Personal Details" />
+        <Label layoutX="30.0" layoutY="130.0" text="First Name*:" />
+        <TextField fx:id="firstNameField" layoutX="150.0" layoutY="125.0" prefWidth="200" promptText="John" style="-fx-background-color: #E0E4E9;" />
+        <Label layoutX="450.0" layoutY="130.0" text="Last Name*:" />
+        <TextField fx:id="lastNameField" layoutX="540.0" layoutY="125.0" prefWidth="200" promptText="Doe" style="-fx-background-color: #E0E4E9;" />
+        <Label layoutX="32.0" layoutY="366.0" text="Email*:" />
+        <TextField fx:id="emailField" layoutX="150.0" layoutY="362.0" prefWidth="250" promptText="john.doe@example.com" style="-fx-background-color: #E0E4E9;" />
+
+        <Label layoutX="30.0" layoutY="184.0" text="Address Line 1:" />
+        <TextField fx:id="address1Field" layoutX="150.0" layoutY="179.0" prefWidth="400" promptText="221B Baker Street" style="-fx-background-color: #E0E4E9;" />
+        <Label layoutX="30.0" layoutY="224.0" text="Address Line 2:" />
+        <TextField fx:id="address2Field" layoutX="150.0" layoutY="219.0" prefWidth="400" promptText="Address Line 2" style="-fx-background-color: #E0E4E9;" />
+
+        <Label layoutX="30.0" layoutY="264.0" text="City:" />
+        <TextField fx:id="cityField" layoutX="150.0" layoutY="259.0" prefHeight="26.0" prefWidth="127.0" promptText="London" style="-fx-background-color: #E0E4E9;" />
+        <Label layoutX="293.0" layoutY="264.0" text="Country:" />
+        <TextField fx:id="stateField" layoutX="346.0" layoutY="259.0" prefHeight="26.0" prefWidth="134.0" promptText="England" style="-fx-background-color: #E0E4E9;" />
+        <Label layoutX="500.0" layoutY="264.0" text="Postcode*:" />
+        <TextField fx:id="zipField" layoutX="567.0" layoutY="259.0" prefWidth="100" promptText="999999" style="-fx-background-color: #E0E4E9;" />
+
+        <Label layoutX="30.0" layoutY="304.0" text="Date of Birth*:" />
+        <DatePicker fx:id="dobPicker" layoutX="150.0" layoutY="299.0" promptText="01/01/1900" />
+
+        <!-- Academic Qualifications -->
+        <Text layoutX="26.0" layoutY="437.0" style="-fx-font-weight: bold; -fx-font-size: 16px;" text="Academic Qualifications" />
+        <Label layoutX="26.0" layoutY="467.0" text="Institution Attended:" />
+        <TextField fx:id="institutionField" layoutX="196.0" layoutY="462.0" prefWidth="250" style="-fx-background-color: #E0E4E9;" />
+        <Label layoutX="26.0" layoutY="515.0" text="Highest Qualification:" />
+        <TextField fx:id="qualificationField" layoutX="196.0" layoutY="511.0" prefWidth="250" style="-fx-background-color: #E0E4E9;" />
+        <Label layoutX="26.0" layoutY="561.0" text="Grade:" />
+
+        <Label layoutX="26.0" layoutY="612.0" text="Graduation Date:" />
+        <DatePicker fx:id="gradDatePicker" layoutX="196.0" layoutY="608.0" promptText="01/01/1994" style="-fx-background-color: #E0E4E9;" />
+
+        <StackPane layoutX="936.0" layoutY="136.0" prefHeight="150" prefWidth="150" />
+
+        <StackPane layoutX="927.0" layoutY="375.0" prefHeight="150" prefWidth="180">
+            <!-- Grey Background Box -->
+            <Rectangle arcHeight="10" arcWidth="10" height="150" style="-fx-fill: #E0E4E9;" width="180" />
+
+            <!-- Passport Icon -->
+            <ImageView fx:id="passportImageView" fitHeight="80.0" fitWidth="72.0" preserveRatio="true">
+                <image>
+                    <Image url="@images/passport-icon.png" />
+                </image>
+            </ImageView>
+
+            <!-- Max Size Text -->
+            <Label style="-fx-text-fill: #A0A0A0; -fx-font-size: 12px;" text="Max size (500 × 500 px), PNG" StackPane.alignment="BOTTOM_CENTER" />
+        </StackPane>
+
+        <!-- Additional Comments -->
+        <Label layoutX="22.0" layoutY="695.0" text="Additional Comments:" />
+        <TextArea fx:id="commentsArea" layoutX="22.0" layoutY="715.0" prefHeight="50" prefWidth="720" promptText="Enter your comments here..." />
+
+        <!-- Footer -->
+        <AnchorPane layoutX="-2.0" layoutY="825.0" prefHeight="65.0" prefWidth="1202.0" style="-fx-background-color: #02B0B0;" />
+      <Button fx:id="uploadProfilePicButton" layoutX="941.0" layoutY="320.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="141.0" style="-fx-background-color: #007A7A;" text="Upload" textFill="WHITE">
+
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Button>
+        <!-- Label for showing uploaded profile picture file name -->
+        <Label fx:id="profilePicLabel" layoutX="975.0" layoutY="357.0" style="-fx-text-fill: #6B7280; -fx-font-size: 12px;" text="No file chosen" />
+
+      <Button fx:id="uploadPassportButton" layoutX="941.0" layoutY="578.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="141.0" style="-fx-background-color: #007A7A;" text="Upload" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Button>
+        <!-- Label for showing uploaded passport file name -->
+        <Label fx:id="passportLabel" layoutX="975.0" layoutY="620.0" style="-fx-text-fill: #6B7280; -fx-font-size: 12px;" text="No file chosen" />
+      <Button fx:id="saveButton" layoutX="435.0" layoutY="775.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="141.0" style="-fx-background-color: #007A7A;" text="Save Changes" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Button>
+      <Button fx:id="cancelButton" layoutX="606.0" layoutY="775.0" mnemonicParsing="false" onAction="#handleCancel" prefHeight="26.0" prefWidth="141.0" style="-fx-background-color: #007A7A;" text="Cancel" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Button>
+      <StackPane layoutX="902.0" layoutY="284.0" prefHeight="30.0" prefWidth="218.0" style="-fx-border-color: #D1D5DB; -fx-border-style: dashed; -fx-border-width: 2px; -fx-border-radius: 5px; -fx-background-color: transparent;">
+         <children>
+            <Label style="-fx-text-fill: #9CA3AF;" text="Upload your profile picture here" />
+         </children>
+      </StackPane>
+         <!-- Grey Background Box -->
+         <Rectangle arcHeight="10" arcWidth="10" height="165.0" layoutX="935.0" layoutY="102.0" style="-fx-fill: #E0E4E9;" width="164.0" />
+
+               <!-- Profile Picture Icon -->
+         <ImageView fx:id="profileImageView" fitHeight="60.0" fitWidth="60.0" layoutX="987.0" layoutY="149.0" preserveRatio="true">
+             <image>
+                 <Image url="@images/camera-icon.png" />
+             </image>
+         </ImageView>
+
+            <!-- Max Size Text -->
+         <Label layoutX="940.0" layoutY="241.0" style="-fx-text-fill: #A0A0A0; -fx-font-size: 12px;" text="Max size (300 × 300 px), PNG">
+         <font>
+            <Font name="System Bold Italic" size="13.0" />
+         </font>
+      </Label>
+      <StackPane layoutX="903.0" layoutY="540.0" prefHeight="30.0" prefWidth="218.0" style="-fx-border-color: #D1D5DB; -fx-border-style: dashed; -fx-border-width: 2px; -fx-border-radius: 5px; -fx-background-color: transparent;">
+         <children>
+            <Label style="-fx-text-fill: #9CA3AF;" text="Upload your passport picture here" />
+         </children>
+      </StackPane>
+      <Label layoutX="22.0" layoutY="792.0" text="Fields marked with * are required to save changes." />
+      <Button fx:id="uploadCertButton" layoutX="23.0" layoutY="646.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="180.0" style="-fx-background-color: #007A7A;" text="Upload Certificate" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Button>
+      <VBox fx:id="uploadedFilesContainer" layoutX="861.0" layoutY="684.0" prefHeight="86.0" prefWidth="310.0" />
+      <Text layoutX="957.0" layoutY="663.0" style="-fx-font-weight: bold; -fx-font-size: 16px;" text="Uploaded Files" />
+      <Label fx:id="certLabel" layoutX="210.0" layoutY="659.0" style="-fx-text-fill: #6B7280; -fx-font-size: 12px;" text="No file chosen" />
+      <ComboBox fx:id="countryCodeBox" layoutX="535.0" layoutY="363.0" prefHeight="26.0" prefWidth="38.0" />
+      <TextField fx:id="contactNumberField" layoutX="595.0" layoutY="362.0" prefHeight="26.0" prefWidth="200.0" promptText="xxxxxxxxxx" style="-fx-background-color: #E0E4E9;" />
+      <Label layoutX="431.0" layoutY="368.0" text="Contact Number:" />
+      <TextField fx:id="gradeField" layoutX="196.0" layoutY="557.0" prefWidth="250" style="-fx-background-color: #E0E4E9;" />
+    </children>
+</AnchorPane>
