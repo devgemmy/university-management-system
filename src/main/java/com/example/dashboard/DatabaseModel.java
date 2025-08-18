@@ -99,16 +99,27 @@ public class DatabaseModel {
     // CRUD Operations for FINANCES table
     public List<Student> getEnrolledStudents() throws SQLException {
         List<Student> enrolledStudents = new ArrayList<>();
-        String query = "SELECT student_id, student_name FROM FINANCES";
+        String selectAllQuery = """
+            SELECT student_id, student_name, course_id FROM STUDENTS
+            ORDER BY student_id DESC;
+        """;
 
-        try (Connection conn = getConnection();
-                PreparedStatement pstmt = conn.prepareStatement(query)) {
-
-            ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
-                enrolledStudents.add(new Student(
-                        rs.getString("student_id"),
-                        rs.getString("student_name")));
+        try (
+                Connection conn = getConnection();
+                PreparedStatement selectstmt = conn.prepareStatement(selectAllQuery)
+        ) {
+            int s = 0;
+            ResultSet selectedAll = selectstmt.executeQuery();
+            while (selectedAll.next()) {
+                String searchStudID = selectedAll.getString("student_id");
+                String collectedStudName = selectedAll.getString("student_name");
+                String collectedCourseID = selectedAll.getString("course_id");
+                Student newStud = new Student(
+                        s += 1,
+                        searchStudID,
+                        collectedStudName,
+                        collectedCourseID);
+                enrolledStudents.add(newStud);
             }
         }
         return enrolledStudents;
@@ -385,6 +396,8 @@ public class DatabaseModel {
         }
         return invoices;
     }
+
+    // =====================================================
 
     public Map<String, String> getInstitutions() {
         Map<String, String> institutions = new HashMap<>();
@@ -798,76 +811,21 @@ public class DatabaseModel {
         return costs;
     }
 
-    public void showError(String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error");
+    public void showAlert(Alert.AlertType type, String title, String message) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
     }
 
-    // public void syncInvoicesToFinances() {
-    // String selectSQL = """
-    // SELECT
-    // i.INVOICE_ID,
-    // i."Student Name" as studentName,
-    // i.COURSE_ID as courseID,
-    // k.TITLE as courseName,
-    // CAST(i."Course Costs" AS INTEGER) as courseInvFees,
-    // i.SPORTS_ACTIVITIES as sportsActivity,
-    // CAST(i."Sports Costs" AS REAL) as totalSportsCost,
-    // i.FOOD_ITEMS as foodItems,
-    // CAST(i."Food Costs" AS REAL) as totalFoodCost,
-    // i.INSTITUTION_ID as institutionID,
-    // inst.INSTITUTION_NAME as institutionName,
-    // i."Date of Invoice" as invoiceDate
-    // FROM INVOICES i
-    // LEFT JOIN KISCOURSE k ON i.COURSE_ID = k.KISCOURSEID
-    // LEFT JOIN INSTITUTION inst ON i.INSTITUTION_ID = inst.UKPRN
-    // WHERE i.INVOICE_ID NOT IN (SELECT invoiceID FROM FINANCES)
-    // """;
+    public void showError(String message) {
+        showAlert(Alert.AlertType.ERROR, "Error", message);
+    }
 
-    // String insertSQL = """
-    // INSERT INTO FINANCES (
-    // invoice_id, student_name, course_id, course_name, course_inv_fees,
-    // sports_activity, total_sports_cost, food_items, total_food_cost,
-    // institution_id, institution_name, invoice_date
-    // ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    // """;
-
-    // try (Connection conn = getConnection()) {
-    // conn.setAutoCommit(false);
-    // try (Statement selectStmt = conn.createStatement();
-    // ResultSet rs = selectStmt.executeQuery(selectSQL);
-    // PreparedStatement insertStmt = conn.prepareStatement(insertSQL)) {
-
-    // System.out.println("Executing query: " + rs);
-    // while (rs.next()) {
-    // insertStmt.setString(1, rs.getString("invoice_id"));
-    // insertStmt.setString(2, rs.getString("student_name"));
-    // insertStmt.setString(3, rs.getString("course_id"));
-    // insertStmt.setString(4, rs.getString("course_name"));
-    // insertStmt.setInt(5, rs.getInt("course_inv_fees"));
-    // insertStmt.setString(6, rs.getString("sports_activity"));
-    // insertStmt.setDouble(7, rs.getDouble("total_sports_cost"));
-    // insertStmt.setString(8, rs.getString("food_items"));
-    // insertStmt.setDouble(9, rs.getDouble("total_food_cost"));
-    // insertStmt.setString(10, rs.getString("institution_id"));
-    // insertStmt.setString(11, rs.getString("institution_name"));
-    // insertStmt.setString(12, rs.getString("invoice_date"));
-
-    // insertStmt.executeUpdate();
-    // }
-    // conn.commit();
-    // System.out.println("Successfully synced INVOICES to FINANCES");
-    // } catch (SQLException e) {
-    // conn.rollback();
-    // throw e;
-    // }
-    // } catch (SQLException e) {
-    // System.err.println("Error syncing INVOICES to FINANCES: " + e.getMessage());
-    // }
-    // }
+    public void showInfo(String message) {
+        showAlert(Alert.AlertType.INFORMATION, "Information", message);
+    }
 }
 
 /*

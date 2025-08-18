@@ -44,19 +44,19 @@
             <VBox prefHeight="209.0" prefWidth="520.0" style="-fx-background-color: #E3FAE3; -fx-padding: 20; -fx-background-radius: 10;" styleClass="service-card" GridPane.columnIndex="0" GridPane.rowIndex="0">
             <Pane prefHeight="200.0" prefWidth="200.0">
                <children>
-                      <Button layoutX="16.0" layoutY="143.0" onAction="#viewApplicantDetails" prefHeight="35.0" prefWidth="140.0" style="-fx-background-color: #00796b; -fx-text-fill: white;" text="View Restaurants">
+                      <Button layoutX="16.0" layoutY="143.0" onAction="#viewApplicantDetails" prefHeight="35.0" prefWidth="140.0" style="-fx-background-color: #00796b; -fx-text-fill: white;" text="View Applicants">
                      <font>
                         <Font name="Avenir Roman" size="14.0" />
                      </font>
                   </Button>
-                      <Text layoutX="17.0" layoutY="126.0" style="-fx-font-size: 18px;" text="108 Applicants">
+                      <Text layoutX="17.0" layoutY="98.0" style="-fx-font-size: 18px;" text="Add new applicants, verify their details, and manage applicant records." wrappingWidth="334.2137756347656">
                      <font>
                         <Font name="Avenir Light" size="13.0" />
                      </font>
                   </Text>
                       <Text layoutX="63.0" layoutY="35.0" style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Applicant Details" wrappingWidth="205.0">
                      <font>
-                        <Font name="Avenir Roman" size="13.0" />
+                         <Font name="Avenir Light" size="13.0" />
                      </font>
                   </Text>
                   <ImageView fitHeight="35.0" fitWidth="45.0" layoutX="18.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true">
@@ -74,12 +74,14 @@
                <children>
                       <Button layoutX="30.0" layoutY="145.0" onAction="#viewAttendance" prefHeight="35.0" prefWidth="215.0" style="-fx-background-color: #DE6600; -fx-text-fill: white;" text="View Attendance Records">
                      <font>
-                        <Font name="Avenir Roman" size="14.0" />
+                         <Font name="Avenir Light" size="13.0" />
                      </font>
                   </Button>
                       <Text layoutX="79.0" layoutY="36.0" style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Attendance Monitoring" />
-                      <Text layoutX="31.0" layoutY="100.0" style="-fx-font-size: 18px;" text="835 Absent Students" />
-                      <Text layoutX="31.0" layoutY="128.0" style="-fx-font-size: 18px;" text="1017 Present Students" />
+                      <Text layoutX="31.0" layoutY="97.0" style="-fx-font-size: 18px;" text="Monitor course and student attendance through visual charts and extract data for external use." wrappingWidth="415.7518310546875">
+                     <font>
+                         <Font name="Avenir Light" size="13.0" />
+                     </font></Text>
                   <ImageView fitHeight="35.0" fitWidth="45.0" layoutX="29.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../../assets/icons/attendance.png" />
@@ -101,8 +103,10 @@
                         <Font size="14.0" />
                      </font>
                   </Button>
-                      <Text layoutX="26.0" layoutY="130.0" style="-fx-font-size: 18px;" text="5008 Courses" />
-                      <Text layoutX="26.0" layoutY="101.0" style="-fx-font-size: 18px;" text="492 Universities" />
+                      <Text layoutX="26.0" layoutY="104.0" style="-fx-font-size: 18px;" text="Manage student bookings and streamline course selection processes." wrappingWidth="355.0718994140625">
+                     <font>
+                        <Font name="Avenir Medium" size="13.0" />
+                     </font></Text>
                       <Text layoutX="70.0" layoutY="40.0" style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Course Selection" wrappingWidth="205.0">
                      <font>
                         <Font name="Avenir Roman" size="13.0" />
@@ -127,8 +131,7 @@
                      </font>
                   </Button>
                       <Text layoutX="77.0" layoutY="35.0" style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Finance Management" />
-                      <Text layoutX="30.0" layoutY="100.0" style="-fx-font-size: 18px;" text="136 Invoices" />
-                      <Text layoutX="30.0" layoutY="129.0" style="-fx-font-size: 18px;" text="Average Costs: £12,500" />
+                      <Text layoutX="30.0" layoutY="78.0" style="-fx-font-size: 18px;" text="Analyze invoice details, visualize financial data in charts, sort tabulated records, and generate invoices for students" wrappingWidth="427.013671875" />
                   <ImageView fitHeight="35.0" fitWidth="45.0" layoutX="30.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../../assets/icons/finance.png" />
@@ -148,8 +151,7 @@
                      </font>
                   </Button>
                       <Text layoutX="72.0" layoutY="37.0" style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Restaurants" />
-                      <Text layoutX="32.0" layoutY="103.0" style="-fx-font-size: 18px;" text="48 Meals" />
-                      <Text layoutX="30.0" layoutY="133.0" style="-fx-font-size: 18px;" text="192 Orders" />
+                      <Text layoutX="32.0" layoutY="97.0" style="-fx-font-size: 18px;" text="Manage student orders, track transactions, and view order history details." wrappingWidth="400.75250244140625" />
                   <ImageView fitHeight="35.0" fitWidth="45.0" layoutX="29.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../../assets/icons/restaurant.png" />
@@ -169,8 +171,7 @@
                      </font>
                   </Button>
                       <Text layoutX="90.0" layoutY="36.0" style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Sports School" />
-                      <Text layoutX="37.0" layoutY="99.0" style="-fx-font-size: 18px;" text="115 Sports" />
-                      <Text layoutX="37.0" layoutY="129.0" style="-fx-font-size: 18px;" text="512 Active Students" />
+                      <Text layoutX="37.0" layoutY="115.0" style="-fx-font-size: 18px;" text="Coming soon! Stay tuned for updates." />
                   <ImageView fitHeight="35.0" fitWidth="45.0" layoutX="41.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../../assets/icons/sports.png" />

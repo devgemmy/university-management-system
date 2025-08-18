@@ -81,7 +81,7 @@ public class PopulateFinanceTable {
                         ResultSet rs = countstmt.executeQuery(countINVQuery)) {
                     if (rs.next() && rs.getInt(1) == originalInvCount) {
                         System.out.println(
-                                "INVOICES table already has clean data. \n Go ahead and populate the Finance table.");
+                                "INVOICES table already has clean data. \nGo ahead and populate the Finance table.");
                         // Populate the FINANCES table
                         if (initFinanceCount == 0 && originalInvCount == 96) {
                             generateFinancesFromExistingInvoices(conn);
@@ -166,9 +166,6 @@ public class PopulateFinanceTable {
                 String invoiceID = String.format("INV%09d%s",
                         100000000 + random.nextInt(900000000),
                         generateRandomLetters());
-                String studentID = String.format("INV%04d%s",
-                        1000 + random.nextInt(9000),
-                        generateRandomLetters());
                 String studentName = allinvrs.getString("student_name");
 
                 String course_costs = allinvrs.getString("course_costs");
@@ -189,6 +186,18 @@ public class PopulateFinanceTable {
 
                 String invoiceDate = parseDate(allinvrs.getString("invoice_date"));
 
+                String studentID = generateStudentID(invoiceDate, studentName);
+
+                // Insert formatted Invoice data into STUDENTS
+                String insertStudentQuery = """
+                  INSERT OR IGNORE INTO STUDENTS (student_id, student_name, course_id) VALUES (?, ?, ?);
+                """;
+
+                // Check if the Student exists
+                String checkStudentIDQuery = """
+                      SELECT student_id FROM STUDENTS WHERE student_id = ?
+                    """;
+
                 // Insert formatted Invoice data into FINANCES
                 String insertFinanceSQL = """
                             INSERT OR IGNORE INTO FINANCES (
@@ -199,6 +208,7 @@ public class PopulateFinanceTable {
                         """;
 
                 try (PreparedStatement pstmt = conn.prepareStatement(insertFinanceSQL)) {
+                    // Insert Into Finance Table
                     pstmt.setString(1, invoiceID);
                     pstmt.setString(2, studentID);
                     pstmt.setString(3, studentName);
@@ -213,6 +223,24 @@ public class PopulateFinanceTable {
                     pstmt.setString(12, institutionName);
                     pstmt.setString(13, invoiceDate);
                     pstmt.executeUpdate();
+
+                    try (PreparedStatement checkstmt = conn.prepareStatement(checkStudentIDQuery)) {
+                        checkstmt.setString(1, studentID);
+                        ResultSet checkStudentQ = checkstmt.executeQuery();
+                        if (!checkStudentQ.next()) {
+                            System.out.println("Storing new student details ...");
+                            try (PreparedStatement insertstmt = conn.prepareStatement(insertStudentQuery)) {
+                                // Insert Into Student Table
+                                insertstmt.setString(1, studentID);
+                                insertstmt.setString(2, studentName);
+                                insertstmt.setString(3, courseID);
+                                insertstmt.executeUpdate();
+                                System.out.println(studentName + " is now enrolled.");
+                            }
+                        }
+                    } catch (SQLException e) {
+                        System.err.println("Error checking student ID: " + e.getMessage());
+                    }
                 }
             }
 
@@ -221,7 +249,7 @@ public class PopulateFinanceTable {
         }
     }
 
-    public static Map<String, String> getCourseSelection(@SuppressWarnings("exports") Connection conn, String ukprn)
+    public static Map<String, String> getCourseSelection(@SuppressWarnings("exports") Connection conn, String courseID)
             throws SQLException {
         Map<String, String> courseDetails = new HashMap<>();
         String courseSelectQuery = """
@@ -235,28 +263,9 @@ public class PopulateFinanceTable {
                     WHERE k.KISCOURSEID = ?;
                 """;
 
-        // String selectSQL = """
-        // SELECT
-        // i."Student Name" as studentName,
-        // k.KISCOURSEID as courseID,
-        // k.TITLE as courseName,
-        // CAST(i."Course Costs" AS INTEGER) as courseInvFees,
-        // i."Sports Costs" as sportsActivity,
-        // CAST(i."Sports Costs" AS REAL) as totalSportsCost,
-        // i."Food Costs" as foodItems,
-        // CAST(i."Food Costs" AS REAL) as totalFoodCost,
-        // inst.UKPRN as institutionID,
-        // inst.LEGAL_NAME as institutionName,
-        // i."Date of Invoice" as invoiceDate
-        // FROM INVOICES i
-        // LEFT JOIN KISCOURSE k ON i.COURSE_ID = k.KISCOURSEID
-        // LEFT JOIN INSTITUTION inst ON i.INSTITUTION_ID = inst.UKPRN
-        // WHERE i.INVOICE_ID NOT IN (SELECT invoice_id FROM FINANCES)
-        // """;
-
         try (
                 PreparedStatement pstmt = conn.prepareStatement(courseSelectQuery);) {
-            pstmt.setString(1, ukprn);
+            pstmt.setString(1, courseID);
             ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()) {
@@ -271,12 +280,39 @@ public class PopulateFinanceTable {
         return courseDetails;
     }
 
+    public static String generateStudentID(String invoiceDate, String studentFullName) {
+        String[] dateParts = invoiceDate.split("-");
+        if (dateParts.length != 3) {
+            throw new IllegalArgumentException("Invoice date must be in the format yyyy-MM-dd");
+        }
+        String year = dateParts[0];
+        String month = dateParts[1];
+        String day = dateParts[2];
+        String yearSuffix = year.substring(year.length() - 2);
+        String randomLetters = generateRandomLetters();
+        String initials = getInitials(studentFullName);
+        return String.format("%s%s%s%s-%s", yearSuffix, day, month, randomLetters, initials);
+    }
+
     private static String generateRandomLetters() {
-        String letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         Random random = new Random();
-        return "" +
-                letters.charAt(random.nextInt(letters.length())) +
-                letters.charAt(random.nextInt(letters.length()));
+        char letter1 = (char) ('A' + random.nextInt(26));
+        char letter2 = (char) ('A' + random.nextInt(26));
+        return "" + letter1 + letter2;
+    }
+
+    private static String getInitials(String fullName) {
+        if (fullName == null || fullName.trim().isEmpty()) {
+            return "";
+        }
+        String[] names = fullName.trim().split("\\s+");
+        StringBuilder initials = new StringBuilder();
+        for (String name : names) {
+            if (!name.isEmpty()) {
+                initials.append(Character.toUpperCase(name.charAt(0)));
+            }
+        }
+        return initials.toString();
     }
 
     private static String parseDate(String inv_date) {
@@ -351,3 +387,23 @@ public class PopulateFinanceTable {
         populateFinancesFromExistingData();
     }
 }
+
+
+// String selectSQL = """
+// SELECT
+// i."Student Name" as studentName,
+// k.KISCOURSEID as courseID,
+// k.TITLE as courseName,
+// CAST(i."Course Costs" AS INTEGER) as courseInvFees,
+// i."Sports Costs" as sportsActivity,
+// CAST(i."Sports Costs" AS REAL) as totalSportsCost,
+// i."Food Costs" as foodItems,
+// CAST(i."Food Costs" AS REAL) as totalFoodCost,
+// inst.UKPRN as institutionID,
+// inst.LEGAL_NAME as institutionName,
+// i."Date of Invoice" as invoiceDate
+// FROM INVOICES i
+// LEFT JOIN KISCOURSE k ON i.COURSE_ID = k.KISCOURSEID
+// LEFT JOIN INSTITUTION inst ON i.INSTITUTION_ID = inst.UKPRN
+// WHERE i.INVOICE_ID NOT IN (SELECT invoice_id FROM FINANCES)
+// """;

@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 
 public class ViewInvoiceController {
     @FXML
-    private Text invoiceIdLabel;
+    private Text invoiceIdLabel, studentIdLabel;
     @FXML
     private Text studentNameLabel;
     @FXML
@@ -45,6 +45,8 @@ public class ViewInvoiceController {
     private Text sportCostsTotalLabel;
     @FXML
     private Text foodCostsTotalLabel;
+    @FXML
+    private Text orderCostsTotalLabel;
 
     @FXML
     private TableView<CourseEntry> courseDtsTable;
@@ -80,6 +82,17 @@ public class ViewInvoiceController {
     private TableColumn<SportEntry, Void> sportDeleteColumn;
 
     @FXML
+    private TableView<OrderEntry> orderDtsTable;
+    @FXML
+    private TableColumn<OrderEntry, Integer> orderIndexColumn;
+    @FXML
+    private TableColumn<OrderEntry, String> orderHistoryColumn;
+    @FXML
+    private TableColumn<OrderEntry, Double> orderTotalColumn;
+    @FXML
+    private TableColumn<OrderEntry, Void> orderActionColumn;
+
+    @FXML
     private ComboBox<String> courseSelectionComboBox, foodSelectionComboBox, sportsSelectionComboBox;
     @FXML
     private TextField courseFeeField, foodPriceField, sportsPriceField;
@@ -94,6 +107,12 @@ public class ViewInvoiceController {
     private Map<String, String> availableCourses;
     // private ObservableList<String> availableFoodItems;
     // private ObservableList<String> availableSportsActivities;
+
+    // Created ORDERS Table: invoice_id, student_id, order_history, order_total ✅
+    // 10. Add functionality to read Order History and Totals ✅
+    // 9. Manage Restaurant Stage exit_on_close ✅
+
+    double orderHistoryCostsTotal;
 
     @FXML
     public void initialize() {
@@ -151,6 +170,12 @@ public class ViewInvoiceController {
         });
         setupSportDeleteColumn();
 
+        // Order History Table
+        orderIndexColumn.setCellValueFactory(cellData -> cellData.getValue().indexProperty().asObject());
+        orderHistoryColumn.setCellValueFactory(cellData -> cellData.getValue().orderNoProperty());
+        orderTotalColumn.setCellValueFactory(cellData -> cellData.getValue().orderTotalProperty().asObject());
+        setupOrderViewColumn();
+
         // Initialize controllers
         dbModel = DatabaseModel.getInstance();
         availableCourses = new HashMap<>();
@@ -194,10 +219,11 @@ public class ViewInvoiceController {
 
         // Basic invoice info
         displayData.put("invoiceId", invoice.getInvoiceID());
+        displayData.put("studentId", invoice.getStudentID());
         displayData.put("studentName", invoice.getStudentName());
         displayData.put("institutionName", invoice.getInstitutionDetails().get("institutionName"));
         displayData.put("invoiceDate", invoice.getInvoiceDate());
-        displayData.put("totalCosts", calculateTotalCosts());
+        // displayData.put("totalCosts", calculateTotalCosts());
 
         displayData.put("totalInvSportsCost", invoice.getTotalSportsCost());
         displayData.put("totalInvFoodCost", invoice.getTotalFoodCost());
@@ -214,14 +240,20 @@ public class ViewInvoiceController {
 
         // Update UI with transformed data
         invoiceIdLabel.setText("Invoice ID: " + displayData.get("invoiceId"));
+        studentIdLabel.setText("Student ID: " + displayData.get("studentId"));
         studentNameLabel.setText((String) displayData.get("studentName"));
+        // totalCostsLabel.setText("Total Costs: " + currencyFormatter.format(displayData.get("totalCosts")));
         institutionLabel.setText((String) displayData.get("institutionName"));
-        totalCostsLabel.setText("Total Costs: " + currencyFormatter.format(displayData.get("totalCosts")));
         invoiceDateLabel.setText((String) displayData.get("invoiceDate"));
 
         loadCourseDetails(displayData);
         loadFoodItems(displayData);
         loadSportsActivities(displayData);
+
+        orderHistoryCostsTotal = loadOrderHistory(""+displayData.get("invoiceId"));
+        double totalCosts = calculateTotalCosts();
+        totalCostsLabel.setText("Total Costs: " + currencyFormatter.format(totalCosts));
+
         updatePieChart();
 
         // Debug log
@@ -249,6 +281,12 @@ public class ViewInvoiceController {
             courseCostsTotalLabel.setText(currencyFormatter.format(displayData.get("totalInvCourseFees")));
         } else {
             System.err.println("courseCostsTotalLabel is null!");
+        }
+
+        if (orderCostsTotalLabel != null) {
+            orderCostsTotalLabel.setText(currencyFormatter.format(orderHistoryCostsTotal));
+        } else {
+            System.err.println("orderCostsTotalLabel is null!");
         }
     }
 
@@ -357,6 +395,42 @@ public class ViewInvoiceController {
         sportDtsTable.setItems(sportEntries);
     }
 
+    @SuppressWarnings("unchecked")
+    private double loadOrderHistory(String displayInvID) {
+        ObservableList<OrderEntry> orderEntries = FXCollections.observableArrayList();
+        int index = 1;
+        String getOrdersQuery = """
+            SELECT invoice_id, order_history, order_total FROM ORDERS
+        """;
+
+        double orderGrandTotal = 0.0;
+        try (
+            Connection conn = dbModel.getConnection();
+            PreparedStatement orderQstmt = conn.prepareStatement(getOrdersQuery);
+            ResultSet order_rs = orderQstmt.executeQuery()
+        ) {
+            while(order_rs.next()) {
+                String order_inv = order_rs.getString("invoice_id");
+                String order_no = order_rs.getString("order_history");
+                double order_tot = order_rs.getDouble("order_total");
+
+                if (displayInvID.equals(order_inv)) {
+                    System.out.println(displayInvID + ": " + order_inv);
+                    orderEntries.add(new OrderEntry(index++, order_no, order_tot));
+                    orderGrandTotal += order_tot;
+                }
+            }
+        } catch (SQLException ex) {
+            dbModel.showError("Database error: " + ex.getMessage());
+            return 0.0;
+        }
+
+        orderDtsTable.setItems(orderEntries);
+        if (orderGrandTotal > 0.0) return orderGrandTotal;
+
+        return orderGrandTotal;
+    }
+
     private void updatePieChart() {
         ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
                 new PieChart.Data("Course Fees", currentInvoice.getCourseInvFees()),
@@ -378,7 +452,8 @@ public class ViewInvoiceController {
     private double calculateTotalCosts() {
         return currentInvoice.getCourseInvFees() +
                 currentInvoice.getTotalSportsCost() +
-                currentInvoice.getTotalFoodCost();
+                currentInvoice.getTotalFoodCost() +
+                orderHistoryCostsTotal;
     }
 
     @FXML
@@ -922,6 +997,41 @@ public class ViewInvoiceController {
         });
     }
 
+    private void setupOrderViewColumn() {
+        orderActionColumn.setCellFactory(column -> new TableCell<OrderEntry, Void>() {
+            private final Button viewButton = new Button("View");
+
+            {
+                // When the view button is clicked, handle the event:
+                viewButton.setOnAction(e -> {
+                    OrderEntry currentOrder = getTableView().getItems().get(getIndex());
+                    viewOrderDetails(currentOrder);
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(viewButton);
+                }
+
+                viewButton.setStyle("-fx-font-size: 11px; -fx-text-fill: #FFF; -fx-background-color: #007a7a");
+            }
+        });
+    }
+
+    private void viewOrderDetails(OrderEntry order) {
+        // For demonstration, show a simple Alert with order details.
+        Alert infoAlert = new Alert(Alert.AlertType.INFORMATION);
+        infoAlert.setTitle("Order Details");
+        infoAlert.setHeaderText("Details for Order: " + order.orderNoProperty().get());
+        infoAlert.setContentText("Access Order History details by visiting the UMS Restaurant through the Admin Services page." + "\n\nOrder Total: " + currencyFormatter.format(order.orderTotalProperty().get()));
+        infoAlert.showAndWait();
+    }
+
     private void showError(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
@@ -1003,3 +1113,29 @@ class SportEntry {
         return price;
     }
 }
+
+class OrderEntry {
+    private final javafx.beans.property.IntegerProperty index;
+    private final javafx.beans.property.StringProperty orderNo;
+    private final javafx.beans.property.DoubleProperty orderTotal;
+
+    public OrderEntry(int index, String orderNo, double orderTotal) {
+        this.index = new javafx.beans.property.SimpleIntegerProperty(index);
+        this.orderNo = new javafx.beans.property.SimpleStringProperty(orderNo);
+        this.orderTotal = new javafx.beans.property.SimpleDoubleProperty(orderTotal);
+    }
+
+    public javafx.beans.property.IntegerProperty indexProperty() {
+        return index;
+    }
+
+    public javafx.beans.property.StringProperty orderNoProperty() {
+        return orderNo;
+    }
+
+    public javafx.beans.property.DoubleProperty orderTotalProperty() {
+        return orderTotal;
+    }
+}
+
+

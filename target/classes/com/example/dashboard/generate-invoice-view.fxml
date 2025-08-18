@@ -150,20 +150,26 @@
                 </Button>
             </children>
         </Pane>
-      <TableView layoutX="394.0" layoutY="156.0" prefHeight="200.0" prefWidth="760.0" fx:id="studentTable" onSort="#loadStudentData">
+      <TableView layoutX="394.0" layoutY="156.0" prefHeight="200.0" prefWidth="750.0" fx:id="studentTable" onSort="#loadStudentData">
         <columns>
-            <TableColumn fx:id="studentIdColumn" prefWidth="260.0" text="Student ID">
+            <TableColumn fx:id="studentIndexColumn" prefWidth="30.0" text="#" />
+            <TableColumn fx:id="studentIdColumn" prefWidth="185.0" text="Student ID">
                 <cellValueFactory>
-                    <PropertyValueFactory property="student_id" />
+                    <PropertyValueFactory property="studentID" />
                 </cellValueFactory>
             </TableColumn>
-            <TableColumn fx:id="studentNameColumn" prefWidth="500.0" text="Student Name">
+            <TableColumn fx:id="studentNameColumn" prefWidth="270.0" text="Student Name">
                 <cellValueFactory>
-                    <PropertyValueFactory property="student_name" />
+                    <PropertyValueFactory property="studentName" />
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn fx:id="studentCourseColumn" prefWidth="248.5" text="Course ID">
+                <cellValueFactory>
+                    <PropertyValueFactory property="courseID" />
                 </cellValueFactory>
             </TableColumn>
         </columns>
       </TableView>
-      <TextField layoutX="46.0" layoutY="157.0" prefHeight="46.0" prefWidth="312.0" promptText="Search Student ..." style="-fx-background-color: #FFFFFF; -fx-border-color: #757575; -fx-border-radius: 8px;" />
+      <TextField fx:id="searchStudentField" layoutX="46.0" layoutY="157.0" prefHeight="46.0" prefWidth="312.0" promptText="Search Student ..." style="-fx-background-color: #FFFFFF; -fx-border-color: #757575; -fx-border-radius: 8px;" />
     </children>
 </AnchorPane>

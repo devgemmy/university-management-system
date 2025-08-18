@@ -1,12 +1,20 @@
 package com.example.dashboard;
 
 public class Student {
+    private final javafx.beans.property.IntegerProperty index;
     private String studentID;
     private String studentName;
+    private String courseID;
 
-    public Student(String studentID, String studentName) {
-        this.studentID = studentID;
+    public Student(int index, String studentId, String studentName, String courseId) {
+        this.index = new javafx.beans.property.SimpleIntegerProperty(index);
+        this.studentID = studentId;
         this.studentName = studentName;
+        this.courseID = courseId;
+    }
+
+    public javafx.beans.property.IntegerProperty indexProperty() {
+        return index;
     }
 
     public String getStudentID() {
@@ -23,5 +31,13 @@ public class Student {
 
     public void setStudentName(String studentName) {
         this.studentName = studentName;
+    }
+
+    public String getCourseID() {
+        return courseID;
+    }
+
+    public void setCourseID(String studentName) {
+        this.courseID = courseID;
     }
 }

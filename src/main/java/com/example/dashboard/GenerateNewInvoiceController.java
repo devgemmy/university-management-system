@@ -19,9 +19,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import javafx.collections.ObservableList;
 
+import static com.example.dashboard.PopulateFinanceTable.getCourseSelection;
+import static com.example.dashboard.PopulateStudentCourse.getStudentDetails;
+
 public class GenerateNewInvoiceController {
     @FXML
-    private TextField studentNameField;
+    private TextField studentNameField, searchStudentField;
     @FXML
     private ComboBox<String> institutionComboBox, courseComboBox;
 
@@ -33,7 +36,9 @@ public class GenerateNewInvoiceController {
     @FXML
     protected TableView<Student> studentTable;
     @FXML
-    private TableColumn<Student, String> studentIdColumn, studentNameColumn;
+    private TableColumn<Student, Integer> studentIndexColumn;
+    @FXML
+    private TableColumn<Student, String> studentIdColumn, studentNameColumn, studentCourseColumn;
 
     // @FXML
     // private Button foodThirdRow, sportThirdRow;
@@ -61,13 +66,27 @@ public class GenerateNewInvoiceController {
             return;
         setLoading(true);
 
+        // load students from FINANCE Table ✅
+        // generate and update student IDs for each existing student and update the database ✅
+        // make student selectable and set values to text fields, if selected student id and name is not in FINANCE table ✅
+        // only display students where student id or student name are the same as submitted_applicant/students ✅
+        // generate only invoice where selected student id and name are in the STUDENTS not the FINANCE table ✅
+        // search by name and student id ✅
+
         try {
             List<Student> enrolledStudents = new ArrayList<>(dbModel.getEnrolledStudents());
+            // getStudentDetails(studentID, courseID, studentName)
             if (enrolledStudents.isEmpty()) {
                 System.out.println("DEBUG: No students found");
             } else {
+                for (Student student : enrolledStudents) {
+                    String studentID = student.getStudentID();
+                    String studentName = student.getStudentName();
+                    String courseID = student.getCourseID();
+                    System.out.println("collecting student data: " + studentID + ", " + studentName + ", " + courseID);
+                    getStudentDetails(studentID, courseID, studentName);
+                }
                 System.out.println("DEBUG: enrolledStudents size = " + enrolledStudents.size());
-                System.out.println("DEBUG: Students found: " + enrolledStudents);
             }
 
             Platform.runLater(() -> {
@@ -79,27 +98,24 @@ public class GenerateNewInvoiceController {
                 setLoading(false);
             });
         } catch (SQLException e) {
-            e.printStackTrace();
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText(null);
-            alert.setContentText("Failed to load student data: " + e.getMessage());
-            alert.showAndWait();
             setLoading(false);
+            dbModel.showError("Failed to load student data: " + e.getMessage());
         }
     }
 
     @FXML
     protected void initStudTableColumns() {
-        studentIdColumn.setCellValueFactory(new PropertyValueFactory<>("student_id"));
-        studentNameColumn.setCellValueFactory(new PropertyValueFactory<>("student_name"));
+        studentIndexColumn.setCellValueFactory(cellData -> cellData.getValue().indexProperty().asObject());
+        studentIdColumn.setCellValueFactory(new PropertyValueFactory<>("studentID"));
+        studentNameColumn.setCellValueFactory(new PropertyValueFactory<>("studentName"));
+        studentCourseColumn.setCellValueFactory(new PropertyValueFactory<>("courseID"));
 
         studentTable.setOnMouseClicked(event -> {
             if (event.getClickCount() == 2) {
                 Student selectedStudent = studentTable.getSelectionModel().getSelectedItem();
                 if (selectedStudent != null) {
                     try {
-                        // viewInvoice(selectedInvoice);
+                        collectStudentDetails(selectedStudent);
                     } catch (Exception e) {
                         dbModel.showError("Failed to select student details: " + e.getMessage());
                     }
@@ -107,6 +123,87 @@ public class GenerateNewInvoiceController {
             }
         });
     }
+
+    public void collectStudentDetails(Student student) throws SQLException {
+        String studentId = student.getStudentID(), studentName = student.getStudentName(), courseID = student.getCourseID();
+        String checkStudentinFinanceQuery = """
+              SELECT invoice_id, student_name FROM FINANCES WHERE student_id = ? OR student_name = ?
+            """;
+        try (
+                Connection conn = dbModel.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(checkStudentinFinanceQuery )
+                ) {
+            stmt.setString(1, studentId);
+            stmt.setString(2, studentName);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    dbModel.showError(rs.getString("student_name") + " already has an associated invoice: " + rs.getString("invoice_id"));
+                } else {
+                    System.out.println("Displaying student details...");
+                    Connection connecting = dbModel.getConnection();
+                    Map<String, String> courseDetails = getCourseSelection(connecting, courseID);
+                    courseComboBox.setValue(courseDetails.get("courseName"));
+                    institutionComboBox.setValue(courseDetails.get("institutionName"));
+                    studentNameField.setText(studentName);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    protected void handleSearch() {
+        String searchText = searchStudentField.getText().trim().toLowerCase();
+
+        try {
+            // Retrieve the full list of enrolled students.
+            List<Student> allStudents = dbModel.getEnrolledStudents();
+
+            List<Student> filteredStudents;
+            if (searchText.isEmpty()) {
+                filteredStudents = allStudents;
+            } else {
+                // Filter the students list based on matching name, ID, or course ID.
+                filteredStudents = allStudents.stream()
+                        .filter(student ->
+                                student.getStudentName().toLowerCase().contains(searchText)
+                                        || (student.getStudentID() != null && student.getStudentID().toLowerCase().contains(searchText))
+                                        || (student.getCourseID() != null && student.getCourseID().toLowerCase().contains(searchText))
+                        )
+                        .toList();
+            }
+
+            // Update the student table with the filtered list.
+            ObservableList<Student> studentTableData = FXCollections.observableArrayList(filteredStudents);
+            studentTable.setItems(studentTableData);
+        } catch (SQLException e) {
+            dbModel.showError("Failed to filter data: " + e.getMessage());
+        }
+    }
+
+    private void setupEventListeners() {
+        // observable, oldValue, newValue
+        searchStudentField.textProperty().addListener((_, _, _) -> {
+            if (!isLoading) {
+                // Cancel any existing timer
+                if (searchTimer != null) {
+                    searchTimer.cancel();
+                }
+                // Create new timer for 500ms delay
+                searchTimer = new Timer();
+                searchTimer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        Platform.runLater(() -> handleSearch());
+                    }
+                }, 500);
+            }
+        });
+    }
+
+    private Timer searchTimer;
+
 
     @FXML
     public void initialize() {
@@ -117,6 +214,11 @@ public class GenerateNewInvoiceController {
 
         hideAllErrorLabels();
         invoiceDatePicker.setValue(LocalDate.now());
+
+        // observable, oldValue, newValue
+        searchStudentField.textProperty().addListener((_, _, _) -> {
+            handleSearch();
+        });
 
         institutionsMap = dbModel.getInstitutions();
         institutionComboBox.setItems(FXCollections.observableArrayList(institutionsMap.values()));
@@ -313,21 +415,13 @@ public class GenerateNewInvoiceController {
             String invoiceId = dbModel.generateInvoice(invoiceData);
 
             // Show success message
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Success");
-            alert.setHeaderText(null);
-            alert.setContentText("Invoice generated successfully with ID: " + invoiceId);
-            alert.showAndWait();
+            dbModel.showInfo("Invoice generated successfully with ID: " + invoiceId);
 
             handleReset();
 
         } catch (Exception e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText(null);
-            alert.setContentText("Failed to generate invoice: " + e.getMessage());
+            dbModel.showError("Failed to generate invoice: " + e.getMessage());
             System.out.println("Failed to generate invoice: " + e.getMessage());
-            alert.showAndWait();
         }
     }
 

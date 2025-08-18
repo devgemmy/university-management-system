@@ -23,16 +23,16 @@
         <Pane prefHeight="78.0" prefWidth="1200" styleClass="header-pane">
             <children>
                 <Button fx:id="backToDashboardButton" layoutX="26.0" layoutY="20.0" onAction="#backToDashboard" prefHeight="35.0" prefWidth="146.0" style="-fx-background-color: transparent; -fx-border-color: #007A7A; -fx-text-fill: #007A7A; -fx-border-radius: 4px;" styleClass="transparent-button" text=" View all Invoices">
-               <font>
-                  <Font name="Avenir Roman" size="13.0" />
-               </font>
-               <graphic>
-                  <ImageView fitHeight="16.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../assets/icons/back-arrow.png" />
-                     </image>
-                  </ImageView>
-               </graphic></Button>
+                    <font>
+                        <Font name="Avenir Roman" size="13.0" />
+                    </font>
+                    <graphic>
+                        <ImageView fitHeight="16.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../../../assets/icons/back-arrow.png" />
+                            </image>
+                        </ImageView>
+                    </graphic></Button>
                 <Circle fill="#003f5a" layoutX="1158.0" layoutY="36.0" radius="21.0" styleClass="user-avatar" />
                 <Text fill="WHITE" layoutX="1149.0" layoutY="40.0" style="-fx-text-fill: #FFFFFF;" styleClass="user-avatar-text" text="AA" wrappingWidth="17.689453125" />
             </children>
@@ -61,7 +61,7 @@
                         <Font name="Avenir Roman" size="14.0" />
                     </font>
                 </Button>
-            <Text fx:id="invoiceIdLabel1" fill="#757575" layoutX="21.0" layoutY="50.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Student ID: " wrappingWidth="198.1986083984375" />
+                <Text fx:id="studentIdLabel" fill="#757575" layoutX="21.0" layoutY="50.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Student ID: " wrappingWidth="198.1986083984375" />
             </children>
         </Pane>
         <Pane layoutX="58.0" layoutY="335.0" prefHeight="38.0" prefWidth="1068.0">
@@ -91,8 +91,8 @@
                         <!-- <Label layoutX="41.0" layoutY="50.0" text="This field is empty" textFill="#dc4067" />
                         <Label layoutX="262.0" layoutY="50.0" text="This field is empty" textFill="#dc4067" /> -->
                     </children>
-                    </Pane>
-                    <Pane prefHeight="55.0" prefWidth="450.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #989898;">
+                </Pane>
+                <Pane prefHeight="55.0" prefWidth="450.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #989898;">
                     <children>
                         <Button fx:id="addCourseButton" defaultButton="true" ellipsisString="" layoutX="38.0" layoutY="12.0" lineSpacing="1.0" onAction="#handleAddCourse" prefHeight="19.0" prefWidth="118.0" style="-fx-background-color: #007A7A; -fx-border-color: #007A7A; -fx-text-fill: #FFFFFF; -fx-border-radius: 4px;" text="Add Course" textAlignment="CENTER" textFill="#007878" textOverrun="WORD_ELLIPSIS" wrapText="true">
                             <font>
@@ -102,11 +102,11 @@
                         <TilePane layoutX="259.0" layoutY="18.0" prefHeight="20.0" prefWidth="147.0">
                             <children>
                                 <Label text="Total:">
-                                <font>
-                                    <Font name="Avenir Heavy" size="14.0" />
-                                </font>
+                                    <font>
+                                        <Font name="Avenir Heavy" size="14.0" />
+                                    </font>
                                 </Label>
-                        <Text fx:id="courseCostsTotalLabel" strokeType="OUTSIDE" strokeWidth="0.0" text="£90.80" wrappingWidth="72.97537231445312" />
+                                <Text fx:id="courseCostsTotalLabel" strokeType="OUTSIDE" strokeWidth="0.0" text="£90.80" wrappingWidth="72.97537231445312" />
                             </children>
                         </TilePane>
                     </children>
@@ -114,7 +114,7 @@
             </children>
         </VBox>
         <!-- <ImageView fx:id="deleteInvBtn" fitHeight="23.0" fitWidth="18.0" layoutX="523.0" layoutY="473.0" pickOnBounds="true" preserveRatio="true" /> -->
-        <VBox fx:id="foodDetailsForm" disable="true" layoutX="640.0" layoutY="407.0">
+        <VBox fx:id="foodDetailsForm" layoutX="640.0" layoutY="407.0">
             <children>
                 <TableView fx:id="foodDtsTable" prefHeight="120.0" prefWidth="450.0">
                     <columns>
@@ -142,11 +142,11 @@
                         <TilePane layoutX="259.0" layoutY="18.0" prefHeight="20.0" prefWidth="147.0">
                             <children>
                                 <Label text="Total:">
-                                <font>
-                                    <Font name="Avenir Heavy" size="14.0" />
-                                </font>
+                                    <font>
+                                        <Font name="Avenir Heavy" size="14.0" />
+                                    </font>
                                 </Label>
-                        <Text fx:id="foodCostsTotalLabel" strokeType="OUTSIDE" strokeWidth="0.0" text="£90.80" wrappingWidth="72.975341796875" />
+                                <Text fx:id="foodCostsTotalLabel" strokeType="OUTSIDE" strokeWidth="0.0" text="£90.80" wrappingWidth="72.975341796875" />
                             </children>
                         </TilePane>
                     </children>
@@ -179,47 +179,47 @@
                         <TilePane layoutX="259.0" layoutY="18.0" prefHeight="20.0" prefWidth="147.0">
                             <children>
                                 <Label text="Total:">
-                                <font>
-                                    <Font name="Avenir Heavy" size="14.0" />
-                                </font>
+                                    <font>
+                                        <Font name="Avenir Heavy" size="14.0" />
+                                    </font>
                                 </Label>
-                        <Text fx:id="sportCostsTotalLabel" strokeType="OUTSIDE" strokeWidth="0.0" text="£90.80" wrappingWidth="72.97537231445312" />
+                                <Text fx:id="sportCostsTotalLabel" strokeType="OUTSIDE" strokeWidth="0.0" text="£90.80" wrappingWidth="72.97537231445312" />
                             </children>
                         </TilePane>
                     </children>
                 </Pane>
             </children>
         </VBox>
-      <VBox fx:id="orderDetailsForm" layoutX="640.0" layoutY="694.0">
-         <children>
-            <TableView fx:id="orderDtsTable" prefHeight="120.0" prefWidth="450.0">
-               <columns>
-                  <TableColumn fx:id="orderIndexColumn" prefWidth="30.0" text="#" />
-                  <TableColumn fx:id="orderHistoryColumn" prefWidth="190.0914306640625" text="Order History" />
-                  <TableColumn fx:id="orderTotalColumn" prefWidth="114.22216796875" text="Order Total" />
-                  <TableColumn fx:id="orderActionColumn" prefWidth="115.27783203125" text="" />
-               </columns>
-            </TableView>
-            <Pane prefHeight="55.0" prefWidth="450.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #989898;">
-               <children>
-                  <Button fx:id="addFoodButton1" defaultButton="true" ellipsisString="" layoutX="38.0" layoutY="12.0" lineSpacing="1.0" onAction="#handleAddFood" prefHeight="19.0" prefWidth="118.0" style="-fx-background-color: #DE6600; -fx-border-color: #DE6600; -fx-text-fill: #FFFFFF; -fx-border-radius: 4px;" text="Add Meal Order" textAlignment="CENTER" textFill="#007878" textOverrun="WORD_ELLIPSIS" wrapText="true">
-                     <font>
-                        <Font name="Avenir Roman" size="12.0" />
-                     </font>
-                  </Button>
-                  <TilePane layoutX="259.0" layoutY="18.0" prefHeight="20.0" prefWidth="147.0">
-                     <children>
-                        <Label text="Total:">
-                           <font>
-                              <Font name="Avenir Heavy" size="14.0" />
-                           </font>
-                        </Label>
-                        <Text fx:id="foodCostsTotalLabel1" strokeType="OUTSIDE" strokeWidth="0.0" text="£100.80" wrappingWidth="72.975341796875" />
-                     </children>
-                  </TilePane>
-               </children>
-            </Pane>
-         </children>
-      </VBox>
+        <VBox fx:id="orderDetailsForm" layoutX="640.0" layoutY="694.0">
+            <children>
+                <TableView fx:id="orderDtsTable" prefHeight="120.0" prefWidth="450.0">
+                    <columns>
+                        <TableColumn fx:id="orderIndexColumn" prefWidth="30.0" text="#" />
+                        <TableColumn fx:id="orderHistoryColumn" prefWidth="190.0914306640625" text="Order History" />
+                        <TableColumn fx:id="orderTotalColumn" prefWidth="114.22216796875" text="Order Total" />
+                        <TableColumn fx:id="orderActionColumn" prefWidth="115.27783203125" text="" />
+                    </columns>
+                </TableView>
+                <Pane prefHeight="55.0" prefWidth="450.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #989898;">
+                    <children>
+                        <Button fx:id="addMealOrder" disable="true" defaultButton="true" ellipsisString="" layoutX="38.0" layoutY="12.0" lineSpacing="1.0" prefHeight="19.0" prefWidth="118.0" style="-fx-background-color: #DE6600; -fx-border-color: #DE6600; -fx-text-fill: #FFFFFF; -fx-border-radius: 4px;" text="Add Meal Order" textAlignment="CENTER" textFill="#007878" textOverrun="WORD_ELLIPSIS" wrapText="true">
+                            <font>
+                                <Font name="Avenir Roman" size="12.0" />
+                            </font>
+                        </Button>
+                        <TilePane layoutX="259.0" layoutY="18.0" prefHeight="20.0" prefWidth="147.0">
+                            <children>
+                                <Label text="Total:">
+                                    <font>
+                                        <Font name="Avenir Heavy" size="14.0" />
+                                    </font>
+                                </Label>
+                                <Text fx:id="orderCostsTotalLabel" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="72.975341796875" />
+                            </children>
+                        </TilePane>
+                    </children>
+                </Pane>
+            </children>
+        </VBox>
     </children>
 </AnchorPane>

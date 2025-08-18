@@ -1,11 +1,20 @@
 package com.example.dashboard;
 
+import Restaurant.MainApp;
+import com.example.attendance.Dashboard;
+import com.example.course.MySwingGUI;
+import com.example.demo1.HelloApplication;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 
 public class AdminServicesController {
@@ -48,23 +57,66 @@ public class AdminServicesController {
     }
 
     @FXML
-    private void viewApplicantDetails() {
-        showComingSoon("Applicant Details");
+    private void viewApplicantDetails() throws IOException {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("/com/example/demo1/Dashboard.fxml"));
+            Scene scene = new Scene(fxmlLoader.load(), 1200, 869);
+            Stage applicantStage = new Stage();
+
+            System.out.println("Stylesheet Loaded: " + getClass().getResource("/com/example/demo1/style.css"));
+            scene.getStylesheets().add(getClass().getResource("/com/example/demo1/style.css").toExternalForm());
+
+            applicantStage.setTitle("Dashboard");
+            applicantStage.setResizable(false);
+            applicantStage.setScene(scene);
+            applicantStage.show();
+            // showComingSoon("Applicant Details");
+        } catch (IOException e) {
+            showError("Error loading Applicant Details dashboard: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     @FXML
     private void viewAttendance() {
-        showComingSoon("Attendance Monitoring");
+        SwingUtilities.invokeLater(() -> {
+            Dashboard frame = new Dashboard();
+            frame.setVisible(true);
+        });
+
+        // showComingSoon("Attendance Monitoring");
     }
 
     @FXML
     private void viewCourseSelection() {
-        showComingSoon("Course Selection");
+        //showComingSoon("Course Selection");
+        EventQueue.invokeLater(() -> {
+            try {
+                MySwingGUI frame = new MySwingGUI();
+                frame.setVisible(true);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     @FXML
     private void viewRestaurants() {
-        showComingSoon("Restaurants");
+        SwingUtilities.invokeLater(() -> {
+            MainApp app = new MainApp();
+            // Change the close operation to dispose the window instead of exiting the application.
+            app.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            // Save stock when the app is closed
+            app.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    app.saveStockBeforeExit();
+                }
+            });
+
+            app.setVisible(true);
+        });
+        //showComingSoon("Restaurants");
     }
 
     @FXML
